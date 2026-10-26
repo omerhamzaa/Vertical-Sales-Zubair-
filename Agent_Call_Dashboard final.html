@@ -233,6 +233,7 @@ th.sort.on.asc::after{content:" ↑"}
       <button class="tab active" data-page="agent">My Record</button>
       <button class="tab" data-page="today">Today</button>
       <button class="tab" data-page="yesterday" id="tabYesterday" style="display:none">Yesterday</button>
+      <button class="tab" data-page="range" id="tabRange" style="display:none">Range</button>
     </div>
   </div>
 </header>
@@ -438,6 +439,50 @@ th.sort.on.asc::after{content:" ↑"}
 </div>
 
 
+<!-- =============== RANGE PAGE (admin only) =============== -->
+<section class="page" id="page-range">
+  <div class="picker" style="grid-template-columns:1fr 1fr auto">
+    <div class="field"><label>From Date</label><input type="date" id="rgFrom"></div>
+    <div class="field"><label>To Date</label><input type="date" id="rgTo"></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn" id="rgReset">Reset</button>
+      <button class="btn primary" id="rgPrint">🖨 Print report</button>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:16px"><div class="card-b" style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+    <div><div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Selected Range · All Agents</div><div id="rgDate" style="font-family:'Playfair Display',serif;font-size:22px;color:var(--navy)">—</div></div>
+    <div><div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Working Days in Range</div><div id="rgDays" style="font-size:20px;font-weight:700;color:var(--navy)">—</div></div>
+    <div><div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Data last refreshed</div><div id="rgUpdated" style="font-size:20px;font-weight:700;color:var(--navy)">—</div></div>
+  </div></div>
+  <div id="rgEmpty" class="card" style="display:none"><div class="empty"><div class="v">V</div><h2></h2><p></p></div></div>
+  <div id="rgView" style="display:none">
+    <div class="kpis k5">
+      <div class="kpi" style="--acc:#7c3aed"><div class="lbl">Agents Active</div><div class="val" id="rgPresent">0</div><div class="sub">With calls in this range</div></div>
+      <div class="kpi" style="--acc:#1a3a66"><div class="lbl">Total Calls</div><div class="val" id="rgCalls">0</div><div class="sub">Avg <b id="rgCallsAvg">0</b> calls / agent / day</div>
+        <div class="tgt"><div class="tgt-l"><span>Target <b style="font-size:12px;color:var(--muted)">70 / day</b> = <span id="rgCallsTgt">0</span></span><b id="rgCallsPct">0%</b></div><div class="tgt-bar"><i id="rgCallsBar"></i></div></div></div>
+      <div class="kpi" style="--acc:#c9a24a"><div class="lbl">Call Duration</div><div class="val" id="rgDur">0</div><div class="sub">= <b id="rgDurHrs">0</b> hrs · Avg <b id="rgDurAvg">0</b> min / agent / day</div>
+        <div class="tgt"><div class="tgt-l"><span>Target <b style="font-size:12px;color:var(--muted)">50 min / day</b> = <span id="rgDurTgt">0</span> min</span><b id="rgDurPct">0%</b></div><div class="tgt-bar"><i id="rgDurBar"></i></div></div></div>
+      <div class="kpi" style="--acc:#16a34a"><div class="lbl">Answered Calls</div><div class="val" id="rgAns">0</div><div class="sub">Not answered <b id="rgNotAns">0</b></div></div>
+      <div class="kpi" style="--acc:#2563eb"><div class="lbl">Answer Rate</div><div class="val" id="rgRate">0</div><div class="sub">Team average</div></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><div><h3>Agent-wise Totals</h3><p>Every agent, sorted by total calls · target <span id="rgTargetTxt"></span> per active day</p></div><span class="badge b" id="rgCount">0 agents</span></div>
+      <div class="tbl-wrap" style="max-height:none">
+        <table>
+          <thead><tr>
+            <th style="width:60px">#</th><th>Agent</th><th>SIM</th>
+            <th class="r">Active Days</th>
+            <th class="r">Calls</th><th class="r">Call Duration <span style="font-weight:500;text-transform:none;letter-spacing:0">(min)</span></th>
+            <th class="r">Answered</th><th class="r">Not Answered</th><th class="c">Answer Rate</th><th class="c">Calls vs Target</th><th class="c">Talk Time vs Target</th>
+          </tr></thead>
+          <tbody id="rgBody"></tbody>
+          <tfoot><tr><td colspan="3">TOTAL</td><td class="r" id="rgfDays">0</td><td class="r" id="rgfCalls">0</td><td class="r" id="rgfDur">0</td><td class="r" id="rgfAns">0</td><td class="r" id="rgfNot">0</td><td class="c" id="rgfRate">0%</td><td class="c" id="rgfCallsPct">0%</td><td class="c" id="rgfDurPct">0%</td></tr></tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- =============== CHANGE PASSWORD =============== -->
 <div class="pwd-ov" id="pwdModal" style="display:none">
   <div class="gate-box" style="width:min(380px,100%)">
@@ -476,6 +521,10 @@ function refreshControls(prevSim,prevFrom,prevTo,oldMin){
   const keep=(v,def,isDefault)=>(v&&!isDefault&&v>=MIN_D&&v<=MAX_D)?v:def;
   $('fromDt').value=keep(prevFrom,MIN_D,prevFrom===oldMin);
   $('toDt').value=keep(prevTo,MAX_D,false);
+  ['rgFrom','rgTo'].forEach(id=>{$(id).min=MIN_D;$(id).max=MAX_D;});
+  const rF=$('rgFrom').value, rT=$('rgTo').value;
+  $('rgFrom').value=keep(rF,MIN_D,rF===oldMin);
+  $('rgTo').value=keep(rT,MAX_D,false);
   const sel=$('agentSel'); sel.innerHTML='<option value="">— Choose your name —</option>';
   [...DATA.agents].sort((a,b)=>a.name.localeCompare(b.name)).forEach(a=>{const o=document.createElement('option');o.value=a.sim;o.textContent=`${a.name}  (SIM ${a.sim})`;sel.appendChild(o);});
   if(prevSim&&AG[prevSim]) sel.value=prevSim;
@@ -484,7 +533,7 @@ function applyData(agents,rows){
   const pS=$('agentSel').value,pF=$('fromDt').value,pT=$('toDt').value,oldMin=MIN_D;
   DATA={agents,rows:[]}; AG={}; agents.forEach(a=>AG[a.sim]=a.name);
   ROWS=rows; DATES=[...new Set(ROWS.map(r=>r.d))].sort(); MIN_D=DATES[0]; MAX_D=DATES[DATES.length-1];
-  refreshControls(pS,pF,pT,oldMin); applyUserScope(); renderAgent(); renderToday(); renderYesterday();
+  refreshControls(pS,pF,pT,oldMin); applyUserScope(); renderAgent(); renderToday(); renderYesterday(); renderRange();
 }
 refreshControls('', '', '', '');
 
@@ -746,7 +795,7 @@ async function attemptLogin(){
     USER={username:m.username,admin,sim:m.sim,agent:m.agent};
     try{sessionStorage.setItem('cd_user',JSON.stringify(USER));}catch(e){}
     $('loginGate').style.display='none'; $('loginPass').value='';
-    applyUserScope(); renderAgent(); renderYesterday();
+    applyUserScope(); renderAgent(); renderYesterday(); renderRange();
   }catch(e){err.textContent='Could not read the Users tab — '+e.message;}
   finally{btn.disabled=false;btn.textContent='🔐 Login';}
 }
@@ -865,6 +914,56 @@ function renderYesterday(){
 $('ydRefresh').onclick=()=>{ if(SHEET_ID) loadSheet(true); else renderYesterday(); };
 $('ydPrint').onclick=()=>window.print();
 
+// ---------- RANGE PAGE (admin only) ----------
+function renderRange(){
+  const isAdmin=!!(USER&&USER.admin);
+  $('tabRange').style.display=isAdmin?'':'none';
+  if(!isAdmin){ if($('page-range').classList.contains('active')){document.querySelector('.tab[data-page="agent"]').click();} return; }
+  let from=$('rgFrom').value||MIN_D, to=$('rgTo').value||MAX_D;
+  if(from>to){ const t=from; from=to; to=t; $('rgFrom').value=from; $('rgTo').value=to; }
+  const now=new Date(), view=$('rgView'), empty=$('rgEmpty');
+  $('rgDate').textContent=from===to?dLong(from):`${dLong(from)} – ${dLong(to)}`;
+  const daysInRange=DATES.filter(d=>d>=from&&d<=to).length;
+  $('rgDays').textContent=daysInRange;
+  const syncTxt=LAST_SYNC?hm(LAST_SYNC)+(LAST_SYNC.toDateString()!==now.toDateString()?' · '+LAST_SYNC.toLocaleDateString('en-GB',{day:'numeric',month:'short'}):''):'Not synced yet';
+  $('rgUpdated').textContent=HUB_UPDATED?fmtHub(HUB_UPDATED):syncTxt;
+  $('rgTargetTxt').textContent=`${CALL_TARGET} calls · ${DUR_TARGET} min`;
+  const list=aggAll(from,to).filter(o=>o.days>0).sort((a,b)=>b.calls-a.calls||a.name.localeCompare(b.name));
+  if(!list.length){
+    view.style.display='none'; empty.style.display='';
+    empty.querySelector('h2').textContent='No data in this range';
+    empty.querySelector('p').textContent='Pick a different From / To date to see agent-wise totals.';
+    return;
+  }
+  empty.style.display='none'; view.style.display='';
+  const tC=list.reduce((s,o)=>s+o.calls,0), tD=list.reduce((s,o)=>s+o.dur,0), tA=list.reduce((s,o)=>s+o.ans,0), tDays=list.reduce((s,o)=>s+o.days,0), rate=tC?tA/tC*100:0;
+  const maxC=Math.max(1,...list.map(o=>o.calls)), active=list.filter(o=>o.calls>0).length;
+  $('rgBody').innerHTML=list.map((o,i)=>{
+    const rt=o.calls?o.ans/o.calls*100:0, tgt=o.days*CALL_TARGET, tp=tgt?o.calls/tgt*100:0, tc=tp>=100?'g':tp>=60?'a':'r';
+    const dtg=o.days*DUR_TARGET, dp=dtg?o.dur/dtg*100:0, dc=dp>=100?'g':dp>=60?'a':'r';
+    return `<tr class="${o.calls?'':'off'}"><td><span class="rank-num ${i<5&&o.calls?'top':''}">${i+1}</span></td><td><span class="day">${o.name}</span></td><td>${o.sim}</td>
+      <td class="r num">${o.days}</td>
+      <td class="r num"><span class="bar" style="width:${o.calls?Math.max(4,o.calls/maxC*70):0}px"></span>${fmt(o.calls)}</td>
+      <td class="r num">${fmt1(o.dur)}</td><td class="r num">${fmt(o.ans)}</td><td class="r num">${fmt(o.calls-o.ans)}</td>
+      <td class="c"><span class="pill ${rateCls(rt)}">${fmt1(rt)}%</span></td>
+      <td class="c"><span class="pill ${tc}">${fmt1(tp)}%</span></td>
+      <td class="c"><span class="pill ${dc}">${fmt1(dp)}%</span></td></tr>`;
+  }).join('');
+  // team target = every agent's active days × per-day target
+  const cTgt=tDays*CALL_TARGET, dTgt=tDays*DUR_TARGET, cPct=cTgt?tC/cTgt*100:0, dPct=dTgt?tD/dTgt*100:0;
+  $('rgPresent').textContent=fmt(active); $('rgCalls').textContent=fmt(tC); $('rgCallsAvg').textContent=tDays?fmt1(tC/tDays):0;
+  $('rgCallsTgt').textContent=fmt(cTgt); $('rgCallsPct').textContent=fmt1(cPct)+'%'; $('rgCallsBar').style.width=Math.min(100,cPct)+'%';
+  $('rgDur').innerHTML=fmt(tD)+'<small>min</small>'; $('rgDurHrs').textContent=fmt1(tD/60); $('rgDurAvg').textContent=tDays?fmt1(tD/tDays):0;
+  $('rgDurTgt').textContent=fmt(dTgt); $('rgDurPct').textContent=fmt1(dPct)+'%'; $('rgDurBar').style.width=Math.min(100,dPct)+'%';
+  $('rgAns').textContent=fmt(tA); $('rgNotAns').textContent=fmt(tC-tA);
+  $('rgRate').innerHTML=fmt1(rate)+'<small>%</small>'; $('rgCount').textContent=`${list.length} agents`;
+  $('rgfDays').textContent=fmt(tDays); $('rgfCalls').textContent=fmt(tC); $('rgfDur').textContent=fmt1(tD); $('rgfAns').textContent=fmt(tA); $('rgfNot').textContent=fmt(tC-tA); $('rgfRate').textContent=fmt1(rate)+'%';
+  $('rgfCallsPct').textContent=fmt1(cPct)+'%'; $('rgfDurPct').textContent=fmt1(dPct)+'%';
+}
+['rgFrom','rgTo'].forEach(id=>$(id).addEventListener('change',renderRange));
+$('rgReset').onclick=()=>{$('rgFrom').value=MIN_D;$('rgTo').value=MAX_D;renderRange();};
+$('rgPrint').onclick=()=>window.print();
+
 // ---------- CHANGE PASSWORD ----------
 function pwdMsg(t,ok){const m=$('pwdMsg');m.textContent=t||'';m.style.color=ok?'#15803d':'#b91c1c';}
 function openPwd(){['pwdOld','pwdNew','pwdNew2'].forEach(id=>$(id).value='');pwdMsg('');$('pwdSave').disabled=false;$('pwdModal').style.display='flex';$('pwdOld').focus();}
@@ -895,6 +994,7 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));$('page-'+t.dataset.page).classList.add('active');
   if(t.dataset.page==='today') renderToday();
   if(t.dataset.page==='yesterday') renderYesterday();
+  if(t.dataset.page==='range') renderRange();
 }));
 ['agentSel','fromDt','toDt'].forEach(id=>$(id).addEventListener('change',renderAgent));
 $('resetBtn').onclick=()=>{$('fromDt').value=MIN_D;$('toDt').value=MAX_D;renderAgent();};
@@ -903,6 +1003,7 @@ applyUserScope();
 renderAgent();
 renderToday();
 renderYesterday();
+renderRange();
 startSheet();
 </script>
 </body>
