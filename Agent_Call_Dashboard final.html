@@ -167,6 +167,18 @@ th.sort.on.asc::after{content:" ↑"}
 .footer b{color:var(--muted)}
 
 @media print{.topbar,.picker,.btn,.tabs,#syncPanel{display:none!important}.wrap{padding:0}.kpi,.card{box-shadow:none}}
+.combo{position:relative}
+.combo-btn{width:100%;height:42px;border:1px solid var(--line);border-radius:9px;padding:0 12px;background:#fff;font-family:inherit;font-size:14px;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left}
+.combo-btn:focus,.combo.open .combo-btn{outline:none;border-color:var(--navy-3);box-shadow:0 0 0 3px rgba(26,58,102,.12)}
+.combo-btn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.combo-btn span.ph{color:var(--soft)}
+.combo-btn i{font-style:normal;color:var(--muted);font-size:12px}
+.combo-panel{position:absolute;left:0;right:0;top:46px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 14px 34px -8px rgba(11,31,58,.35);padding:8px;z-index:20}
+.combo-panel input{width:100%;height:38px;border:1px solid var(--line);border-radius:8px;padding:0 10px;font-family:inherit;font-size:14px;outline:none;margin-bottom:6px}
+.combo-panel input:focus{border-color:var(--navy-3)}
+.combo-list{max-height:220px;overflow-y:auto}
+.combo-item{padding:9px 10px;border-radius:7px;font-size:14px;cursor:pointer}
+.combo-item:hover,.combo-item.act{background:#eef2f9}.combo-item.sel{font-weight:700;color:var(--navy-3)}
+.combo-none{padding:10px;font-size:13px;color:var(--muted);text-align:center}
 @media (min-width:1001px){.kpis.k5{grid-template-columns:repeat(5,1fr)}}
 @media (max-width:1000px){.kpis,.ins{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.picker{grid-template-columns:1fr 1fr}.sum-kpis{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:640px){.wrap{padding:16px}.topbar{padding:0 16px}.kpis,.ins,.picker,.sum-kpis{grid-template-columns:1fr}.hero{flex-wrap:wrap}.hero .rank{margin-left:0;text-align:left}.topbar-right .period{display:none}}
@@ -191,6 +203,13 @@ th.sort.on.asc::after{content:" ↑"}
     <p>Enter your username and password to log in</p>
     <div class="field"><label>Username</label>
       <select id="loginUser"><option value="">Loading users…</option></select>
+      <div class="combo" id="loginCombo" style="display:none">
+        <button type="button" class="combo-btn" id="comboBtn"><span id="comboLbl">— Select username —</span><i>▾</i></button>
+        <div class="combo-panel" id="comboPanel" style="display:none">
+          <input type="text" id="comboSearch" autocomplete="off" placeholder="🔍 Search username…">
+          <div class="combo-list" id="comboList"></div>
+        </div>
+      </div>
       <input type="text" id="loginUserTyped" autocomplete="username" placeholder="Enter username" style="display:none"></div>
     <div class="field"><label>Password</label><input type="password" id="loginPass" autocomplete="current-password"></div>
     <div id="loginErr"></div>
@@ -717,17 +736,46 @@ async function attemptLogin(){
 $('loginBtn').onclick=attemptLogin;
 function getLoginUser(){const t=$('loginUserTyped');return (t.style.display!=='none'?t.value:$('loginUser').value).trim();}
 function useTypedUser(){$('loginUser').style.display='none';$('loginUserTyped').style.display='';}
+let LOGIN_NAMES=[], comboAct=0;
+function setLoginUser(n){
+  $('loginUser').value=n; const l=$('comboLbl'); l.textContent=n||'— Select username —'; l.className=n?'':'ph';
+}
+function renderCombo(q){
+  const f=String(q||'').trim().toLowerCase(), cur=$('loginUser').value, box=$('comboList');
+  const list=LOGIN_NAMES.filter(n=>!f||n.toLowerCase().includes(f));
+  if(comboAct>=list.length) comboAct=Math.max(0,list.length-1);
+  box.innerHTML=list.length?'':'<div class="combo-none">No user found</div>';
+  list.forEach((n,i)=>{const d=document.createElement('div');d.className='combo-item'+(i===comboAct?' act':'')+(n===cur?' sel':'');d.textContent=n;
+    d.onmousedown=e=>{e.preventDefault();pickCombo(n);}; d.onmousemove=()=>{comboAct=i;[...box.children].forEach((c,j)=>c.classList.toggle('act',j===i));}; box.appendChild(d);});
+  const a=box.querySelector('.act'); if(a) a.scrollIntoView({block:'nearest'});
+  return list;
+}
+function openCombo(){ $('comboPanel').style.display=''; $('loginCombo').classList.add('open'); $('comboSearch').value=''; comboAct=0; renderCombo(''); $('comboSearch').focus(); }
+function closeCombo(){ $('comboPanel').style.display='none'; $('loginCombo').classList.remove('open'); }
+function pickCombo(n){ setLoginUser(n); closeCombo(); $('loginErr').textContent=''; $('loginPass').focus(); }
+$('comboBtn').onclick=()=>{ $('comboPanel').style.display==='none'?openCombo():closeCombo(); };
+$('comboSearch').addEventListener('input',e=>{comboAct=0;renderCombo(e.target.value);});
+$('comboSearch').addEventListener('keydown',e=>{
+  const list=LOGIN_NAMES.filter(n=>!$('comboSearch').value.trim()||n.toLowerCase().includes($('comboSearch').value.trim().toLowerCase()));
+  if(e.key==='ArrowDown'){e.preventDefault();comboAct=Math.min(list.length-1,comboAct+1);renderCombo($('comboSearch').value);}
+  else if(e.key==='ArrowUp'){e.preventDefault();comboAct=Math.max(0,comboAct-1);renderCombo($('comboSearch').value);}
+  else if(e.key==='Enter'){e.preventDefault();if(list[comboAct])pickCombo(list[comboAct]);}
+  else if(e.key==='Escape'){closeCombo();$('comboBtn').focus();}
+});
+document.addEventListener('mousedown',e=>{ if(!$('loginCombo').contains(e.target)) closeCombo(); });
 async function loadUserDropdown(){
   const sel=$('loginUser');
   if(!SHEET_ID){useTypedUser();return;}
   try{
     const users=await fetchUsers(), names=[...new Set(users.map(u=>u.username))].sort((a,b)=>a.localeCompare(b));
     if(!names.length){useTypedUser();return;}
+    LOGIN_NAMES=names;
     sel.innerHTML='<option value="">— Select username —</option>'+names.map(n=>`<option value="${n.replace(/"/g,'&quot;')}">${n.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</option>`).join('');
-    sel.onchange=()=>{$('loginErr').textContent='';$('loginPass').focus();};
+    sel.style.display='none'; $('loginUserTyped').style.display='none'; $('loginCombo').style.display='';
   }catch(e){useTypedUser();}
 }
 ['loginUser','loginUserTyped','loginPass'].forEach(id=>$(id).addEventListener('keydown',e=>{if(e.key==='Enter')attemptLogin();}));
+$('comboBtn').addEventListener('keydown',e=>{if(e.key==='Enter'&&$('loginUser').value&&$('comboPanel').style.display==='none'){e.preventDefault();$('loginPass').focus();}});
 $('logoutBtn').onclick=()=>{try{sessionStorage.removeItem('cd_user');}catch(e){} location.reload();};
 if(USER){$('loginGate').style.display='none';}else{loadUserDropdown();}
 
