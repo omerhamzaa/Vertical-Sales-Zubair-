@@ -167,6 +167,8 @@ th.sort.on.asc::after{content:" ↑"}
 .footer b{color:var(--muted)}
 
 @media print{.topbar,.picker,.btn,.tabs,#syncPanel{display:none!important}.wrap{padding:0}.kpi,.card{box-shadow:none}}
+.pwd-ov{position:fixed;inset:0;z-index:998;background:rgba(7,19,39,.62);display:flex;align-items:center;justify-content:center;padding:20px}
+#pwdLink{cursor:pointer;text-decoration:underline}
 .combo{position:relative}
 .combo-btn{width:100%;height:42px;border:1px solid var(--line);border-radius:9px;padding:0 12px;background:#fff;font-family:inherit;font-size:14px;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left}
 .combo-btn:focus,.combo.open .combo-btn{outline:none;border-color:var(--navy-3);box-shadow:0 0 0 3px rgba(26,58,102,.12)}
@@ -225,7 +227,7 @@ th.sort.on.asc::after{content:" ↑"}
   </div>
   <div class="topbar-right">
     <div class="period"><span>Reporting Period</span><b id="periodLbl">—</b></div>
-    <span class="user-chip" id="userChip">👤 <b id="userLbl"></b> <a id="logoutBtn">Logout</a></span>
+    <span class="user-chip" id="userChip">👤 <b id="userLbl"></b> <a id="pwdLink" style="display:none;margin-right:10px">Change password</a><a id="logoutBtn">Logout</a></span>
     <button class="sync-btn" id="syncToggle">🔗 Google Sheet</button>
     <div class="tabs">
       <button class="tab active" data-page="agent">My Record</button>
@@ -433,6 +435,20 @@ th.sort.on.asc::after{content:" ↑"}
 </section>
 
 
+</div>
+
+
+<!-- =============== CHANGE PASSWORD =============== -->
+<div class="pwd-ov" id="pwdModal" style="display:none">
+  <div class="gate-box" style="width:min(380px,100%)">
+    <h2>Change password</h2>
+    <p>Your new password is saved in the Users sheet</p>
+    <div class="field"><label>Current password</label><input type="password" id="pwdOld" autocomplete="current-password"></div>
+    <div class="field"><label>New password <span style="text-transform:none;letter-spacing:0;font-weight:500">(min 6 characters)</span></label><input type="password" id="pwdNew" autocomplete="new-password"></div>
+    <div class="field"><label>Confirm new password</label><input type="password" id="pwdNew2" autocomplete="new-password"></div>
+    <div id="pwdMsg" style="font-size:12.5px;min-height:18px;margin-bottom:10px;text-align:center"></div>
+    <div style="display:flex;gap:10px"><button class="btn" id="pwdCancel" style="flex:1">Cancel</button><button class="btn primary" id="pwdSave" style="flex:1">Update password</button></div>
+  </div>
 </div>
 
 <script>
@@ -672,6 +688,7 @@ $('sheetUrl').value=SHEET_ID; $('sheetTab').value=SHEET_TAB;
 
 // ---------- LOGIN (Users tab) ----------
 const USERS_TAB='Users';
+const PWD_API_URL='https://script.google.com/macros/s/AKfycbwpt26ZG2nDaBHf4BJuB_yDDMv22zF79Sf5YwmU1GqGgb76BVXffKTOtpRu9Wrapyyb/exec';   // paste the Apps Script web-app URL (ChangePassword.gs) here; blank = "Change password" link stays hidden
 let USER=null; try{USER=JSON.parse(sessionStorage.getItem('cd_user')||'null');}catch(e){}
 const rawTxt=c=>(!c||c.v==null)?'':String(c.v);
 function parseUsers(json){
@@ -703,7 +720,7 @@ function userSim(){
 }
 function applyUserScope(){
   if(!USER)return;
-  $('userLbl').textContent=USER.username; $('userChip').style.display='flex';
+  $('userLbl').textContent=USER.username; $('userChip').style.display='flex'; $('pwdLink').style.display=PWD_API_URL?'':'none';
   $('syncToggle').style.display=USER.admin?'':'none'; if(!USER.admin)$('syncPanel').style.display='none';
   if(USER.admin)return;
   const sim=userSim(), sel=$('agentSel'); sel.disabled=true;
@@ -847,6 +864,30 @@ function renderYesterday(){
 }
 $('ydRefresh').onclick=()=>{ if(SHEET_ID) loadSheet(true); else renderYesterday(); };
 $('ydPrint').onclick=()=>window.print();
+
+// ---------- CHANGE PASSWORD ----------
+function pwdMsg(t,ok){const m=$('pwdMsg');m.textContent=t||'';m.style.color=ok?'#15803d':'#b91c1c';}
+function openPwd(){['pwdOld','pwdNew','pwdNew2'].forEach(id=>$(id).value='');pwdMsg('');$('pwdSave').disabled=false;$('pwdModal').style.display='flex';$('pwdOld').focus();}
+function closePwd(){$('pwdModal').style.display='none';}
+$('pwdLink').onclick=openPwd; $('pwdCancel').onclick=closePwd;
+$('pwdModal').addEventListener('mousedown',e=>{if(e.target===$('pwdModal'))closePwd();});
+['pwdOld','pwdNew','pwdNew2'].forEach(id=>$(id).addEventListener('keydown',e=>{if(e.key==='Enter')$('pwdSave').click();else if(e.key==='Escape')closePwd();}));
+$('pwdSave').onclick=async()=>{
+  const o=$('pwdOld').value.trim(), n=$('pwdNew').value.trim(), n2=$('pwdNew2').value.trim();
+  if(!o||!n||!n2) return pwdMsg('Fill in all three fields');
+  if(n.length<6) return pwdMsg('New password must be at least 6 characters');
+  if(n!==n2) return pwdMsg('New passwords do not match');
+  if(n===o) return pwdMsg('New password must be different from the current one');
+  if(!PWD_API_URL||!USER) return pwdMsg('Password change is not set up yet');
+  const btn=$('pwdSave'); btn.disabled=true; btn.textContent='Updating…'; pwdMsg('');
+  try{
+    const r=await fetch(PWD_API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'changePassword',username:USER.username,oldPassword:o,newPassword:n})});
+    const j=await r.json();
+    if(j&&j.ok){ pwdMsg('Password updated. Use the new password next time you log in.',true); setTimeout(closePwd,2200); }
+    else pwdMsg((j&&j.error)||'Could not update the password');
+  }catch(e){ pwdMsg('Could not reach the password service. Check your internet and try again.'); }
+  finally{ btn.disabled=false; btn.textContent='Update password'; }
+};
 
 // ---------- events ----------
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
