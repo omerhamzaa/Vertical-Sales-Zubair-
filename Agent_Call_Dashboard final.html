@@ -167,6 +167,7 @@ th.sort.on.asc::after{content:" ↑"}
 .footer b{color:var(--muted)}
 
 @media print{.topbar,.picker,.btn,.tabs,#syncPanel{display:none!important}.wrap{padding:0}.kpi,.card{box-shadow:none}}
+@media (min-width:1001px){.kpis.k5{grid-template-columns:repeat(5,1fr)}}
 @media (max-width:1000px){.kpis,.ins{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.picker{grid-template-columns:1fr 1fr}.sum-kpis{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:640px){.wrap{padding:16px}.topbar{padding:0 16px}.kpis,.ins,.picker,.sum-kpis{grid-template-columns:1fr}.hero{flex-wrap:wrap}.hero .rank{margin-left:0;text-align:left}.topbar-right .period{display:none}}
 </style>
@@ -210,6 +211,7 @@ th.sort.on.asc::after{content:" ↑"}
     <div class="tabs">
       <button class="tab active" data-page="agent">My Record</button>
       <button class="tab" data-page="today">Today</button>
+      <button class="tab" data-page="yesterday" id="tabYesterday" style="display:none">Yesterday</button>
     </div>
   </div>
 </header>
@@ -378,6 +380,40 @@ th.sort.on.asc::after{content:" ↑"}
   </div>
 </section>
 
+<!-- =============== YESTERDAY PAGE (admin only) =============== -->
+<section class="page" id="page-yesterday">
+  <div class="card" style="margin-bottom:16px"><div class="card-b" style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+    <div><div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Yesterday · All Agents</div><div id="ydDate" style="font-family:'Playfair Display',serif;font-size:22px;color:var(--navy)">—</div></div>
+    <div><div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Data last refreshed</div><div id="ydUpdated" style="font-size:20px;font-weight:700;color:var(--navy)">—</div></div>
+    <div style="display:flex;gap:10px"><button class="btn" id="ydPrint">🖨 Print report</button><button class="btn primary" id="ydRefresh">⟳ Refresh now</button></div>
+  </div></div>
+  <div id="ydEmpty" class="card" style="display:none"><div class="empty"><div class="v">V</div><h2></h2><p></p></div></div>
+  <div id="ydView" style="display:none">
+    <div class="kpis k5">
+      <div class="kpi" style="--acc:#7c3aed"><div class="lbl">Total Agents Present</div><div class="val" id="ydPresent">0</div></div>
+      <div class="kpi" style="--acc:#1a3a66"><div class="lbl">Total Calls</div><div class="val" id="ydCalls">0</div><div class="sub">Yesterday, all agents</div></div>
+      <div class="kpi" style="--acc:#c9a24a"><div class="lbl">Call Duration</div><div class="val" id="ydDur">0</div><div class="sub">All agents combined</div></div>
+      <div class="kpi" style="--acc:#16a34a"><div class="lbl">Answered Calls</div><div class="val" id="ydAns">0</div><div class="sub">Not answered <b id="ydNotAns">0</b></div></div>
+      <div class="kpi" style="--acc:#2563eb"><div class="lbl">Answer Rate</div><div class="val" id="ydRate">0</div><div class="sub">Team average</div></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><div><h3>Yesterday’s Report</h3><p>Every agent, sorted by total calls · target <span id="ydTargetTxt"></span></p></div><span class="badge b" id="ydCount">0 agents</span></div>
+      <div class="tbl-wrap" style="max-height:none">
+        <table>
+          <thead><tr>
+            <th style="width:60px">#</th><th>Agent</th><th>SIM</th>
+            <th class="r">Calls</th><th class="r">Call Duration <span style="font-weight:500;text-transform:none;letter-spacing:0">(min)</span></th>
+            <th class="r">Answered</th><th class="r">Not Answered</th><th class="c">Answer Rate</th><th class="c">Calls vs Target</th>
+          </tr></thead>
+          <tbody id="ydBody"></tbody>
+          <tfoot><tr><td colspan="3">TOTAL</td><td class="r" id="ydfCalls">0</td><td class="r" id="ydfDur">0</td><td class="r" id="ydfAns">0</td><td class="r" id="ydfNot">0</td><td class="c" id="ydfRate">0%</td><td></td></tr></tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 </div>
 
 <script>
@@ -413,7 +449,7 @@ function applyData(agents,rows){
   const pS=$('agentSel').value,pF=$('fromDt').value,pT=$('toDt').value,oldMin=MIN_D;
   DATA={agents,rows:[]}; AG={}; agents.forEach(a=>AG[a.sim]=a.name);
   ROWS=rows; DATES=[...new Set(ROWS.map(r=>r.d))].sort(); MIN_D=DATES[0]; MAX_D=DATES[DATES.length-1];
-  refreshControls(pS,pF,pT,oldMin); applyUserScope(); renderAgent(); renderToday();
+  refreshControls(pS,pF,pT,oldMin); applyUserScope(); renderAgent(); renderToday(); renderYesterday();
 }
 refreshControls('', '', '', '');
 
@@ -674,7 +710,7 @@ async function attemptLogin(){
     USER={username:m.username,admin,sim:m.sim,agent:m.agent};
     try{sessionStorage.setItem('cd_user',JSON.stringify(USER));}catch(e){}
     $('loginGate').style.display='none'; $('loginPass').value='';
-    applyUserScope(); renderAgent();
+    applyUserScope(); renderAgent(); renderYesterday();
   }catch(e){err.textContent='Could not read the Users tab — '+e.message;}
   finally{btn.disabled=false;btn.textContent='🔐 Login';}
 }
@@ -726,11 +762,50 @@ function renderToday(){
 $('todaySel').onchange=()=>{$('agentSel').value=$('todaySel').value;renderAgent();renderToday();};
 $('tdRefresh').onclick=()=>{ if(SHEET_ID) loadSheet(true); else renderToday(); };
 
+// ---------- YESTERDAY PAGE (admin only) ----------
+function yesterdayStr(){const d=new Date();d.setDate(d.getDate()-1);return `${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}`;}
+function renderYesterday(){
+  const isAdmin=!!(USER&&USER.admin);
+  $('tabYesterday').style.display=isAdmin?'':'none';
+  if(!isAdmin){ if($('page-yesterday').classList.contains('active')){document.querySelector('.tab[data-page="agent"]').click();} return; }
+  const y=yesterdayStr(), now=new Date(), view=$('ydView'), empty=$('ydEmpty');
+  $('ydDate').textContent=new Date(y+'T00:00:00').toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short',year:'numeric'});
+  const syncTxt=LAST_SYNC?hm(LAST_SYNC)+(LAST_SYNC.toDateString()!==now.toDateString()?' · '+LAST_SYNC.toLocaleDateString('en-GB',{day:'numeric',month:'short'}):''):'Not synced yet';
+  $('ydUpdated').textContent=HUB_UPDATED?fmtHub(HUB_UPDATED):syncTxt;
+  $('ydTargetTxt').textContent=`${CALL_TARGET} calls · ${DUR_TARGET} min`;
+  const list=ROWS.filter(r=>r.d===y&&r.calls!=null).map(r=>({sim:r.sim,name:AG[r.sim]||('SIM '+r.sim),calls:r.calls,dur:r.dur||0,ans:r.ans||0}))
+    .sort((a,b)=>b.calls-a.calls||a.name.localeCompare(b.name));
+  if(!list.length){
+    view.style.display='none'; empty.style.display='';
+    empty.querySelector('h2').textContent='No data for yesterday yet';
+    empty.querySelector('p').textContent='Yesterday’s numbers will appear here after the next sheet update.';
+    return;
+  }
+  empty.style.display='none'; view.style.display='';
+  const tC=list.reduce((s,o)=>s+o.calls,0), tD=list.reduce((s,o)=>s+o.dur,0), tA=list.reduce((s,o)=>s+o.ans,0), rate=tC?tA/tC*100:0;
+  const maxC=Math.max(1,...list.map(o=>o.calls)), active=list.filter(o=>o.calls>0).length;
+  $('ydBody').innerHTML=list.map((o,i)=>{
+    const rt=o.calls?o.ans/o.calls*100:0, tp=o.calls/CALL_TARGET*100, tc=tp>=100?'g':tp>=60?'a':'r';
+    return `<tr class="${o.calls?'':'off'}"><td>${i+1}</td><td><span class="day">${o.name}</span></td><td>${o.sim}</td>
+      <td class="r num"><span class="bar" style="width:${o.calls?Math.max(4,o.calls/maxC*70):0}px"></span>${fmt(o.calls)}</td>
+      <td class="r num">${fmt1(o.dur)}</td><td class="r num">${fmt(o.ans)}</td><td class="r num">${fmt(o.calls-o.ans)}</td>
+      <td class="c"><span class="pill ${rateCls(rt)}">${fmt1(rt)}%</span></td>
+      <td class="c"><span class="pill ${tc}">${fmt1(tp)}%</span></td></tr>`;
+  }).join('');
+  $('ydCalls').textContent=fmt(tC); $('ydPresent').textContent=fmt(active);
+  $('ydDur').innerHTML=fmt1(tD)+'<small>min</small>'; $('ydAns').textContent=fmt(tA); $('ydNotAns').textContent=fmt(tC-tA);
+  $('ydRate').innerHTML=fmt1(rate)+'<small>%</small>'; $('ydCount').textContent=`${list.length} agents`;
+  $('ydfCalls').textContent=fmt(tC); $('ydfDur').textContent=fmt1(tD); $('ydfAns').textContent=fmt(tA); $('ydfNot').textContent=fmt(tC-tA); $('ydfRate').textContent=fmt1(rate)+'%';
+}
+$('ydRefresh').onclick=()=>{ if(SHEET_ID) loadSheet(true); else renderYesterday(); };
+$('ydPrint').onclick=()=>window.print();
+
 // ---------- events ----------
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));$('page-'+t.dataset.page).classList.add('active');
   if(t.dataset.page==='today') renderToday();
+  if(t.dataset.page==='yesterday') renderYesterday();
 }));
 ['agentSel','fromDt','toDt'].forEach(id=>$(id).addEventListener('change',renderAgent));
 $('resetBtn').onclick=()=>{$('fromDt').value=MIN_D;$('toDt').value=MAX_D;renderAgent();};
@@ -738,6 +813,7 @@ $('printBtn').onclick=()=>window.print();
 applyUserScope();
 renderAgent();
 renderToday();
+renderYesterday();
 startSheet();
 </script>
 </body>
