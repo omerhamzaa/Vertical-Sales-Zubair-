@@ -817,7 +817,8 @@ function parseSheet(json){
   const H=headers.map(norm),used=new Set();
   const find=f=>{const i=H.findIndex((h,i)=>!used.has(i)&&h&&f(h));if(i>=0)used.add(i);return i;};
   const iDate=find(h=>h.includes('date')||h==='day'), iDur=find(h=>h.includes('dur')||h.includes('talk')),
-        iAns=find(h=>h.includes('answer')), iSim=find(h=>h.startsWith('sim')),
+        iNot=find(h=>/^(not|un|non|missed|no)/.test(h)&&h.includes('answer')),
+        iAns=find(h=>h.includes('answer')&&!/^(not|un|non|missed|no)/.test(h)), iSim=find(h=>h.startsWith('sim')),
         iName=find(h=>h.includes('name')||h.includes('agent')), iCalls=find(h=>h.includes('call'));
   if(iDate<0||iCalls<0)throw new Error('Headings not found. Required: Date and Call (total). Headings found: '+(headers.filter(Boolean).join(', ')||'none'));
   const durInMin=iDur>=0&&/min/.test(H[iDur]);
@@ -828,7 +829,10 @@ function parseSheet(json){
     let sim=iSim>=0?parseInt(String(cText(c[iSim])).replace(/\D/g,''),10):NaN;
     if(isNaN(sim)){if(!nm)return;sim=ids[nm]||(ids[nm]=++auto);}
     if(nm&&!names[sim])names[sim]=nm;
-    out.push({d,sim,calls:cNum(c[iCalls]),dur:iDur>=0?cMinutes(c[iDur],durInMin):null,ans:iAns>=0?cNum(c[iAns]):null});
+    const calls=cNum(c[iCalls]);
+    let ans=iAns>=0?cNum(c[iAns]):null;
+    if(ans==null&&iNot>=0&&calls!=null){const na=cNum(c[iNot]);if(na!=null)ans=Math.max(0,calls-na);}   // only "Not Answered" given → Answered = Calls − Not Answered
+    out.push({d,sim,calls,dur:iDur>=0?cMinutes(c[iDur],durInMin):null,ans});
   });
   if(!out.length)throw new Error('No valid rows found in the sheet');
   const sims=[...new Set(out.map(r=>r.sim))];
