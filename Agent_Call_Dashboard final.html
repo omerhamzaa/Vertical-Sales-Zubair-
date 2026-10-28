@@ -191,7 +191,17 @@ td .dpct{display:block;font-size:10.5px;font-weight:600;color:var(--muted);margi
 .img-box img{max-width:100%;max-height:70vh;object-fit:contain;border-radius:8px;background:#f1f5f9;margin:0 auto;display:block}
 .img-box .fb{display:none;text-align:center;color:var(--muted);font-size:13px;padding:30px 10px}
 .img-box .ftr{display:flex;gap:8px;justify-content:flex-end}
-.kpi-rem{font-size:11.5px;color:var(--muted);min-width:150px;max-width:220px;white-space:normal}
+.kpi-rem{font-size:11.5px;color:var(--muted);white-space:normal;line-height:1.4}
+table.kz{table-layout:auto}
+table.kz thead th,table.kz tbody td{padding:10px 9px;font-size:12.5px}
+table.kz thead th{letter-spacing:.04em;font-size:10.5px}
+table.kz tbody td:nth-child(2){min-width:135px}
+table.kz tbody td.kpi-rem{min-width:230px;width:24%}
+table.kz .dpct{font-size:10px}
+table.kz tfoot td{padding:11px 9px;font-size:12.5px}
+table.kz .ocr-v{font-size:12px}
+table.kz .shot,table.kz .ocr{padding:3px 8px;font-size:11.5px}
+@media (max-width:1250px){table.kz tbody td.kpi-rem{min-width:180px}}
 .ocr{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:7px;background:#f1f5f9;color:var(--navy);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
 .ocr:hover{background:#e2e8f0}.ocr.busy{opacity:.6;cursor:wait}
 .ocr-v{font-size:13px;font-weight:700;white-space:nowrap}.ocr-v small{display:block;font-size:10.5px;font-weight:600;color:var(--muted)}
@@ -664,9 +674,9 @@ table.cmp thead tr.grp th.g-cz{background:#f0fdf4;color:#166534}
       <div class="card-h"><div><h3 id="kzTitle">Agent-wise Comparison</h3><p id="kzSub">MyHub = sheet calls &amp; duration · Callyzer = read from the agent's Callyzer screenshot when available (📷), otherwise the number typed in the KPI form</p></div>
         <div style="display:flex;align-items:center;gap:10px"><button class="btn" id="kzOcrAll" title="Screenshots are read automatically; press to retry failed ones">🔍 Read all screenshots</button><div class="mode-tog"><button class="on" data-m="agent">By Agent</button><button data-m="day">Day-wise</button></div><span class="badge b" id="kzCount">0</span></div></div>
       <div class="tbl-wrap" style="max-height:none">
-        <table class="cmp">
+        <table class="cmp kz">
           <thead>
-            <tr class="grp"><th rowspan="2" style="width:50px;vertical-align:bottom;text-align:left">#</th><th rowspan="2" style="vertical-align:bottom;text-align:left" id="kzH1">Agent Name</th><th rowspan="2" style="vertical-align:bottom;text-align:left;display:none" id="kzH2">Agent</th>
+            <tr class="grp"><th rowspan="2" style="width:40px;vertical-align:bottom;text-align:left">#</th><th rowspan="2" style="vertical-align:bottom;text-align:left" id="kzH1">Agent Name</th><th rowspan="2" style="vertical-align:bottom;text-align:left;display:none" id="kzH2">Agent</th>
               <th colspan="2" class="sep g-mh">MyHub</th><th colspan="3" class="sep g-cz">Callyzer (KPI form)</th><th colspan="2" class="sep g-df">Difference (MyHub − Callyzer)</th><th rowspan="2" class="c sep" style="vertical-align:bottom">Screenshot</th><th rowspan="2" class="c" style="vertical-align:bottom">Read from Screenshot</th><th rowspan="2" style="vertical-align:bottom;text-align:left">Remarks</th></tr>
             <tr class="sub">
               <th class="r sep">Calls</th><th class="r">Talk Time <span style="font-weight:500;text-transform:none;letter-spacing:0">(min)</span></th>
