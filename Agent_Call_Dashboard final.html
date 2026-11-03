@@ -392,8 +392,8 @@ table.team td.pos{color:var(--green);font-weight:700}table.team td.neg{color:var
     <span class="user-chip" id="userChip">👤 <b id="userLbl"></b> <a id="pwdLink" style="display:none;margin-right:10px">Change password</a><a id="logoutBtn">Logout</a></span>
     <button class="sync-btn" id="syncToggle" style="display:none">🔗 Google Sheet</button>
     <div class="tabs">
-      <button class="tab active" data-page="agent">My Record</button>
-      <button class="tab" data-page="today">Today</button>
+      <button class="tab active" data-page="agent" id="tabAgent">My Record</button>
+      <button class="tab" data-page="today" id="tabToday">Today</button>
       <button class="tab" data-page="yesterday" id="tabYesterday" style="display:none">Yesterday</button>
       <button class="tab" data-page="range" id="tabRange" style="display:none">Range</button>
       <button class="tab" data-page="bitrix" id="tabBitrix" style="display:none">Bitrix</button>
@@ -1294,9 +1294,9 @@ $('sheetUrl').value=SHEET_ID; $('sheetTab').value=SHEET_TAB;
 const USERS_TAB='Users';
 const PWD_API_URL='https://script.google.com/macros/s/AKfycbwpt26ZG2nDaBHf4BJuB_yDDMv22zF79Sf5YwmU1GqGgb76BVXffKTOtpRu9Wrapyyb/exec';   // paste the Apps Script web-app URL (ChangePassword.gs) here; blank = "Change password" link stays hidden
 let USER=null; try{USER=JSON.parse(sessionStorage.getItem('cd_user')||'null');}catch(e){}
-const TAB_ALIASES={yesterday:'yesterday',range:'range',bitrix:'bitrix',cmp:'cmp',myhubvsbitrix:'cmp',bitrixcompare:'cmp',kpi:'kpi',callyzer:'kpi',myhubvscallyzer:'kpi',visits:'visits',visitentry:'visits',entry:'visits',vdash:'vdash',visitsdashboard:'vdash',visitdashboard:'vdash',team:'team',teamahsan:'team',ahsan:'team',today:'today'};
-const DEFAULT_TABS=['today','visits','vdash'];     // every logged-in user gets these (plus My Record)
-function permTabs(perm){const out=new Set(DEFAULT_TABS);String(perm||'').split(/[,;|/ ]+/).forEach(t=>{const k=TAB_ALIASES[norm(t)];if(k)out.add(k);if(norm(t)==='novisits'){out.delete('visits');out.delete('vdash');}});return [...out];}
+const TAB_ALIASES={agent:'agent',myrecord:'agent',record:'agent',yesterday:'yesterday',range:'range',bitrix:'bitrix',cmp:'cmp',myhubvsbitrix:'cmp',bitrixcompare:'cmp',kpi:'kpi',callyzer:'kpi',myhubvscallyzer:'kpi',visits:'visits',visitentry:'visits',entry:'visits',vdash:'vdash',visitsdashboard:'vdash',visitdashboard:'vdash',team:'team',teamahsan:'team',ahsan:'team',today:'today'};
+const DEFAULT_TABS=['agent','today','visits','vdash'];     // every logged-in user gets these unless the Permission starts with "only"
+function permTabs(perm){const toks=String(perm||'').split(/[,;|/ ]+/).map(norm).filter(Boolean);const out=new Set(toks.includes('only')?[]:DEFAULT_TABS);toks.forEach(t=>{const k=TAB_ALIASES[t];if(k)out.add(k);if(t==='novisits'){out.delete('visits');out.delete('vdash');}});if(!out.size)out.add('agent');return [...out];}
 function canTab(key){if(!USER)return false;if(USER.admin)return true;return (USER.tabs||DEFAULT_TABS).includes(key);}
 const rawTxt=c=>(!c||c.v==null)?'':String(c.v);
 function parseUsers(json){
@@ -1329,6 +1329,8 @@ function userSim(){
 function applyUserScope(){
   if(!USER)return;
   $('userLbl').textContent=USER.username; $('userChip').style.display='flex'; $('pwdLink').style.display=PWD_API_URL?'':'none';
+  $('tabAgent').style.display=canTab('agent')?'':'none'; $('tabToday').style.display=canTab('today')?'':'none';
+  setTimeout(()=>{const act=document.querySelector('.tab.active');if(!act||act.style.display==='none'){const first=[...document.querySelectorAll('.tab')].find(t=>t.style.display!=='none');if(first)first.click();}},0);
   
   if(USER.admin)return;
   const sim=userSim(), sel=$('agentSel'); sel.disabled=true;
