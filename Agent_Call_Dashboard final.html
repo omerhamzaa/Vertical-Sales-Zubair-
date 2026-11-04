@@ -772,7 +772,7 @@ table.team td.pos{color:var(--green);font-weight:700}table.team td.neg{color:var
           <div class="vz-sec-h"><span class="n">1</span><div><h3>Visitor</h3><p>Who came to see us</p></div></div>
           <div class="vz-form three">
             <div class="field"><label>Visitor Name<span class="req">*</span></label><div class="in-ico"><span>👤</span><input type="text" id="vzName" placeholder="Full name of the visitor" required></div></div>
-            <div class="field"><label>Phone<span class="req">*</span></label><div class="in-ico"><span>📞</span><input type="tel" id="vzPhone" placeholder="03001234567" maxlength="11" inputmode="numeric" required></div></div>
+            <div class="field"><label>Phone<span class="req" id="vzPhoneReq" style="display:none">*</span> <small id="vzPhoneOpt" style="font-weight:500;text-transform:none;letter-spacing:0;color:var(--soft)">(optional)</small></label><div class="in-ico"><span>📞</span><input type="tel" id="vzPhone" placeholder="03001234567" maxlength="11" inputmode="numeric"></div></div>
             <div class="field"><label>Date of Visit<span class="req">*</span></label><div class="in-ico"><span>📅</span><input type="date" id="vzDate" required></div></div>
           </div>
         </div>
@@ -792,9 +792,9 @@ table.team td.pos{color:var(--green);font-weight:700}table.team td.neg{color:var
           </div>
         </div>
         <div class="vz-sec">
-          <div class="vz-sec-h"><span class="n">3</span><div><h3>Purpose</h3><p>What the visit was about</p></div></div>
+          <div class="vz-sec-h"><span class="n">3</span><div><h3>Purpose</h3><p>What the visit was about (optional)</p></div></div>
           <div class="vz-form">
-            <div class="field full"><textarea id="vzPurpose" placeholder="e.g. Site visit for V4 Business Centre, payment discussion, documentation…" required></textarea></div>
+            <div class="field full"><textarea id="vzPurpose" placeholder="e.g. Site visit for V4 Business Centre, payment discussion, documentation…"></textarea></div>
           </div>
         </div>
         <div class="vz-foot">
@@ -1723,8 +1723,9 @@ function vzNote(msg,ok){const n=$('vzNote');n.className='vz-note '+(ok?'ok':'bad
 $('vzForm').addEventListener('submit',async e=>{
   e.preventDefault();
   const f={date:$('vzDate').value,name:$('vzName').value.trim(),phone:$('vzPhone').value.replace(/\D/g,''),person:$('vzPerson').value.trim(),dept:$('vzDept').value,loc:$('vzLoc').value,purpose:$('vzPurpose').value.trim()};
-  let bad=false; [['vzDate',f.date],['vzName',f.name],['vzPhone',/^\d{11}$/.test(f.phone)],['vzPerson',f.person],['vzDept',f.dept],['vzLoc',f.loc],['vzPurpose',f.purpose]].forEach(([id,v])=>{$(id).closest('.field').classList.toggle('err',!v);if(!v)bad=true;});
-  if(bad){vzNote(/^\d{11}$/.test(f.phone)?'Please fill all required fields.':'Phone number must be exactly 11 digits (e.g. 03001234567).',false);return;}
+  const phoneNeeded=vzSalesDept(), phoneOk=phoneNeeded?/^\d{11}$/.test(f.phone):(f.phone===''||/^\d{11}$/.test(f.phone));
+  let bad=false; [['vzDate',f.date],['vzName',f.name],['vzPhone',phoneOk],['vzPerson',f.person],['vzDept',f.dept],['vzLoc',f.loc]].forEach(([id,v])=>{$(id).closest('.field').classList.toggle('err',!v);if(!v)bad=true;});
+  if(bad){vzNote(!phoneOk?(phoneNeeded&&!f.phone?'Phone number is required for Sales visits.':'Phone number must be exactly 11 digits (e.g. 03001234567).'):'Please fill all required fields.',false);return;}
   const btn=$('vzSubmit'); btn.disabled=true; btn.textContent='Submitting…';
   try{ const j=await vzApi(Object.assign({action:'visit',by:USER.agent||USER.username||''},f));
     VZ.unshift({ts:new Date().toISOString(),d:f.date,name:f.name,phone:f.phone,person:f.person,dept:f.dept,loc:f.loc,purpose:f.purpose,by:USER.agent||USER.username||''}); VZ_URL=j.sheetUrl||VZ_URL;
@@ -1750,7 +1751,7 @@ $('vzPersonSearch').addEventListener('keydown',e=>{const list=$('vzPersonList'),
   else if(e.key==='Escape'){list.classList.remove('open');}});
 $('vzPersonList').addEventListener('mousedown',e=>{const d=e.target.closest('div[data-v]');if(d){e.preventDefault();vzComboPick(d.dataset.v);}});
 $('vzPersonSearch').addEventListener('blur',()=>{setTimeout(()=>{$('vzPersonList').classList.remove('open');const t=$('vzPersonSearch').value.trim();if(!$('vzPerson').value){const m=VZ_AGENTS.find(n=>n.toLowerCase()===t.toLowerCase());if(m)vzComboPick(m);else if(t){$('vzPersonSearch').value='';}}},120);});
-function vzPersonMode(){const sales=vzSalesDept();$('vzPersonSelWrap').style.display=sales?'':'none';$('vzPerson').parentElement.style.display=sales?'none':'';$('vzPersonHint').textContent=sales?'Type to search, or open the list and pick the sales agent':'Type the name of the person the visitor came to meet';}
+function vzPersonMode(){const sales=vzSalesDept();$('vzPhoneReq').style.display=sales?'':'none';$('vzPhoneOpt').style.display=sales?'none':'';$('vzPersonSelWrap').style.display=sales?'':'none';$('vzPerson').parentElement.style.display=sales?'none':'';$('vzPersonHint').textContent=sales?'Type to search, or open the list and pick the sales agent':'Type the name of the person the visitor came to meet';}
 $('vzDept').addEventListener('change',()=>{vzPersonMode();$('vzPerson').value='';$('vzPersonSearch').value='';$('vzPerson').closest('.field').classList.remove('err');});
 $('vzPhone').addEventListener('input',()=>{const el=$('vzPhone');el.value=el.value.replace(/\D/g,'').slice(0,11);el.closest('.field').classList.toggle('err',el.value.length>0&&el.value.length!==11);});
 $('vzLocPills').addEventListener('click',e=>{const b=e.target.closest('.vz-pill');if(!b)return;$('vzLoc').value=b.dataset.v;document.querySelectorAll('#vzLocPills .vz-pill').forEach(x=>x.classList.toggle('on',x===b));b.closest('.field').classList.remove('err');});
