@@ -1992,12 +1992,13 @@ async function loadKpi(){
 const IMG_API_URL='https://script.google.com/macros/s/AKfycbzTHBeXzpu-tHf_AJRgSDWXXkDr1B9aX7G1CrrmzQFsHDZr_2F9G3b35dEhJ2wApQZa/exec';
 const TESS_URL='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
 let OCR={}; try{OCR=JSON.parse(localStorage.getItem('cd_ocr')||'{}')||{};}catch(e){OCR={};}
+Object.keys(OCR).forEach(k=>{const r=OCR[k];if(!r||(r.c==null&&r.s==null&&!r.err))delete OCR[k];});   // drop broken entries
 function ocrSave(){try{localStorage.setItem('cd_ocr',JSON.stringify(OCR));}catch(e){}}
 let tessWorker=null, tessLoading=null;
 function loadScript(u){return new Promise((res,rej)=>{const sc=document.createElement('script');sc.src=u;sc.onload=res;sc.onerror=()=>rej(new Error('Could not load the OCR library'));document.head.appendChild(sc);});}
 async function getWorker(){
   if(tessWorker)return tessWorker;
-  if(!tessLoading)tessLoading=(async()=>{ if(!window.Tesseract)await loadScript(TESS_URL); tessWorker=await Tesseract.createWorker('eng'); return tessWorker; })();
+  if(!tessLoading)tessLoading=(async()=>{ if(!window.Tesseract)await loadScript(TESS_URL); tessWorker=await Tesseract.createWorker('eng'); try{await tessWorker.setParameters({tessedit_pageseg_mode:'6'});}catch(e){} return tessWorker; })();
   return tessLoading;
 }
 function jsonpGet(url){               // fallback when fetch() is blocked (CORS / redirect) — loads the reply as a script, like the Sheet reader does
@@ -2020,9 +2021,16 @@ async function fetchShot(id){
   if(!j||!j.ok)throw new Error((j&&j.error)||'Could not read the Drive file');
   return 'data:'+(j.mime||'image/png')+';base64,'+j.b64;
 }
-function prepImage(src){           // upscale + greyscale → OCR reads the small phone text reliably
+function prepImage(src){           // upscale + greyscale + sharpen (small phone screenshots are blurry after scaling) → OCR reads the text reliably
   return new Promise((res,rej)=>{const im=new Image();im.onload=()=>{const sc=Math.max(1,Math.min(4,1800/im.width));const c=document.createElement('canvas');c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);
-    const x=c.getContext('2d');x.imageSmoothingQuality='high';x.drawImage(im,0,0,c.width,c.height);const d=x.getImageData(0,0,c.width,c.height),p=d.data;for(let i=0;i<p.length;i+=4){const g=p[i]*.3+p[i+1]*.59+p[i+2]*.11;p[i]=p[i+1]=p[i+2]=g;}x.putImageData(d,0,0);res(c);};im.onerror=()=>rej(new Error('Image could not be decoded'));im.src=src;});
+    const x=c.getContext('2d');x.imageSmoothingQuality='high';x.drawImage(im,0,0,c.width,c.height);
+    const W=c.width,H=c.height,d=x.getImageData(0,0,W,H),p=d.data; let g=new Float32Array(W*H);
+    for(let i=0,j=0;i<p.length;i+=4,j++)g[j]=p[i]*.3+p[i+1]*.59+p[i+2]*.11;
+    for(let pass=0;pass<2;pass++){const o=new Float32Array(W*H);   // unsharp mask ×2 (k=2, 3×3 box blur)
+      for(let y=0;y<H;y++)for(let xx=0;xx<W;xx++){let sum=0,n=0;for(let dy=-1;dy<=1;dy++){const yy=y+dy;if(yy<0||yy>=H)continue;for(let dx=-1;dx<=1;dx++){const x2=xx+dx;if(x2<0||x2>=W)continue;sum+=g[yy*W+x2];n++;}}const v=g[y*W+xx];o[y*W+xx]=v+2*(v-sum/n);}
+      g=o;}
+    for(let j=0;j<g.length;j++){const v=Math.max(0,Math.min(255,g[j]));p[j*4]=p[j*4+1]=p[j*4+2]=v;p[j*4+3]=255;}
+    x.putImageData(d,0,0);res(c);};im.onerror=()=>rej(new Error('Image could not be decoded'));im.src=src;});
 }
 function parseShotText(text){
   const lines=text.split(/\n/).map(l=>l.trim()).filter(Boolean);
@@ -2037,16 +2045,45 @@ function parseShotText(text){
   let date=null; const dm=text.match(/(\d{1,2})\s*-\s*(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/i); if(dm)date={d:+dm[1],m:MON.findIndex(x=>x.toLowerCase()===dm[2].toLowerCase())+1};
   return {calls,sec,date,raw:lines.slice(0,40).join(' | ')};
 }
+// The call count sits right of a small phone icon; OCR often merges them ("Ls" instead of "5").
+// Fix: locate the row under "Total Phone Calls", cut the icon away (first dark run before a gap) and re-read digits only.
+function cropStrip(cv,b){
+  const pad=4, x0=Math.max(0,b.x0-pad), y0=Math.max(0,b.y0-pad), W=Math.min(cv.width-x0,b.x1-b.x0+2*pad), H=Math.min(cv.height-y0,b.y1-b.y0+2*pad);
+  const d=cv.getContext('2d').getImageData(x0,y0,W,H).data, col=new Array(W).fill(0);
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(d[(y*W+x)*4]<140)col[x]++;
+  const gapMin=Math.max(3,Math.round(H*0.22)); let x=0; while(x<W&&col[x]===0)x++; let e=x; while(e<W&&col[e]>0)e++; let g=e; while(g<W&&col[g]===0)g++;
+  const start=(g-e>=gapMin&&g<W)?g:0;
+  const out=document.createElement('canvas'); out.width=W-start+20; out.height=H+20; const c=out.getContext('2d'); c.fillStyle='#fff'; c.fillRect(0,0,out.width,out.height); c.drawImage(cv,x0+start,y0,W-start,H,10,10,W-start,H);
+  return out;
+}
 async function readShot(id){
   const w=await getWorker(); const src=await fetchShot(id); const cv=await prepImage(src);
-  const {data:{text}}=await w.recognize(cv); const r=parseShotText(text);
+  try{await w.setParameters({tessedit_pageseg_mode:'6',tessedit_char_whitelist:''});}catch(e){}
+  const {data}=await w.recognize(cv,{},{text:true,blocks:true}); const text=data.text||''; const r=parseShotText(text);
+  try{
+    const words=[]; (data.blocks||[]).forEach(b=>(b.paragraphs||[]).forEach(p=>(p.lines||[]).forEach(l=>(l.words||[]).forEach(wd=>words.push({t:wd.text,b:wd.bbox})))));
+    const tot=words.find(x=>/total/i.test(x.t));
+    if(tot){
+      const h=tot.b.y1-tot.b.y0, inc=words.find(x=>/incoming/i.test(x.t)&&Math.abs(x.b.y0-tot.b.y0)<h), xMax=inc?inc.b.x0-0.5*h:tot.b.x0+8*h;
+      const left=x=>x.b.x1>tot.b.x0-6*h&&x.b.x0<xMax&&/[A-Za-z0-9]/.test(x.t)&&(x.b.x1-x.b.x0)>=0.4*h;
+      // the call count is the row right above the talk-time row ("54m 37s") in the same card — anchor on the "NNm" word
+      const tw=words.filter(x=>/^\d{1,3}m$/i.test(x.t)&&x.b.y0>tot.b.y1&&x.b.y0<tot.b.y1+8*h&&left(x)).sort((a,b)=>a.b.y0-b.b.y0)[0];
+      let row;
+      if(tw){ const hw=tw.b.y1-tw.b.y0; row=words.filter(x=>left(x)&&x.b.y1<=tw.b.y0+0.2*hw&&x.b.y0>=tw.b.y0-2.6*hw&&x.b.y0>tot.b.y1).sort((a,b)=>a.b.x0-b.b.x0); }
+      if(!row||!row.length){ const cand=words.filter(x=>left(x)&&x.b.y0>tot.b.y1&&x.b.y0<tot.b.y1+6*h).sort((a,b)=>a.b.y0-b.b.y0||a.b.x0-b.b.x0); const y0=cand.length?cand[0].b.y0:0; row=cand.filter(x=>x.b.y0<y0+1.2*h).sort((a,b)=>a.b.x0-b.b.x0); }
+      const pure=row.find(x=>/^\d{1,4}$/.test(x.t));
+      if(pure)r.calls=+pure.t;
+      else if(row.length){ await w.setParameters({tessedit_pageseg_mode:'7',tessedit_char_whitelist:'0123456789'}); const r2=await w.recognize(cropStrip(cv,row[0].b)); const m=String(r2.data.text||'').match(/\d{1,4}/); if(m)r.calls=+m[0]; }
+    }
+  }catch(e){}
+  try{await w.setParameters({tessedit_pageseg_mode:'6',tessedit_char_whitelist:''});}catch(e){}
   if(r.calls==null&&r.sec==null)throw new Error('“Total Phone Calls” not found in the screenshot');
   return r;
 }
 async function ocrRow(id,btn){
   if(btn){btn.classList.add('busy');btn.textContent='Reading…';}
   try{ const r=await readShot(id); OCR[id]={c:r.calls,s:r.sec,d:r.date,t:Date.now()}; ocrSave(); }
-  catch(e){ OCR[id]={err:e.message,t:Date.now()}; ocrSave(); }
+  catch(e){ OCR[id]={err:String((e&&e.message)||e||'failed'),t:Date.now()}; ocrSave(); }
   renderKpi();
 }
 let ocrAllBusy=false, KZ_QUEUE=[], ocrAutoBusy=false;
@@ -2059,7 +2096,7 @@ async function ocrAuto(){                 // reads every unread screenshot in th
       const id=KZ_QUEUE[0], left=KZ_QUEUE.length;
       btn.textContent=`⏳ Reading screenshots… ${left} left`;
       try{const r=await readShot(id);OCR[id]={c:r.calls,s:r.sec,d:r.date,t:Date.now()};}
-      catch(e){OCR[id]={err:e.message,t:Date.now()};}
+      catch(e){OCR[id]={err:String((e&&e.message)||e||'failed'),t:Date.now()};}
       ocrSave(); renderKpi();          // renderKpi rebuilds KZ_QUEUE without this id
     }
   }catch(e){}
@@ -2070,7 +2107,7 @@ async function ocrAll(){
   if(ocrAllBusy||ocrAutoBusy)return; const errIds=Object.keys(OCR).filter(id=>OCR[id]&&OCR[id].err), ids=[...new Set([...KZ_QUEUE,...errIds])];
   if(!ids.length){alert('All screenshots in this view are already read.');return;}
   const btn=$('kzOcrAll'); ocrAllBusy=true; btn.disabled=true;
-  try{ await getWorker(); for(let i=0;i<ids.length;i++){ btn.textContent=`Reading ${i+1} / ${ids.length}…`; try{const r=await readShot(ids[i]);OCR[ids[i]]={c:r.calls,s:r.sec,d:r.date,t:Date.now()};}catch(e){OCR[ids[i]]={err:e.message,t:Date.now()};} ocrSave(); if(i%5===4)renderKpi(); } }
+  try{ await getWorker(); for(let i=0;i<ids.length;i++){ btn.textContent=`Reading ${i+1} / ${ids.length}…`; try{const r=await readShot(ids[i]);OCR[ids[i]]={c:r.calls,s:r.sec,d:r.date,t:Date.now()};}catch(e){OCR[ids[i]]={err:String((e&&e.message)||e||'failed'),t:Date.now()};} ocrSave(); if(i%5===4)renderKpi(); } }
   catch(e){ alert(e.message); }
   ocrAllBusy=false; btn.disabled=false; renderKpi();
 }
