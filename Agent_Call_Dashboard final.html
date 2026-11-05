@@ -996,6 +996,10 @@ table.team td.pos{color:var(--green);font-weight:700}table.team td.neg{color:var
         <div style="display:flex;gap:8px"><button class="btn primary" id="sheetConnect">Connect</button><button class="btn" id="sheetRefresh">Refresh</button><button class="btn" id="sheetDisc">Disconnect</button></div>
       </div>
       <div style="margin-top:12px;font-size:12.5px;color:var(--muted)"><b id="sheetStatus">Not connected — showing built-in data</b><br>Refreshes automatically every 20 minutes.</div>
+      <div style="margin-top:14px;border-top:1px dashed var(--line);padding-top:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap"><b style="font-size:13px">Sheet check — missing data finder</b><button class="btn" id="diagBtn" style="height:32px;padding:0 12px;font-size:12px">Run check</button></div>
+        <div id="diagOut" style="margin-top:10px;font-size:12.5px;line-height:1.6;color:var(--muted)">Press “Run check” after a sync to see which rows the dashboard could not use, SIMs that carry two names, and agents/dates with no data.</div>
+      </div>
     </div>
   </div>
   <div class="card" style="margin-bottom:16px">
@@ -1191,6 +1195,27 @@ const SHEET_DEFAULT_TAB='';  // blank = first tab
 const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
 let SHEET_ID=store.get('cd_sheet_id')||SHEET_DEFAULT_ID, SHEET_TAB=store.get('cd_sheet_tab')||SHEET_DEFAULT_TAB, SHEET_GID=store.get('cd_sheet_gid')||'', sheetTimer=null;
 function parseSheetInput(t){t=String(t||'').trim();const m=t.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);const g=t.match(/[#&?]gid=(\d+)/);return {id:m?m[1]:t,gid:g?g[1]:''};}
+function runDiag(){
+  const o=$('diagOut'), d=SHEET_DIAG; const esc=v=>String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  if(!d){o.innerHTML='No sheet synced yet — press Refresh first.';return;}
+  const li=(arr,max)=>arr.slice(0,max).map(x=>`<li>Row ${x.row}: <b>${esc(x.why)}</b><br><code style="font-size:11px;color:var(--soft)">${esc(x.txt)}</code></li>`).join('')+(arr.length>max?`<li>… and ${arr.length-max} more</li>`:'');
+  // per-agent last date & missing days in the last 7 days (excluding Sundays)
+  const last7=[];for(let i=0;i<7;i++){const t=new Date();t.setDate(t.getDate()-i);if(t.getDay()!==0)last7.push(todayStr===undefined?'':`${t.getFullYear()}-${p2(t.getMonth()+1)}-${p2(t.getDate())}`);}
+  const byAg={};ROWS.forEach(r=>{if(r.calls==null)return;const a=byAg[r.sim]||(byAg[r.sim]={last:'',days:new Set()});a.days.add(r.d);if(r.d>a.last)a.last=r.d;});
+  const agRows=DATA.agents.map(a=>{const x=byAg[a.sim]||{last:'',days:new Set()};const miss=last7.filter(dd=>dd<=MAX_D&&!x.days.has(dd));return {name:a.name,sim:a.sim,last:x.last,miss};}).filter(x=>x.miss.length||!x.last).sort((a,b)=>b.miss.length-a.miss.length);
+  const dateCount={};ROWS.forEach(r=>{if(r.calls!=null)dateCount[r.d]=(dateCount[r.d]||0)+1;});
+  const dateRows=Object.keys(dateCount).sort().slice(-10).map(dd=>`${dShort(dd)}: ${dateCount[dd]} agents`).join(' · ');
+  o.innerHTML=`
+    <div><b>Rows in sheet:</b> ${d.total} · <b>used:</b> ${d.kept} · <b>skipped:</b> ${d.skipped.length} · <b>blank Call cells:</b> ${d.blankCalls.length} · <b>duplicate agent+date rows:</b> ${d.dupes}</div>
+    <div><b>Headings read:</b> ${esc(d.headers.join(', '))}</div>
+    <div style="margin-top:6px"><b>Agents per date (last 10 dates):</b> ${dateRows||'—'}</div>
+    ${d.multiName.length?`<div style="margin-top:6px;color:var(--amber)"><b>⚠ One SIM, two names (only the first name is shown):</b> ${esc(d.multiName.join(' ; '))}</div>`:''}
+    ${(d.merged||[]).length?`<div style="margin-top:6px;color:var(--blue)"><b>ℹ Same agent on two SIMs — merged:</b> ${esc(d.merged.join(' ; '))}</div>`:''}
+    ${d.skipped.length?`<div style="margin-top:8px"><b style="color:var(--red)">Rows skipped (date not readable / no SIM & name):</b><ul style="margin:4px 0 0 18px">${li(d.skipped,15)}</ul></div>`:'<div style="margin-top:6px;color:var(--green)">✓ No rows skipped</div>'}
+    ${d.blankCalls.length?`<div style="margin-top:8px"><b style="color:var(--amber)">Rows with blank Call cell (shown as “no data”):</b><ul style="margin:4px 0 0 18px">${li(d.blankCalls,15)}</ul></div>`:''}
+    <div style="margin-top:8px"><b>Agents missing days in the last 7 days (Mon–Sat):</b>${agRows.length?`<ul style="margin:4px 0 0 18px">${agRows.slice(0,40).map(x=>`<li><b>${esc(x.name)}</b> (SIM ${x.sim}) — last data ${x.last?dShort(x.last):'never'}${x.miss.length?' · missing: '+x.miss.map(dShort).join(', '):''}</li>`).join('')}</ul>`:' none ✓'}</div>`;
+}
+$('diagBtn').onclick=runDiag;
 function setSheetStatus(txt,bad){$('sheetStatus').textContent=txt;$('sheetStatus').style.color=bad?'#b91c1c':'';$('syncToggle').textContent='🔗 '+(SHEET_ID?(bad?'Sheet error':txt.split(' · ')[0]):'Google Sheet');}
 function gvizLoad(id,tab,gid,hdr){
   return new Promise((resolve,reject)=>{
@@ -1226,6 +1251,7 @@ function cMinutes(c,inMin){
   if(m)return +(+m[1]*60+ +m[2]+(+m[3]||0)/60).toFixed(1);                          // "0:13:12"
   const n=cNum(c); return n==null?null:+(inMin?n:n*60).toFixed(1);                   // hours → minutes
 }
+let SHEET_DIAG=null, SIM_ALIAS={};
 function parseSheet(json){
   if(json.status==='error')throw new Error((json.errors&&json.errors[0]&&(json.errors[0].detailed_message||json.errors[0].message))||'Sheet error');
   const cols=json.table.cols||[]; let rows=json.table.rows||[];
@@ -1240,19 +1266,34 @@ function parseSheet(json){
   if(iDate<0||iCalls<0)throw new Error('Headings not found. Required: Date and Call (total). Headings found: '+(headers.filter(Boolean).join(', ')||'none'));
   const durInMin=iDur>=0&&/min/.test(H[iDur]);
   const names={},ids={};let auto=1000;const out=[];
-  rows.forEach(r=>{
-    const c=r.c||[], d=cDate(c[iDate]); if(!d)return;
+  const diag={total:rows.length,headers:headers.filter(Boolean),skipped:[],simNames:{},dupes:0,blankCalls:[]}; const seen=new Set();
+  const rowTxt=c=>c.slice(0,8).map(x=>cText(x)).join(' | ');
+  rows.forEach((r,ri)=>{
+    const c=r.c||[], d=cDate(c[iDate]);
+    if(!d){ if(c.some(x=>x&&x.v!=null&&x.v!=='')) diag.skipped.push({row:ri+2,why:'Date not readable: "'+cText(c[iDate])+'"',txt:rowTxt(c)}); return; }
     const nm=iName>=0?cText(c[iName]).trim():'';
     let sim=iSim>=0?parseInt(String(cText(c[iSim])).replace(/\D/g,''),10):NaN;
-    if(isNaN(sim)){if(!nm)return;sim=ids[nm]||(ids[nm]=++auto);}
+    if(isNaN(sim)){if(!nm){diag.skipped.push({row:ri+2,why:'No SIM and no agent name',txt:rowTxt(c)});return;}sim=ids[nm]||(ids[nm]=++auto);}
+    if(nm){(diag.simNames[sim]=diag.simNames[sim]||new Set()).add(nm);}
     if(nm&&!names[sim])names[sim]=nm;
+    const key=d+'|'+sim; if(seen.has(key))diag.dupes++; seen.add(key);
     const calls=cNum(c[iCalls]);
+    if(calls==null)diag.blankCalls.push({row:ri+2,why:'Call column blank → counted as no data',txt:rowTxt(c)});
     let ans=iAns>=0?cNum(c[iAns]):null;
     if(ans==null&&iNot>=0&&calls!=null){const na=cNum(c[iNot]);if(na!=null)ans=Math.max(0,calls-na);}   // only "Not Answered" given → Answered = Calls − Not Answered
     out.push({d,sim,calls,dur:iDur>=0?cMinutes(c[iDur],durInMin):null,ans});
   });
   if(!out.length)throw new Error('No valid rows found in the sheet');
+  // same agent on two SIMs (SIM changed) → merge under the SIM used most recently, so history stays in one row
+  const byName={}; Object.keys(names).forEach(sim=>{const k=norm(names[sim]);if(!k)return;(byName[k]=byName[k]||[]).push(+sim);});
+  const remap={}; diag.merged=[];
+  Object.keys(byName).forEach(k=>{const sims=byName[k];if(sims.length<2)return;const last={};out.forEach(r=>{if(sims.includes(r.sim)&&r.calls!=null&&(!last[r.sim]||r.d>last[r.sim]))last[r.sim]=r.d;});
+    const main=sims.slice().sort((a,b)=>String(last[b]||'').localeCompare(String(last[a]||''))||b-a)[0];sims.forEach(x=>{if(x!==main)remap[x]=main;});diag.merged.push(names[main]+': SIM '+sims.filter(x=>x!==main).join(', ')+' → '+main);});
+  if(Object.keys(remap).length){out.forEach(r=>{if(remap[r.sim]!==undefined)r.sim=remap[r.sim];});}
+  SIM_ALIAS=remap;
   const sims=[...new Set(out.map(r=>r.sim))];
+  diag.multiName=Object.entries(diag.simNames).filter(([k,v])=>v.size>1).map(([k,v])=>'SIM '+k+': '+[...v].join(' / '));
+  diag.kept=out.length; SHEET_DIAG=diag;
   return {agents:sims.map(s=>({sim:s,name:names[s]||('SIM '+s)})),rows:out};
 }
 // ---- time the hourly sheet script last refreshed the data (read from the "Info" tab) ----
@@ -1337,6 +1378,7 @@ async function fetchUsers(){
 function userSim(){
   if(!USER||USER.admin)return null;
   if(!isNaN(USER.sim)&&AG[USER.sim])return USER.sim;
+  if(!isNaN(USER.sim)&&SIM_ALIAS[USER.sim]!==undefined)return SIM_ALIAS[USER.sim];   // Users tab still has the old SIM
   const n=norm(USER.agent||USER.username), a=DATA.agents.find(x=>norm(x.name)===n);
   return a?a.sim:null;
 }
