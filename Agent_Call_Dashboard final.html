@@ -317,6 +317,7 @@ table.vz .by{font-size:11px;color:var(--muted);display:block}
 @media (max-width:1100px){.vz-grid{grid-template-columns:1fr}.vz-filters{grid-template-columns:1fr 1fr}}
 /* Team Ahsan — dark theme */
 body.tm-dark{background:#0b1120}
+body.tm-dark .wrap{max-width:100%;padding:0 4px}
 body.tm-dark .app-footer{border-top-color:#1e2a40;color:#6b7a8d}
 body.tm-dark .app-footer .l .v{color:var(--gold)}
 body.tm-dark .app-footer .l b{color:#e2e8f0}
@@ -324,7 +325,10 @@ body.tm-dark .app-footer .l span{color:#475569}
 body.tm-dark .app-footer .r{color:#6b7a8d}
 body.tm-dark .app-footer .r b{color:#e2e8f0}
 body.tm-dark .app-footer .sep{color:#2d3a4f}
-#page-team{background:#0b1120;padding-left:32px;padding-right:32px;padding-top:0;padding-bottom:50px;min-height:100vh;margin-top:-26px}
+#page-team{background:#0b1120;padding-left:12px;padding-right:12px;padding-top:16px;padding-bottom:50px;min-height:100vh}
+#page-team .card-b{padding:12px}
+#page-team table.team{font-size:12.5px}
+#page-team table.team th,#page-team table.team td{padding:8px 6px}
 #page-team .picker{background:#151d2e;border-color:#1e2a40;color:#e2e8f0}
 #page-team .picker .field label{color:#8896ab}
 #page-team .picker .field select,#page-team .picker .field input[type="date"]{background:#0f1829;border-color:#1e2a40;color:#e2e8f0}
@@ -338,7 +342,11 @@ body.tm-dark .app-footer .sep{color:#2d3a4f}
 #page-team .card-h h3{color:#e2e8f0}
 #page-team .card-h p{color:#6b7a8d}
 #page-team .badge.b{background:rgba(201,162,74,.15);color:var(--gold)}
-#page-team .kpi,#page-team .team-kpi{background:#151d2e;border-color:#1e2a40;box-shadow:0 1px 2px rgba(0,0,0,.2),0 8px 24px -12px rgba(0,0,0,.5)}
+#page-team .kpis{grid-template-columns:repeat(5,1fr)}
+#page-team .kpi,#page-team .team-kpi{background:#151d2e;border-color:#1e2a40;box-shadow:0 1px 2px rgba(0,0,0,.2),0 8px 24px -12px rgba(0,0,0,.5);padding:14px 16px}
+#page-team .team-kpi .big{font-size:20px;margin-top:6px}
+#page-team .team-kpi .tg{font-size:11px;margin-top:4px}
+#page-team .team-kpi .bar-w{margin-top:8px;height:6px}
 #page-team .kpi .lbl,#page-team .team-kpi .tg{color:#6b7a8d}
 #page-team .team-kpi .tg b{color:#e2e8f0}
 #page-team .team-kpi .big{color:#fff}
@@ -981,8 +989,8 @@ table.team td.pos{color:var(--green);font-weight:700}table.team td.neg{color:var
       <table class="cmp team">
         <thead>
           <tr class="grp"><th rowspan="2" style="text-align:left;vertical-align:bottom">Team lead</th><th rowspan="2" class="r" style="vertical-align:bottom">Agents</th>
-            <th colspan="3" class="sep g-mh">Calls</th><th colspan="3" class="sep g-mh">Talk time</th><th colspan="3" class="sep g-cz">Client visits</th><th colspan="3" class="sep g-bx">Sales (sq ft)</th><th rowspan="2" class="sep" style="text-align:left;vertical-align:bottom">Achievement</th><th rowspan="2" style="vertical-align:bottom"></th></tr>
-          <tr class="sub"><th class="r sep">Done</th><th class="r">Target</th><th class="r">Diff</th><th class="r sep">Done</th><th class="r">Target</th><th class="r">Diff</th><th class="r sep">Done</th><th class="r">Target</th><th class="r">Diff</th><th class="r sep">Target</th><th class="r">Done</th><th class="r">Diff</th></tr>
+            <th colspan="3" class="sep g-mh">Calls</th><th colspan="3" class="sep g-mh">Talk time</th><th colspan="3" class="sep g-cz">Client visits</th><th colspan="3" class="sep g-bx">Sales (sq ft)</th><th colspan="3" class="sep g-bx">Sales (Value)</th><th rowspan="2" class="sep" style="text-align:left;vertical-align:bottom">Achievement</th><th rowspan="2" style="vertical-align:bottom"></th></tr>
+          <tr class="sub"><th class="r sep">Done</th><th class="r">Target</th><th class="r">Diff</th><th class="r sep">Done</th><th class="r">Target</th><th class="r">Diff</th><th class="r sep">Done</th><th class="r">Target</th><th class="r">Diff</th><th class="r sep">Target</th><th class="r">Done</th><th class="r">Diff</th><th class="r sep">Target</th><th class="r">Done</th><th class="r">Diff</th></tr>
         </thead>
         <tbody id="tmTLBody"></tbody>
         <tfoot id="tmTLFoot"></tfoot>
@@ -996,8 +1004,8 @@ table.team td.pos{color:var(--green);font-weight:700}table.team td.neg{color:var
       <table class="cmp team" id="tmAgTable">
         <thead>
           <tr class="grp"><th rowspan="2" style="text-align:left;vertical-align:bottom" data-k="name">Agent</th><th rowspan="2" style="text-align:left;vertical-align:bottom" data-k="tl">Team lead</th>
-            <th colspan="3" class="sep g-mh">Calls</th><th colspan="3" class="sep g-mh">Talk time</th><th colspan="3" class="sep g-cz">Client visits</th><th colspan="3" class="sep g-bx">Sales (sq ft)</th><th rowspan="2" class="sep" style="text-align:left;vertical-align:bottom" data-k="ach">Achievement</th><th rowspan="2" style="vertical-align:bottom">Status</th><th rowspan="2" style="vertical-align:bottom"></th></tr>
-          <tr class="sub"><th class="r sep" data-k="mc">Done</th><th class="r" data-k="ct">Target</th><th class="r" data-k="cd">Diff</th><th class="r sep" data-k="mt">Done</th><th class="r" data-k="tt">Target</th><th class="r" data-k="td">Diff</th><th class="r sep" data-k="vd">Done</th><th class="r" data-k="vt">Target</th><th class="r" data-k="vdf">Diff</th><th class="r sep" data-k="st">Target</th><th class="r" data-k="sd">Done</th><th class="r" data-k="sdf">Diff</th></tr>
+            <th colspan="3" class="sep g-mh">Calls</th><th colspan="3" class="sep g-mh">Talk time</th><th colspan="3" class="sep g-cz">Client visits</th><th colspan="3" class="sep g-bx">Sales (sq ft)</th><th colspan="3" class="sep g-bx">Sales (Value)</th><th rowspan="2" class="sep" style="text-align:left;vertical-align:bottom" data-k="ach">Achievement</th><th rowspan="2" style="vertical-align:bottom">Status</th><th rowspan="2" style="vertical-align:bottom"></th></tr>
+          <tr class="sub"><th class="r sep" data-k="mc">Done</th><th class="r" data-k="ct">Target</th><th class="r" data-k="cd">Diff</th><th class="r sep" data-k="mt">Done</th><th class="r" data-k="tt">Target</th><th class="r" data-k="td">Diff</th><th class="r sep" data-k="vd">Done</th><th class="r" data-k="vt">Target</th><th class="r" data-k="vdf">Diff</th><th class="r sep" data-k="st">Target</th><th class="r" data-k="sd">Done</th><th class="r" data-k="sdf">Diff</th><th class="r sep" data-k="vt2">Target</th><th class="r" data-k="vd2">Done</th><th class="r" data-k="vdf2">Diff</th></tr>
         </thead>
         <tbody id="tmAgBody"></tbody>
       </table>
@@ -1123,6 +1131,17 @@ table.team td.pos{color:var(--green);font-weight:700}table.team td.neg{color:var
         <div style="display:flex;gap:8px"><button class="btn primary" id="sdConnect">Connect</button><button class="btn" id="sdRefresh2">Refresh</button><button class="btn" id="sdDefault">Reset</button></div>
       </div>
       <div style="margin-top:12px;font-size:12.5px;color:var(--muted)"><b id="sdStatus">—</b><br>Sheet must have headers: NO, SALE DATE, SALES PERSON'S NAME, SALE'S PERSONS'S TEAM LEAD, CLIENT NAME, PROJECT, FLOOR, UNIT/SHOP, SQFT, TOTAL VALUE, NUMBER OF SALES, TYPE OF SALE, Status of DP. Share as "Anyone with the link → Viewer".</div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-h"><div><h3>TL Sales Target Sheet</h3><p>Monthly sales value targets per team lead (Month, Name, Value in Rs). Used by Team Ahsan tab for the Sales (Value) columns</p></div><a class="link" id="openTv" target="_blank" rel="noopener" style="display:none">Open sheet ↗</a></div>
+    <div class="card-b">
+      <div class="sync-grid">
+        <div class="field"><label>Google Sheet URL / ID</label><input type="text" id="tvUrl" placeholder="https://docs.google.com/spreadsheets/d/…"></div>
+        <div class="field"><label>Tab name</label><input type="text" id="tvTab" placeholder="Sheet1"></div>
+        <div style="display:flex;gap:8px"><button class="btn primary" id="tvConnect">Connect</button><button class="btn" id="tvRefresh2">Refresh</button><button class="btn" id="tvDefault">Reset</button></div>
+      </div>
+      <div style="margin-top:12px;font-size:12.5px;color:var(--muted)"><b id="tvStatus">—</b><br>Sheet must have headers: Month, Name, Value. Share as "Anyone with the link → Viewer".</div>
     </div>
   </div>
   <div class="card">
@@ -1959,36 +1978,40 @@ function renderTeam(){
   const simByName={}; DATA.agents.forEach(a=>simByName[norm(a.name)]=a.sim);
   const mh={}; ROWS.forEach(r=>{if(r.d<from||r.d>to||r.calls==null)return;const k=norm(AG[r.sim]||'');const o=mh[k]||(mh[k]={c:0,t:0,days:0});o.c+=r.calls;o.t+=r.dur||0;o.days++;});
   const vis={}; KZ.forEach(r=>{if(r.d<from||r.d>to)return;const k=norm(r.name);vis[k]=(vis[k]||0)+(r.visits||0);});
-  const agents=[]; TEAM_AHSAN.tls.forEach(t=>t.agents.forEach(n=>{const k=norm(n), m=mh[k]||{c:0,t:0,days:0};
+  const agents=[]; TEAM_AHSAN.tls.forEach(t=>{const tlValTgt=tvTLTarget(t.name,from,to); const agValTgt=t.agents.length?Math.round(tlValTgt/t.agents.length):0; t.agents.forEach(n=>{const k=norm(n), m=mh[k]||{c:0,t:0,days:0};
     const ct=TGT.calls*wd, tt=TGT.talk*wd, vt=Math.round(TGT.visits*monthFrac), st=Math.round(TGT.sales*monthFrac);
     const sd=SD_DATA.length?sdAgentSqft(k,from,to):+(SALES[tmSalesKey(k,from,to)]||0);
+    const vd2=sdAgentValue(k,from,to), vt2=agValTgt;
     const parts=[achPct(m.c,ct),achPct(m.t,tt),achPct(vis[k]||0,vt),sd>0||st>0?achPct(sd,st):null].filter(x=>x!=null);
     const ach=parts.length?parts.reduce((a,b)=>a+b,0)/parts.length:null;
-    agents.push({name:n,k,tl:t.name,inHub:k in simByName,mc:m.c,mt:m.t,days:m.days,ct,tt,cd:m.c-ct,td:m.t-tt,vd:vis[k]||0,vt,vdf:(vis[k]||0)-vt,st,sd,sdf:sd-st,ach});}));
+    agents.push({name:n,k,tl:t.name,inHub:k in simByName,mc:m.c,mt:m.t,days:m.days,ct,tt,cd:m.c-ct,td:m.t-tt,vd:vis[k]||0,vt,vdf:(vis[k]||0)-vt,st,sd,sdf:sd-st,vd2,vt2,ach});});});
   const inTeam=agents.length, mapped=agents.filter(a=>a.inHub).length;
   $('tmTeamInfo').textContent=`${TEAM_AHSAN.tls.length} team leads · ${inTeam} agents · ${mapped} found in MyHub${mapped<inTeam?' · '+(inTeam-mapped)+' not in MyHub':''}`;
   $('tmSalesSrc').textContent=SD_DATA.length?'Sales Done sheet ('+SD_DATA.length+' rows)':'entered in Targets';
   $('tmSalesHint').textContent=SD_DATA.length?'Sales done (sq ft) per agent is auto-populated from the Sales Done Google Sheet for the selected date range.':'Sales done (sq ft) per agent is entered in the agents table below — type the figure for the selected range and it is saved automatically.';
   // TL table
   const tlRows=TEAM_AHSAN.tls.map(t=>{const ag=agents.filter(a=>a.tl===t.name);const sum=f=>ag.reduce((a,b)=>a+b[f],0);
-    const r={name:t.name,direct:!!t.direct,n:ag.length,mc:sum('mc'),ct:sum('ct'),mt:sum('mt'),tt:sum('tt'),vd:sum('vd'),vt:sum('vt'),st:sum('st'),sd:sum('sd')};
-    const parts=[achPct(r.mc,r.ct),achPct(r.mt,r.tt),achPct(r.vd,r.vt),r.sd>0||r.st>0?achPct(r.sd,r.st):null].filter(x=>x!=null); r.ach=parts.length?parts.reduce((a,b)=>a+b,0)/parts.length:null; return r;});
+    const r={name:t.name,direct:!!t.direct,n:ag.length,mc:sum('mc'),ct:sum('ct'),mt:sum('mt'),tt:sum('tt'),vd:sum('vd'),vt:sum('vt'),st:sum('st'),sd:sum('sd'),
+      vt2:tvTLTarget(t.name,from,to),vd2:sum('vd2')};
+    r.ach=r.vt2>0?achPct(r.vd2,r.vt2):null; return r;});
   const esc=v=>String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
   $('tmTLBody').innerHTML=tlRows.map(r=>`<tr class="clickable ${TM_TL===r.name?'sel':''}" data-tl="${esc(r.name)}"><td><b>${esc(r.name)}</b>${r.direct?' <span class="badge b" style="padding:2px 7px;font-size:10px">direct to DGM</span>':''}</td><td class="r">${r.n}</td>
     <td class="r sep">${fmt(r.mc)}</td><td class="r">${fmt(r.ct)}</td>${tmDiffCell(r.mc-r.ct)}
     <td class="r sep">${hmFmt(r.mt)}</td><td class="r">${hmFmt(r.tt)}</td>${tmDiffCell(r.mt-r.tt,false,hmFmt)}
     <td class="r sep">${fmt(r.vd)}</td><td class="r">${fmt(r.vt)}</td>${tmDiffCell(r.vd-r.vt)}
     <td class="r sep">${fmt(r.st)}</td><td class="r">${fmt(r.sd)}</td>${tmDiffCell(r.sd-r.st)}
+    <td class="r sep">${fmtRs(r.vt2)}</td><td class="r">${fmtRs(r.vd2)}</td>${tmDiffCell(r.vd2-r.vt2,false,fmtRs)}
     ${achCell(r.ach)}<td><button class="rpt-btn" data-rtype="tl" data-rkey="${esc(r.name)}">📋 Report</button></td></tr>`).join('');
-  const T=tlRows.reduce((a,r)=>{['n','mc','ct','mt','tt','vd','vt','st','sd'].forEach(f=>a[f]=(a[f]||0)+r[f]);return a;},{});
-  const tParts=[achPct(T.mc,T.ct),achPct(T.mt,T.tt),achPct(T.vd,T.vt),T.sd>0?achPct(T.sd,T.st):null].filter(x=>x!=null); const tAch=tParts.length?tParts.reduce((a,b)=>a+b,0)/tParts.length:null;
-  $('tmTLFoot').innerHTML=`<tr><td>TEAM AHSAN</td><td class="r">${T.n}</td><td class="r sep">${fmt(T.mc)}</td><td class="r">${fmt(T.ct)}</td>${tmDiffCell(T.mc-T.ct)}<td class="r sep">${hmFmt(T.mt)}</td><td class="r">${hmFmt(T.tt)}</td>${tmDiffCell(T.mt-T.tt,false,hmFmt)}<td class="r sep">${fmt(T.vd)}</td><td class="r">${fmt(T.vt)}</td>${tmDiffCell(T.vd-T.vt)}<td class="r sep">${fmt(T.st)}</td><td class="r">${fmt(T.sd)}</td>${tmDiffCell(T.sd-T.st)}${achCell(tAch)}<td></td></tr>`;
+  const T=tlRows.reduce((a,r)=>{['n','mc','ct','mt','tt','vd','vt','st','sd','vt2','vd2'].forEach(f=>a[f]=(a[f]||0)+r[f]);return a;},{});
+  const tAch=T.vt2>0?achPct(T.vd2,T.vt2):null;
+  $('tmTLFoot').innerHTML=`<tr><td>TEAM AHSAN</td><td class="r">${T.n}</td><td class="r sep">${fmt(T.mc)}</td><td class="r">${fmt(T.ct)}</td>${tmDiffCell(T.mc-T.ct)}<td class="r sep">${hmFmt(T.mt)}</td><td class="r">${hmFmt(T.tt)}</td>${tmDiffCell(T.mt-T.tt,false,hmFmt)}<td class="r sep">${fmt(T.vd)}</td><td class="r">${fmt(T.vt)}</td>${tmDiffCell(T.vd-T.vt)}<td class="r sep">${fmt(T.st)}</td><td class="r">${fmt(T.sd)}</td>${tmDiffCell(T.sd-T.st)}<td class="r sep">${fmtRs(T.vt2)}</td><td class="r">${fmtRs(T.vd2)}</td>${tmDiffCell(T.vd2-T.vt2,false,fmtRs)}${achCell(tAch)}<td></td></tr>`;
   $('tmTLCount').textContent=`${tlRows.length} team leads`;
   // KPI cards (whole team or selected TL)
   const scope=TM_TL?tlRows.find(r=>r.name===TM_TL):T;
   const card=(lbl,done,target,acc,fmtD,unit)=>{const p=achPct(done,target);const c=p==null?'var(--soft)':p>=100?'var(--green)':p>=80?'var(--amber)':'var(--red)';
     return `<div class="kpi team-kpi" style="--acc:${c}"><div class="lbl">${lbl}</div><div class="big">${fmtD(done)}${unit?`<small>${unit}</small>`:''}</div><div class="tg">Target <b>${fmtD(target)}</b> · ${p==null?'—':(done-target>=0?'+':'−')+fmtD(Math.abs(done-target))+' · '+Math.round(p)+'%'}</div><div class="bar-w"><i style="width:${Math.min(100,p||0)}%"></i></div></div>`;};
-  $('tmKpis').innerHTML=card('Calls',scope.mc,scope.ct,'',fmt,'')+card('Talk time',scope.mt,scope.tt,'',hmFmt,'')+card('Client visits',scope.vd,scope.vt,'',fmt,'')+card('Sales (sq ft)',scope.sd,scope.st,'',fmt,'');
+  const scopeVt2=tlRows.reduce((a,r)=>a+r.vt2,0), scopeVd2=tlRows.reduce((a,r)=>a+r.vd2,0);
+  $('tmKpis').innerHTML=card('Calls',scope.mc,scope.ct,'',fmt,'')+card('Talk time',scope.mt,scope.tt,'',hmFmt,'')+card('Client visits',scope.vd,scope.vt,'',fmt,'')+card('Sales (sq ft)',scope.sd,scope.st,'',fmt,'')+card('Sales (Value)',scopeVd2,scopeVt2,'',fmtRs,'');
   // agents table
   let list=TM_TL?agents.filter(a=>a.tl===TM_TL):agents.slice();
   const k=TM_SORT.k, dir=TM_SORT.dir;
@@ -2001,6 +2024,7 @@ function renderTeam(){
     <td class="r sep">${hmFmt(a.mt)}</td><td class="r">${hmFmt(a.tt)}</td>${tmDiffCell(a.td,false,hmFmt)}
     <td class="r sep">${fmt(a.vd)}</td><td class="r">${fmt(a.vt)}</td>${tmDiffCell(a.vdf)}
     <td class="r sep">${fmt(a.st)}</td><td class="r">${SD_DATA.length?`<b>${fmt(a.sd)}</b>`:`<input class="sales-in" type="number" min="0" data-k="${esc(a.k)}" value="${a.sd||''}" placeholder="0">`}</td>${tmDiffCell(a.sdf)}
+    <td class="r sep">${fmtRs(a.vt2)}</td><td class="r">${fmtRs(a.vd2)}</td>${tmDiffCell(a.vd2-a.vt2,false,fmtRs)}
     ${achCell(a.ach)}<td>${statusTag(a.ach)}</td><td><button class="rpt-btn" data-rtype="agent" data-rkey="${esc(a.k)}">📋 Report</button></td></tr>`).join('');
 }
 ['tmFrom','tmTo'].forEach(id=>$(id).addEventListener('change',()=>{$(id).dataset.manual='1';renderTeam();}));
@@ -2037,7 +2061,9 @@ function openReport(type,key){try{
     const vis={}; kzRows.forEach(r=>{if(r.d<from||r.d>to)return;vis[norm(r.name)]=(vis[norm(r.name)]||0)+(r.visits||0);});
     let mc=0,mt=0,vd=0,sd=0,ct=TGT.calls*wd*tl.agents.length,tt=TGT.talk*wd*tl.agents.length,vt=Math.round(TGT.visits*mf)*tl.agents.length,st=Math.round(TGT.sales*mf)*tl.agents.length;
     tl.agents.forEach(n=>{const k=norm(n),m=mh[k]||{c:0,t:0};mc+=m.c;mt+=m.t;vd+=vis[k]||0;sd+=SD_DATA.length?sdAgentSqft(k,from,to):+(SALES[tmSalesKey(k,from,to)]||0);});
-    kpis=[{label:'Calls',done:mc,target:ct,unit:''},{label:'Talk Time',done:mt,target:tt,unit:'min',fmtD:hmFmt,fmtT:hmFmt},{label:'Client Visits',done:vd,target:vt,unit:''},{label:'Sales (sq ft)',done:sd,target:st,unit:'sq ft'}];
+    var valDone=0; tl.agents.forEach(n=>valDone+=sdAgentValue(norm(n),from,to));
+    var valTgt=tvTLTarget(tl.name,from,to);
+    kpis=[{label:'Calls',done:mc,target:ct,unit:''},{label:'Talk Time',done:mt,target:tt,unit:'min',fmtD:hmFmt,fmtT:hmFmt},{label:'Client Visits',done:vd,target:vt,unit:''},{label:'Sales (sq ft)',done:sd,target:st,unit:'sq ft'},{label:'Sales (Value)',done:valDone,target:valTgt,unit:'Rs',fmtD:fmtRs,fmtT:fmtRs}];
   }else{
     const agKey=key;
     let agName='',agTL='';
@@ -2048,7 +2074,8 @@ function openReport(type,key){try{
     let vd=0; kzRows.forEach(r=>{if(r.d<from||r.d>to)return;if(norm(r.name)===agKey)vd+=r.visits||0;});
     const sd=SD_DATA.length?sdAgentSqft(agKey,from,to):+(SALES[tmSalesKey(agKey,from,to)]||0);
     const ct=TGT.calls*wd,tt=TGT.talk*wd,vt=Math.round(TGT.visits*mf),st=Math.round(TGT.sales*mf);
-    kpis=[{label:'Calls',done:mh.c,target:ct,unit:'',extra:mh.days+' active days of '+wd+' working days'},{label:'Talk Time',done:mh.t,target:tt,unit:'min',fmtD:hmFmt,fmtT:hmFmt},{label:'Client Visits',done:vd,target:vt,unit:''},{label:'Sales (sq ft)',done:sd,target:st,unit:'sq ft'}];
+    var valDone2=sdAgentValue(agKey,from,to);
+    kpis=[{label:'Calls',done:mh.c,target:ct,unit:'',extra:mh.days+' active days of '+wd+' working days'},{label:'Talk Time',done:mh.t,target:tt,unit:'min',fmtD:hmFmt,fmtT:hmFmt},{label:'Client Visits',done:vd,target:vt,unit:''},{label:'Sales (sq ft)',done:sd,target:st,unit:'sq ft'},{label:'Sales (Value)',done:valDone2,target:0,unit:'Rs',fmtD:fmtRs,fmtT:fmtRs}];
   }
   // build report HTML
   const pct=kpis.map(k=>{const p=k.target>0?Math.round(k.done/k.target*100):null;return {...k,pct:p};});
@@ -2122,6 +2149,46 @@ async function loadSales(){
   }
   SD_LOADED=true; SD_LOADING=false; renderTeam(); renderSettings();
 }
+// Target Value Google Sheet — columns: Month, Name, Value
+const TV_SHEET_DEFAULT='https://docs.google.com/spreadsheets/d/16WIoZsJ9ScJs_hlALr_Kd1pMjzpEvR-0vir_iPxnOTg/edit';
+const TV_TAB_DEFAULT='Sheet1';
+let TV_ID=store.get('cd_tv_id')||TV_SHEET_DEFAULT, TV_TAB=store.get('cd_tv_tab')||TV_TAB_DEFAULT;
+let TV_DATA=[], TV_LOADED=false, TV_LOADING=false, TV_SRC='';
+function parseRsVal(s){return Number(String(s||'0').replace(/[^0-9.-]/g,''))||0;}
+function fmtRs(v){if(!v&&v!==0)return '—';const a=Math.abs(v);if(a>=10000000)return (v<0?'-':'')+'Rs '+(a/10000000).toFixed(1)+'Cr';if(a>=100000)return (v<0?'-':'')+'Rs '+(a/100000).toFixed(1)+'L';if(a>=1000)return (v<0?'-':'')+'Rs '+fmt(a);return 'Rs '+fmt(v);}
+function parseTargetValue(j){
+  const t=j&&j.table, rows=t&&t.rows; if(!rows)return [];
+  return rows.map(r=>{const c=r.c||[];const d=cDate(c[0]);return {month:d?d.slice(0,7):'',name:cText(c[1]).trim(),value:parseRsVal(cText(c[2])||cNum(c[2]))};}).filter(r=>r.month&&r.name);
+}
+async function loadTargetValue(){
+  const id=parseSheetInput(TV_ID).id;
+  if(!id){TV_LOADED=true;TV_DATA=[];TV_SRC='Not connected';renderTeam();renderSettings();return;}
+  if(TV_LOADING)return; TV_LOADING=true;
+  try{
+    TV_DATA=parseTargetValue(await gvizLoad(id,TV_TAB,''));
+    TV_SRC='Target sheet · synced '+hm(new Date())+' · '+TV_DATA.length+' rows';
+  }catch(e){
+    try{TV_DATA=parseTargetValue(await scriptSheetLoad(id,TV_TAB));TV_SRC='Target sheet (Apps Script) · '+TV_DATA.length+' rows';}
+    catch(e2){TV_SRC='Target sheet · ⚠ '+e2.message;}
+  }
+  TV_LOADED=true;TV_LOADING=false;renderTeam();renderSettings();
+}
+function tvTLTarget(tlName,from,to){
+  const fm=from.slice(0,7),tm=to.slice(0,7);
+  return TV_DATA.filter(r=>{
+    const sn=norm(r.name),dn=norm(tlName);
+    const nameOk=sn===dn||dn.startsWith(sn)||sn.startsWith(dn);
+    return nameOk&&r.month>=fm&&r.month<=tm;
+  }).reduce((s,r)=>s+r.value,0);
+}
+function sdAgentValue(agentKey,from,to){
+  return SD_DATA.filter(r=>{
+    if(r.d<from||r.d>to)return false;
+    const sn=norm(r.name);
+    return sdNameMatch(sn,agentKey);
+  }).reduce((s,r)=>s+r.value,0);
+}
+
 function sdEditDist(a,b){
   if(Math.abs(a.length-b.length)>2)return 99;
   let prev=Array.from({length:b.length+1},(_,i)=>i);
@@ -2424,6 +2491,11 @@ function renderSettings(){
   if(document.activeElement!==$('sdUrl'))$('sdUrl').value=SD_ID?sheetLink(SD_ID):'';
   if(document.activeElement!==$('sdTab'))$('sdTab').value=SD_TAB;
   $('sdStatus').textContent=SD_LOADING?'Syncing…':(SD_LOADED?SD_SRC:'Not synced yet — open the Team Ahsan tab or press Refresh');
+  // TL Sales Target sheet
+  const tvLk=sheetLink(TV_ID), tvA=$('openTv'); tvA.href=tvLk||'#'; tvA.style.display=tvLk?'':'none';
+  if(document.activeElement!==$('tvUrl'))$('tvUrl').value=TV_ID?sheetLink(TV_ID):'';
+  if(document.activeElement!==$('tvTab'))$('tvTab').value=TV_TAB;
+  $('tvStatus').textContent=TV_LOADING?'Syncing…':(TV_LOADED?TV_SRC:'Not synced yet — open the Team Ahsan tab or press Refresh');
   $('pwdApiTxt').textContent=PWD_API_URL||'not set'; $('imgApiTxt').textContent=IMG_API_URL||'not set';
   $('vzStatus').textContent=VZ_SRC; const vl=$('openVz'); vl.href=VZ_URL||'#'; vl.style.display=VZ_URL?'':'none';
 }
@@ -2455,6 +2527,14 @@ $('sdConnect').onclick=()=>{
 };
 $('sdRefresh2').onclick=()=>{loadSales();renderSettings();};
 $('sdDefault').onclick=()=>{store.del('cd_sd_id');store.del('cd_sd_tab');SD_ID=SD_SHEET_DEFAULT;SD_TAB=SD_TAB_DEFAULT;SD_DATA=[];SD_LOADED=false;SD_SRC='Not connected';renderTeam();renderSettings();};
+// TL Sales Target sheet settings
+$('tvConnect').onclick=()=>{
+  const id=parseSheetInput($('tvUrl').value).id; if(!id){$('tvStatus').textContent='Enter the TL Sales Target Sheet URL or ID';return;}
+  TV_ID=id; TV_TAB=$('tvTab').value.trim()||TV_TAB_DEFAULT; store.set('cd_tv_id',TV_ID); store.set('cd_tv_tab',TV_TAB);
+  TV_LOADED=false; loadTargetValue(); renderSettings();
+};
+$('tvRefresh2').onclick=()=>{loadTargetValue();renderSettings();};
+$('tvDefault').onclick=()=>{store.del('cd_tv_id');store.del('cd_tv_tab');TV_ID=TV_SHEET_DEFAULT;TV_TAB=TV_TAB_DEFAULT;TV_DATA=[];TV_LOADED=false;TV_SRC='Not connected';renderTeam();renderSettings();};
 
 // ---------- CHANGE PASSWORD ----------
 function pwdMsg(t,ok){const m=$('pwdMsg');m.textContent=t||'';m.style.color=ok?'#15803d':'#b91c1c';}
@@ -2492,7 +2572,7 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
   if(t.dataset.page==='cmp'){ renderCmp(); if(!BX_LOADED) loadBitrix(); }
   if(t.dataset.page==='kpi'){ renderKpi(); if(!KZ_LOADED||Date.now()-KZ_LAST>REFRESH_MIN*60*1000) loadKpi(); }
   if(t.dataset.page==='visits'||t.dataset.page==='vdash'){ renderVisits(); loadVisits(false); }
-  if(t.dataset.page==='team'){ renderTeam(); if(!KZ_LOADED||Date.now()-KZ_LAST>REFRESH_MIN*60*1000) loadKpi(); if(!SD_LOADED&&parseSheetInput(SD_ID).id) loadSales(); }
+  if(t.dataset.page==='team'){ renderTeam(); if(!KZ_LOADED||Date.now()-KZ_LAST>REFRESH_MIN*60*1000) loadKpi(); if(!SD_LOADED&&parseSheetInput(SD_ID).id) loadSales(); if(!TV_LOADED&&parseSheetInput(TV_ID).id) loadTargetValue(); }
   if(t.dataset.page==='settings') renderSettings();
 }));
 ['agentSel','fromDt','toDt'].forEach(id=>$(id).addEventListener('change',renderAgent));
@@ -2512,6 +2592,7 @@ renderTeam();
 renderSettings();
 startSheet();
 if(parseSheetInput(SD_ID).id) loadSales();
+if(parseSheetInput(TV_ID).id) loadTargetValue();
 </script>
 </body>
 </html>
