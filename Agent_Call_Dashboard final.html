@@ -475,7 +475,29 @@ body.tm-dark .app-footer .sep{color:#2d3a4f}
 #page-leads .st.a{background:rgba(251,191,36,.12);color:#fbbf24}
 #page-leads .st.r{background:rgba(248,113,113,.12);color:#f87171}
 #page-leads table.team td.sep,#page-leads table.team th.sep{border-left-color:#1e2a40}
-#page-leads .kpis{grid-template-columns:repeat(4,1fr)}
+#page-leads .kpis{grid-template-columns:repeat(5,1fr)}
+#page-leads .ld-grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;align-items:start}
+#page-leads .ld-quick{display:flex;align-items:center;gap:8px;flex-wrap:wrap}#page-leads .ld-quick span{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#6b7a8d;margin-right:4px}
+#page-leads .ld-quick button{background:#0f1626;border:1px solid #1e2a40;color:#cbd5e1;border-radius:999px;padding:5px 14px;font:600 12px Inter,sans-serif;cursor:pointer}#page-leads .ld-quick button:hover{border-color:var(--gold)}#page-leads .ld-quick button.on{background:var(--gold);border-color:var(--gold);color:#0b1120}
+#page-leads .ld-find{margin:0;padding-left:20px;display:grid;gap:8px;font-size:14px;line-height:1.55;color:#cbd5e1}#page-leads .ld-find b{color:#fff}#page-leads .ld-find li::marker{color:var(--gold)}
+#page-leads .ld-donut{display:grid;grid-template-columns:minmax(260px,380px) 1fr;gap:32px;align-items:center}
+#page-leads .ld-dn-leg{columns:2;column-gap:32px}#page-leads .ld-dn-row{break-inside:avoid}
+#page-leads .ld-dn-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #1e2a40;font-size:13.5px;color:#cbd5e1}
+#page-leads .ld-dn-row i{flex:none;width:12px;height:12px;border-radius:3px}#page-leads .ld-dn-row span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#page-leads .ld-dn-row b{color:#fff;font-size:14px}#page-leads .ld-dn-row em{font-style:normal;color:#8896ab;width:44px;text-align:right}
+@media (max-width:1100px){#page-leads .ld-donut{grid-template-columns:1fr}#page-leads .ld-dn-leg{columns:1}}
+#page-leads .ld-srcbtn{display:inline-block;min-width:26px;text-align:center;padding:2px 9px;border-radius:999px;background:rgba(201,162,74,.14);border:1px solid rgba(201,162,74,.45);color:var(--gold);font-weight:700;cursor:pointer}#page-leads .ld-srcbtn:hover{background:var(--gold);color:#0b1120}
+#page-leads table.team tfoot .ld-srcbtn{background:#0b1120;border-color:#0b1120;color:var(--gold)}
+#page-leads .ld-pop-ov{position:fixed;inset:0;background:rgba(3,7,18,.72);z-index:900;display:flex;align-items:center;justify-content:center;padding:20px}
+#page-leads .ld-pop{background:#151d2e;border:1px solid #2a3852;border-radius:14px;width:min(760px,100%);max-height:88vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.55);color:#e2e8f0}
+#page-leads .ld-pop-h{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:18px 20px;border-bottom:1px solid #1e2a40}#page-leads .ld-pop-h h3{margin:0;font-size:17px;color:#fff}#page-leads .ld-pop-h p{margin:4px 0 0;font-size:12.5px;color:#8896ab}
+#page-leads .ld-pop .btn{background:#0f1626;border:1px solid #2a3852;color:#e2e8f0;white-space:nowrap}#page-leads .ld-pop .btn:hover{border-color:var(--gold)}
+#page-leads .ld-pop-b{overflow:auto}#page-leads .ld-pop-b td{white-space:normal}
+#page-leads table.team th.mxh{white-space:normal;max-width:96px;line-height:1.25;vertical-align:bottom}
+#page-leads table.team tr.mx-tl td{background:#101827;color:var(--gold);font-weight:700;border-top:1px solid #2a3852}#page-leads table.team tr.mx-tl td small{color:#6b7a8d;font-weight:500;margin-left:6px}
+#page-leads table.team td small{color:#6b7a8d}
+@media (max-width:1100px){#page-leads .ld-grid2{grid-template-columns:1fr}#page-leads .picker{grid-template-columns:1fr 1fr!important}}
+@media print{#page-leads .ld-pop-ov{display:none!important}#page-leads,#page-leads *{-webkit-print-color-adjust:exact;print-color-adjust:exact}#page-leads .card,#page-leads .kpi{break-inside:avoid}}
 #page-leads .ld-note{font-size:12.5px;color:#8896ab;line-height:1.6;border-top:1px solid #1e2a40}#page-leads .ld-note b{color:#e2e8f0}
 #page-leads .ld-info .l{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#6b7a8d}#page-leads .ld-info .v{font-size:13px;font-weight:600;color:#e2e8f0}#page-leads .ld-info .m{font-family:'Playfair Display',serif;font-size:22px;color:var(--gold)}
 @media (max-width:1000px){#page-leads .kpis,#page-teamkpi .kpis{grid-template-columns:repeat(2,1fr)}}
@@ -1177,52 +1199,105 @@ table.team td.pos{color:var(--green);font-weight:700}table.team td.neg{color:var
   </div>
 </section>
 
-<!-- =============== LEAD DISTRIBUTION PAGE (Team Ahsan · paid leads received vs fair share) =============== -->
+<!-- =============== LEAD DISTRIBUTION PAGE (Team Ahsan · paid leads by team lead, agent and source · Receipts sheet only) =============== -->
 <section class="page wrap" id="page-leads" style="padding-top:0">
-  <div class="picker" style="grid-template-columns:1.2fr 1fr 1fr auto">
+  <div class="picker" style="grid-template-columns:1fr 1fr 1.1fr 1.1fr 1.2fr auto;gap:14px">
+    <div class="field"><label>From Date</label><input type="date" id="ldFrom"></div>
+    <div class="field"><label>To Date</label><input type="date" id="ldTo"></div>
     <div class="field"><label>Team Lead</label><select id="ldTL"><option value="">All team leads</option></select></div>
-    <div class="field"><label>Fairness status</label><select id="ldStatus"><option value="">All</option><option>Under-allocated</option><option>Fair</option><option>Over-allocated</option></select></div>
-    <div class="field"><label>Eligible today</label><select id="ldElig"><option value="">All</option><option value="1">Eligible</option><option value="0">Ineligible</option></select></div>
+    <div class="field"><label>Agent</label><select id="ldAgent"><option value="">All agents</option></select></div>
+    <div class="field"><label>Source</label><select id="ldSource"><option value="">All sources</option></select></div>
     <div style="display:flex;gap:8px">
+      <button class="btn" id="ldRefresh" title="Read the Google Sheet again">↻ Refresh</button>
       <button class="btn" id="ldReset">Reset</button>
       <button class="btn primary" id="ldPrint">🖨 Print</button>
     </div>
+    <div class="ld-quick" style="grid-column:1/-1"><span>Quick period</span><button data-q="month">This month</button><button data-q="prev">Last month</button><button data-q="q3">Last 3 months</button><button data-q="q6">Last 6 months</button><button data-q="ytd">Year to date</button></div>
   </div>
-  <div class="card" style="margin-bottom:16px"><div class="card-b ld-info" style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 18px">
-    <div><div class="l">Lead Distribution · Team Ahsan · Month to date</div><div class="m" id="ldMonth">—</div></div>
-    <div><div class="l">Team</div><div class="v" id="ldTeamInfo">—</div></div>
+
+  <div class="card" style="margin-bottom:16px"><div class="card-b ld-info" style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:16px 20px">
+    <div><div class="l">Paid Lead Distribution · Team Ahsan</div><div class="m" id="ldPeriod">—</div></div>
+    <div><div class="l">Showing</div><div class="v" id="ldScope">—</div></div>
     <div><div class="l">Data as of</div><div class="v" id="ldAsOf">—</div></div>
-    <div><div class="l">Source</div><div class="v" id="ldSrc">—</div></div>
+    <div><div class="l">Source</div><div class="v" id="ldSrc">—</div><div id="ldSync" style="font-size:11.5px;color:#8896ab;margin-top:2px"></div></div>
   </div></div>
 
   <div class="kpis" id="ldKpis"></div>
 
   <div class="card" style="margin-bottom:16px">
-    <div class="card-h"><div><h3>Leads received vs should have received</h3><p id="ldChartSub">Per agent · paid leads this month</p></div></div>
+    <div class="card-h"><div><h3>Key findings</h3><p id="ldFindSub">For the selected period</p></div></div>
+    <div class="card-b"><ul class="ld-find" id="ldFind"></ul></div>
+  </div>
+
+  <div class="ld-grid2">
+    <div class="card">
+      <div class="card-h"><div><h3>Leads by source</h3><p id="ldSrcSub">Where the team's paid leads came from</p></div></div>
+      <div class="card-b"><div class="chart-box" id="ldSrcBox" style="height:320px"><canvas id="chLdSrc"></canvas></div></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><div><h3>Leads by team lead</h3><p id="ldTlSub">Share of the team's paid leads</p></div></div>
+      <div class="card-b"><div class="chart-box" style="height:320px"><canvas id="chLdTl"></canvas></div></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-h"><div><h3>Leads by agent</h3><p id="ldAgSub">Paid leads each agent received in the selected period</p></div></div>
     <div class="card-b"><div class="chart-box" style="height:300px"><canvas id="chLeads"></canvas></div></div>
   </div>
 
   <div class="card" style="margin-bottom:16px">
-    <div class="card-h"><div><h3>Team leads</h3><p>Click a team lead to see the agents under them · totals of their agents</p></div><span class="badge b" id="ldTLCount">0</span></div>
+    <div class="card-h"><div><h3>Source share</h3><p id="ldDnSub">Which sources the leads came from</p></div></div>
+    <div class="card-b ld-donut">
+      <div class="chart-box" style="height:300px"><canvas id="chLdDonut"></canvas></div>
+      <div class="ld-dn-leg" id="ldDnLeg"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-h"><div><h3>Team leads</h3><p>Click a team lead to filter the whole page</p></div><span class="badge b" id="ldTLCount">0</span></div>
     <div class="tbl-wrap" style="max-height:none">
       <table class="cmp team">
-        <thead><tr><th style="text-align:left">Team lead</th><th class="r">Agents</th><th class="r">Eligible today</th><th class="r">Eligible days</th><th class="r sep">Leads received</th><th class="r">Should have received</th><th class="r">Difference</th><th class="sep" style="text-align:left">% of fair share</th><th class="r">Under-allocated agents</th></tr></thead>
+        <thead><tr><th style="text-align:left">Team lead</th><th class="r">Agents</th><th class="r sep">Leads received</th><th style="text-align:left">Share of team</th><th class="r">Per agent</th><th class="r">Sources</th><th style="text-align:left" class="sep">Top source</th><th style="text-align:left">Top agent</th></tr></thead>
         <tbody id="ldTLBody"></tbody>
         <tfoot id="ldTLFoot"></tfoot>
       </table>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-h"><div><h3 id="ldAgTitle">Agents</h3><p>Click a column heading to sort · Difference = leads received − leads the agent should have received</p></div><span class="badge b" id="ldAgCount">0</span></div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-h"><div><h3>Agent × source</h3><p id="ldMxSub">How many leads each agent received from each source</p></div><span class="badge b" id="ldMxCount">0</span></div>
+    <div class="tbl-wrap" style="max-height:none">
+      <table class="cmp team ld-mx" id="ldMx"><thead id="ldMxHead"></thead><tbody id="ldMxBody"></tbody><tfoot id="ldMxFoot"></tfoot></table>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-h"><div><h3 id="ldAgTitle">Agent detail</h3><p id="ldFairSub">Selected period</p></div><span class="badge b" id="ldAgCount">0</span></div>
     <div class="tbl-wrap" style="max-height:none">
       <table class="cmp team" id="ldAgTable">
-        <thead><tr><th style="text-align:left" data-k="name">Agent</th><th style="text-align:left" data-k="tl">Team lead</th><th data-k="elig" style="text-align:left">Eligible today · reason</th><th class="r" data-k="ed">Eligible days</th><th class="r sep" data-k="act">Leads received</th><th class="r" data-k="exp">Should have received</th><th class="r" data-k="gap">Difference</th><th class="sep" style="text-align:left" data-k="pct">% of fair share</th><th style="text-align:left" data-k="status">Status</th></tr></thead>
+        <thead><tr><th style="text-align:left" data-k="name">Agent</th><th style="text-align:left" data-k="tl">Team lead</th><th class="r sep" data-k="n">Leads received</th><th style="text-align:left" data-k="share">Share of total</th><th style="text-align:left" class="sep" data-k="top">Top source</th><th class="r" data-k="nsrc">Sources</th><th class="r sep" data-k="days">Days with leads</th><th class="r" data-k="perDay">Leads per day</th><th style="text-align:left" data-k="last">Last lead on</th></tr></thead>
         <tbody id="ldAgBody"></tbody>
       </table>
     </div>
-    <div class="card-b ld-note" id="ldNote"></div>
   </div>
+
+  <div class="ld-grid2">
+    <div class="card">
+      <div class="card-h"><div><h3>Source detail</h3><p>Leads from each source, split by team lead</p></div><span class="badge b" id="ldSrcCount">0</span></div>
+      <div class="tbl-wrap" style="max-height:none"><table class="cmp team" id="ldSrcTable"><thead id="ldSrcHead"></thead><tbody id="ldSrcBody"></tbody><tfoot id="ldSrcFoot"></tfoot></table></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><div><h3 id="ldTrendTitle">Monthly trend · 2026</h3><p id="ldTrendSub">Paid leads received each month</p></div></div>
+      <div class="card-b"><div class="chart-box" style="height:320px"><canvas id="chLdTrend"></canvas></div></div>
+    </div>
+  </div>
+
+  <div class="card"><div class="card-b ld-note" id="ldNote" style="border-top:none"></div></div>
+
+  <div class="ld-pop-ov" id="ldPop" style="display:none"><div class="ld-pop">
+    <div class="ld-pop-h"><div><h3 id="ldPopTitle">Leads by source</h3><p id="ldPopSub"></p></div><button class="btn" id="ldPopClose">✕ Close</button></div>
+    <div class="ld-pop-b"><table class="cmp team"><thead><tr><th style="text-align:left">Source</th><th class="r">Leads</th><th style="text-align:left">Share</th><th style="text-align:left" id="ldPopCol">Agents</th></tr></thead><tbody id="ldPopBody"></tbody><tfoot id="ldPopFoot"></tfoot></table></div>
+  </div></div>
 </section>
 
 <!-- =============== MYHUB vs CALLYZER PAGE (admin only) =============== -->
@@ -2428,75 +2503,234 @@ function printReport(){const w=window.open('','_blank','width=800,height=900');w
 $('rptModal').addEventListener('mousedown',e=>{if(e.target===$('rptModal'))closeReport();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('rptModal').style.display!=='none')closeReport();});
 
-// ---------- LEAD DISTRIBUTION PAGE (Team Ahsan): paid leads each agent received vs the leads they should have received ----------
-// Built-in data = "Distribution Fairness" sheet of Paid_Lead_Distribution_Control.xlsx (Senior TL Ahsan Sohail + Sufyaan Fareed's team). Replace this block when a newer file is supplied.
-const LEAD_DATA={"month":"November 2026","refreshed":"24 Nov 2026, 11:00 AM PKT","file":"Paid_Lead_Distribution_Control.xlsx","pool":{"name":"V3 / V4 / Fractional","people":33,"days":456,"leads":1193},"held":[{"name":"Fizza Hussain","n":19},{"name":"Usman Gul","n":2}],"rows":[{"name":"Muhammad Abdullah","tl":"Usman Khalid","srtl":"Ahsan Sohail","joined":"2026-11-02","elig":false,"ed":7,"id":12,"ev":20,"act":13,"exp":18.3136,"status":"Under-allocated","today":0,"cap":5,"reason":"Official overdue threshold breached: 192 lead(s) (50+ is ineligible)","pool":"V3 / V4 / Fractional"},{"name":"Muhammad Zain Babar","tl":"Fizza Hussain","srtl":"Ahsan Sohail","joined":"2026-11-04","elig":true,"ed":12,"id":2,"ev":18,"act":28,"exp":31.3947,"status":"Under-allocated","today":0,"cap":5,"reason":"Eligible; Overdue check passed: 7 is below 50","pool":"V3 / V4 / Fractional"},{"name":"Daniyal Nadeem","tl":"Sufyaan Fareed","srtl":"Direct / Unmapped","joined":"2026-11-02","elig":false,"ed":16,"id":3,"ev":20,"act":40,"exp":41.8596,"status":"Under-allocated","today":0,"cap":5,"reason":"KPI missing with 57 qualifying activities; Overdue check passed: 2 is below 50","pool":"V3 / V4 / Fractional"},{"name":"Ayesha Khalid","tl":"Usman Gul","srtl":"Ahsan Sohail","joined":"2026-07-01","elig":true,"ed":16,"id":2,"ev":20,"act":41,"exp":41.8596,"status":"Under-allocated","today":0,"cap":5,"reason":"Eligible; Overdue check passed: 0 is below 50","pool":"V3 / V4 / Fractional"},{"name":"Malaika Awan","tl":"Usman Khalid","srtl":"Ahsan Sohail","joined":"2026-01-05","elig":false,"ed":14,"id":3,"ev":20,"act":38,"exp":36.6272,"status":"Over-allocated","today":0,"cap":5,"reason":"Official overdue threshold breached: 65 lead(s) (50+ is ineligible)","pool":"V3 / V4 / Fractional"},{"name":"Jannat Anjum","tl":"Ahsan Sohail","srtl":"Ahsan Sohail","joined":"2026-02-01","elig":true,"ed":17,"id":1,"ev":20,"act":46,"exp":44.4759,"status":"Over-allocated","today":0,"cap":5,"reason":"Eligible; Overdue check passed: 9 is below 50","pool":"V3 / V4 / Fractional"},{"name":"Amroz Rasheed","tl":"Fizza Hussain","srtl":"Ahsan Sohail","joined":"2024-12-01","elig":false,"ed":4,"id":5,"ev":20,"act":12,"exp":10.4649,"status":"Over-allocated","today":0,"cap":5,"reason":"Official overdue threshold breached: 224 lead(s) (50+ is ineligible)","pool":"V3 / V4 / Fractional"},{"name":"Saad Sami","tl":"Usman Khalid","srtl":"Ahsan Sohail","joined":"2026-08-26","elig":false,"ed":10,"id":7,"ev":20,"act":28,"exp":26.1623,"status":"Over-allocated","today":0,"cap":5,"reason":"Official overdue threshold breached: 57 lead(s) (50+ is ineligible)","pool":"V3 / V4 / Fractional"},{"name":"Muhammad Faheem Malik","tl":"Sufyaan Fareed","srtl":"Direct / Unmapped","joined":"2026-10-20","elig":true,"ed":18,"id":1,"ev":20,"act":49,"exp":47.0921,"status":"Over-allocated","today":0,"cap":5,"reason":"Eligible; Overdue check passed: 3 is below 50","pool":"V3 / V4 / Fractional"},{"name":"Ayesha Ayaz","tl":"Ahsan Sohail","srtl":"Ahsan Sohail","joined":"2026-03-10","elig":false,"ed":11,"id":6,"ev":20,"act":32,"exp":28.7785,"status":"Over-allocated","today":0,"cap":5,"reason":"KPI missing with 6 qualifying activities; Overdue check passed: 2 is below 50","pool":"V3 / V4 / Fractional"},{"name":"Saba Noor","tl":"Usman Khalid","srtl":"Ahsan Sohail","joined":"2025-11-03","elig":true,"ed":11,"id":5,"ev":20,"act":34,"exp":28.7785,"status":"Over-allocated","today":0,"cap":5,"reason":"Eligible; Overdue check passed: 9 is below 50","pool":"V3 / V4 / Fractional"},{"name":"Safwan Mustafa","tl":"Ahsan Sohail","srtl":"Ahsan Sohail","joined":"2025-02-17","elig":true,"ed":16,"id":0,"ev":20,"act":51,"exp":41.8596,"status":"Over-allocated","today":0,"cap":5,"reason":"Eligible; Overdue check passed: 14 is below 50","pool":"V3 / V4 / Fractional"},{"name":"Hadiya Zaheer","tl":"Ahsan Sohail","srtl":"Ahsan Sohail","joined":"2025-11-03","elig":false,"ed":6,"id":11,"ev":20,"act":34,"exp":15.6974,"status":"Over-allocated","today":0,"cap":5,"reason":"KPI missing with 40 qualifying activities; Overdue check passed: 5 is below 50","pool":"V3 / V4 / Fractional"}]};
-let LD_SORT={k:'gap',dir:1}, LD_TL='';
-function ldStTag(s){return s==='Under-allocated'?'<span class="st r">Under-allocated</span>':s==='Over-allocated'?'<span class="st a">Over-allocated</span>':'<span class="st g">Fair</span>';}
-function ldGapCell(v){const cls=v<=-0.5?'neg':v>=0.5?'pos':'zero',z=Math.abs(v)<0.05;return `<td class="r ${cls}">${z?'':v>0?'+':'−'}${fmt1(Math.abs(v))}</td>`;}
-function ldPctCell(act,exp){if(!(exp>0))return '<td class="sep" style="color:var(--soft)">—</td>';const p=act/exp*100,c=p<95?'#f87171':p>105?'#fbbf24':'#4ade80';return `<td class="sep"><span class="ach" style="--w:${Math.min(100,p/2)}%;--c:${c}"><i></i>${Math.round(p)}%</span></td>`;}
+// ---------- LEAD DISTRIBUTION PAGE (Team Ahsan): paid leads by team lead, agent and source (Receipts sheet only) ----------
+// Built-in copy (fallback when the Google Sheet cannot be read) from the Receipts sheet ONLY of "Paid lead distribution for 2026" (Senior TL Ahsan Sohail + Sufyaan Fareed's team). No fair-share / eligibility sheets are used.
+// rec = flat [dayOffset, agentIndex, sourceIndex, leads, ...] (a lead counts once per month, as in the workbook)
+let LEAD_DATA={"asOf":"24 Nov 2026, 5:35 PM","file":"Paid lead distribution for 2026 · Receipts sheet","base":"2026-01-01","first":"2026-01-01","last":"2026-11-24","tls":["Ahsan Sohail","Fizza Hussain","Usman Gul","Usman Khalid","Sufyaan Fareed"],"agents":[{"n":"Jannat Anjum","tl":"Ahsan Sohail"},{"n":"Ayesha Ayaz","tl":"Ahsan Sohail"},{"n":"Hadiya Zaheer","tl":"Ahsan Sohail"},{"n":"Safwan Mustafa","tl":"Ahsan Sohail"},{"n":"Amroz Rasheed","tl":"Fizza Hussain"},{"n":"Muhammad Zain Babar","tl":"Fizza Hussain"},{"n":"Ayesha Khalid","tl":"Usman Gul"},{"n":"Malaika Awan","tl":"Usman Khalid"},{"n":"Saba Noor","tl":"Usman Khalid"},{"n":"Muhammad Abdullah","tl":"Usman Khalid"},{"n":"Saad Sami","tl":"Usman Khalid"},{"n":"Muhammad Faheem Malik","tl":"Sufyaan Fareed"},{"n":"Daniyal Nadeem","tl":"Sufyaan Fareed"}],"sources":["Inbound V4","Facebook Form V4","Facebook Form Elevation","Facebook Form V3","UAN Whatsapp Lead","Inbound Elevation","Website Form","Walk-in Customer","Facebook Form Fractional","Social Media DMs/Comments","LinkedIn","Whatsapp Marketing","Facebook Form Rental","Live Chat","Inbound Rental","Inbound Tele Sales"],"rec":[4,3,6,1,4,4,4,1,4,4,7,1,4,7,6,3,6,0,6,1,6,0,8,1,6,2,1,1,6,7,7,1,7,0,8,2,7,2,1,1,7,4,6,1,7,5,6,1,7,7,0,2,7,7,6,2,8,2,1,1,8,2,6,1,8,7,0,1,8,7,6,1,8,7,7,1,9,2,6,4,9,7,6,1,10,7,8,1,11,1,5,1,11,2,6,1,11,9,8,1,12,1,5,36,12,4,0,1,12,4,4,1,12,4,6,1,12,6,0,2,12,7,4,2,12,7,6,2,12,8,4,1,13,4,1,1,13,6,0,1,13,7,6,1,14,2,0,2,14,4,1,3,14,6,0,1,14,7,0,2,14,7,6,1,15,1,5,2,15,2,0,2,15,2,1,1,15,4,4,1,15,4,7,1,15,7,1,1,16,1,5,16,16,2,4,1,16,4,0,4,16,7,1,1,16,7,4,1,17,0,1,1,17,4,0,2,17,4,1,2,18,7,1,2,18,8,0,3,19,3,0,1,19,3,6,1,19,4,1,1,19,4,6,1,19,7,1,1,19,7,6,1,20,0,8,1,20,1,5,31,20,2,4,1,20,3,6,1,20,4,0,4,20,6,0,1,20,7,1,2,20,9,4,1,21,2,0,1,21,2,1,2,21,4,0,1,21,4,1,2,21,6,0,1,21,7,1,3,21,7,6,1,21,8,1,1,22,0,8,2,22,1,4,1,22,2,0,6,22,4,1,3,22,7,0,1,22,7,1,5,22,9,8,1,23,1,5,1,23,2,0,4,23,2,1,1,23,7,0,4,23,7,1,2,23,7,4,1,23,7,6,2,23,8,1,1,24,3,1,1,24,7,1,3,24,8,1,1,25,0,7,1,25,1,5,1,25,4,1,1,25,6,0,2,25,7,1,1,25,7,5,35,25,7,6,2,25,8,5,1,26,0,1,1,26,0,8,1,26,3,4,1,26,4,1,3,26,4,4,2,26,7,1,2,26,7,4,10,27,2,1,2,27,2,7,1,27,3,0,1,27,3,1,1,27,4,1,2,27,4,6,1,27,7,1,3,27,7,5,1,27,8,1,1,27,9,8,1,28,0,1,1,28,0,8,3,28,3,1,1,28,3,6,1,28,4,0,2,28,4,6,1,28,7,5,28,28,7,6,1,28,7,8,1,28,8,1,2,29,2,6,1,29,3,6,1,29,4,0,2,29,4,1,3,29,8,4,3,29,9,8,1,30,0,0,1,30,0,1,1,30,4,6,1,30,7,0,1,30,7,1,2,30,7,4,1,30,7,6,1,30,8,1,1,30,9,0,1,31,8,1,2,32,2,0,1,32,2,1,2,32,2,8,1,32,3,1,1,32,4,1,2,32,7,1,2,32,7,4,1,32,7,5,35,32,7,6,2,32,8,6,1,33,0,8,1,33,2,1,1,33,2,6,2,33,3,1,1,33,4,1,1,33,7,1,1,33,7,6,2,33,8,6,1,34,0,0,2,34,3,0,1,34,3,1,1,34,4,1,1,34,6,4,1,34,7,1,1,34,7,4,1,34,7,6,3,34,8,1,1,35,0,0,1,36,7,6,2,36,8,7,1,36,9,1,1,37,4,1,1,37,8,1,1,38,4,1,1,38,7,1,1,38,7,6,1,39,2,4,1,39,2,6,3,39,7,1,1,39,7,4,2,40,0,0,2,40,0,1,1,40,2,6,3,40,4,1,1,40,7,0,3,40,7,6,1,40,8,0,1,40,9,0,1,40,10,8,1,41,2,1,1,41,4,1,2,41,7,0,4,41,7,1,1,41,8,4,1,41,9,0,2,42,0,1,1,42,2,6,1,42,4,0,1,42,7,1,1,42,8,1,1,43,4,1,1,44,2,0,1,44,3,0,1,44,7,1,2,45,7,1,1,46,0,1,1,46,2,0,1,46,2,4,1,46,2,6,1,46,4,1,1,46,7,1,1,46,8,1,1,47,2,1,1,47,4,0,2,47,4,4,1,47,7,1,2,48,0,1,1,48,2,0,1,48,2,1,1,48,7,1,2,48,8,1,1,49,0,0,2,49,0,1,1,49,4,1,1,49,7,1,1,49,8,12,1,49,9,1,1,50,7,1,1,50,9,1,1,51,7,0,2,51,7,1,1,51,8,0,1,51,8,1,1,51,9,4,1,52,7,1,1,53,0,4,1,53,4,1,1,53,7,0,3,53,7,1,2,53,10,0,1,54,2,1,1,54,3,1,1,54,4,1,2,54,7,1,1,54,10,1,1,56,4,1,1,56,7,1,3,57,2,1,1,57,3,1,1,57,6,0,3,57,7,0,1,57,7,4,2,57,7,6,2,58,4,1,1,58,6,1,1,59,4,1,1,60,2,0,1,60,7,1,2,61,2,4,1,61,7,1,1,61,9,4,1,62,2,1,1,63,4,1,2,63,4,6,1,63,7,1,2,64,4,0,1,64,7,1,1,64,8,0,1,65,0,0,1,65,8,4,1,66,4,1,2,67,6,1,1,67,7,1,2,67,9,1,1,68,0,1,1,68,3,1,1,68,7,0,3,68,7,1,4,68,8,1,1,68,9,0,1,68,9,1,1,69,0,1,1,69,2,1,3,69,4,1,1,69,7,1,4,69,8,1,1,69,9,1,1,70,0,1,1,70,4,4,1,70,6,4,1,70,7,1,5,70,7,4,9,70,8,1,2,70,8,4,2,70,9,4,1,71,2,1,6,71,6,1,1,71,7,1,5,71,8,1,4,74,2,4,6,74,4,4,1,74,7,0,1,74,7,1,1,74,8,4,1,75,0,1,1,75,3,1,2,75,7,1,5,75,8,1,2,76,0,1,1,76,2,1,1,76,3,4,18,76,4,1,4,76,4,4,4,76,6,1,2,76,7,1,12,76,7,4,12,76,8,1,6,76,8,4,2,76,9,1,2,77,3,0,6,77,3,4,3,77,4,4,1,77,7,4,13,77,8,6,2,82,0,1,5,82,2,0,2,82,3,1,1,82,6,1,1,82,7,1,3,82,7,4,11,82,8,0,1,82,8,1,8,82,9,5,1,83,0,1,2,83,0,4,2,83,1,2,1,83,1,4,1,83,2,1,2,83,4,1,4,83,4,4,1,83,7,0,1,83,7,1,10,83,7,4,15,83,8,0,1,83,8,1,8,83,8,4,7,83,9,4,3,84,0,1,2,84,4,0,1,84,7,0,15,84,7,1,4,84,7,4,13,84,8,0,1,85,1,3,2,85,7,1,4,85,8,1,1,85,8,4,2,85,9,1,1,86,7,7,1,88,7,0,1,88,7,4,13,89,0,1,1,89,4,1,1,89,6,1,2,89,7,1,6,89,7,4,2,89,9,1,1,90,0,1,1,90,1,3,1,90,2,1,1,90,4,6,2,90,6,1,2,90,7,0,3,90,7,4,7,90,11,1,1,91,0,0,1,91,2,1,1,91,4,1,1,91,7,1,5,91,7,4,3,91,9,1,1,92,0,1,3,92,0,2,2,92,0,4,1,92,1,3,3,92,2,1,4,92,2,2,1,92,4,4,1,92,7,1,3,92,9,1,1,93,0,1,1,93,0,2,29,93,1,3,1,93,1,8,1,93,2,1,3,93,2,2,6,93,2,4,8,93,4,1,2,93,8,1,1,94,0,1,2,94,0,2,5,94,1,2,12,94,2,1,1,94,2,2,4,94,3,1,1,94,6,1,1,94,7,0,1,94,7,1,1,94,8,1,2,95,0,4,1,95,1,1,1,95,1,2,5,95,2,0,1,95,2,1,5,95,2,2,1,95,4,1,1,95,4,8,2,95,7,0,3,95,7,1,4,95,7,4,4,96,1,1,1,96,1,2,15,96,2,0,1,96,2,1,2,96,2,2,11,96,4,1,1,96,4,2,15,96,7,1,3,96,7,2,1,96,7,4,1,96,8,1,3,97,0,1,1,97,0,2,2,97,0,6,1,97,0,8,1,97,1,2,5,97,1,4,1,97,1,8,1,97,2,1,4,97,2,2,4,97,4,1,2,97,6,0,2,97,7,1,1,98,0,2,10,98,1,3,2,98,2,1,2,98,4,1,1,98,4,2,1,98,6,0,1,98,7,1,3,98,7,4,1,98,8,1,3,98,9,0,1,98,9,1,2,99,0,2,31,99,1,1,2,99,2,1,1,99,4,1,4,99,4,2,5,99,6,6,2,99,7,0,3,99,7,1,3,99,8,1,2,100,0,1,2,100,0,2,18,100,2,1,1,100,3,1,1,100,4,2,2,101,0,1,2,101,2,1,3,101,4,1,1,101,7,1,2,102,0,2,5,102,0,4,1,102,1,1,2,102,1,4,1,102,2,0,1,102,3,1,1,102,4,1,1,102,4,4,2,102,4,6,1,102,7,4,2,102,7,6,2,102,9,6,2,103,0,1,1,103,0,2,14,103,0,8,1,103,1,3,1,103,1,4,1,103,2,4,3,103,3,1,1,103,3,4,1,103,4,1,1,103,4,2,5,103,4,4,1,103,7,1,2,103,8,1,1,103,9,0,2,104,0,1,3,104,0,2,18,104,1,3,4,104,2,1,3,104,2,2,1,104,3,1,1,104,4,0,2,104,4,1,4,104,4,2,3,104,7,6,1,104,7,8,1,105,0,1,1,105,0,4,1,105,0,6,2,105,1,1,1,105,2,0,1,105,4,2,3,105,7,6,1,105,8,5,4,105,9,4,1,106,0,0,1,106,1,3,1,106,2,1,3,106,4,2,2,106,8,5,13,107,0,0,1,107,0,1,2,107,1,1,4,107,2,1,4,107,3,1,2,107,4,1,4,107,4,2,6,107,6,0,1,107,6,1,1,107,7,1,7,107,8,1,2,107,8,5,8,108,4,1,1,109,1,3,1,109,4,2,1,109,4,4,6,109,6,4,1,109,7,1,4,109,7,4,4,109,8,1,2,109,8,4,1,109,9,0,1,110,0,1,4,110,0,8,1,110,2,1,2,110,3,1,3,110,4,1,3,110,4,2,4,110,4,4,1,110,6,0,1,110,6,1,1,110,8,4,3,110,8,5,16,110,11,2,1,111,0,0,1,111,0,1,3,111,0,6,4,111,3,1,2,111,3,4,2,111,3,5,1,111,6,1,1,111,6,6,1,111,7,1,5,111,7,4,4,111,8,1,1,111,8,5,21,111,8,6,4,112,0,0,2,112,0,1,3,112,2,1,3,112,3,0,2,112,3,1,6,112,4,1,2,112,4,2,2,112,4,4,1,112,7,0,1,112,7,1,8,112,7,4,3,112,8,1,1,112,8,4,5,112,8,5,10,112,9,1,1,113,0,0,1,113,0,6,8,113,1,3,2,113,2,1,2,113,4,1,2,113,4,2,6,113,7,8,1,113,8,5,26,114,0,0,1,114,1,1,4,114,1,3,1,114,2,1,4,114,4,0,1,114,4,1,2,114,4,2,6,114,5,5,1,114,7,0,1,114,7,1,4,115,0,6,1,115,0,7,1,115,1,6,1,115,2,1,1,115,4,1,1,115,4,2,5,115,10,8,1,116,0,0,2,116,0,1,1,116,2,1,2,116,4,0,3,116,4,2,14,116,7,1,7,116,7,7,1,116,8,1,2,116,9,1,1,117,0,0,2,117,0,6,2,117,1,3,1,117,1,4,6,117,2,1,1,117,3,6,1,117,4,2,12,117,4,4,4,117,7,4,7,117,8,1,3,117,8,4,4,118,1,4,3,118,2,4,2,118,4,4,3,118,6,0,8,118,7,0,4,118,7,4,3,118,8,0,1,118,8,4,3,118,9,0,1,119,0,4,2,119,2,4,2,119,6,0,1,119,7,0,2,119,7,4,2,119,8,0,1,119,8,4,2,119,8,6,2,119,9,4,2,121,0,0,1,121,0,4,1,121,1,4,1,121,2,4,1,121,2,5,1,121,7,6,1,121,8,4,1,123,0,2,1,123,0,5,1,123,2,5,1,123,3,5,1,123,7,0,2,123,7,2,1,123,8,0,1,123,8,2,1,123,8,10,1,123,9,0,1,124,0,2,3,124,0,4,2,124,2,2,2,124,3,2,2,124,3,4,2,124,4,0,1,124,4,1,1,124,4,2,3,124,4,4,2,124,4,5,3,124,7,2,2,124,7,6,1,124,8,2,3,124,8,4,1,124,8,5,1,125,0,0,101,125,0,4,2,125,0,7,61,125,0,8,9,125,1,0,155,125,1,2,1,125,1,3,1,125,1,4,2,125,1,6,4,125,1,8,8,125,2,0,122,125,2,6,4,125,2,7,22,125,2,8,6,125,3,0,10,125,3,8,1,125,4,0,7,125,4,2,7,125,4,4,1,125,4,5,6,125,4,6,1,125,4,7,1,125,5,0,1,125,6,0,284,125,6,6,5,125,6,8,7,125,7,0,15,125,7,2,2,125,7,4,2,125,7,6,4,125,7,7,1,125,7,8,2,125,8,0,92,125,8,4,2,125,8,7,18,125,8,8,2,125,9,0,104,125,9,7,1,125,10,0,18,125,10,7,1,125,11,0,1,125,11,7,1,125,12,0,1,126,0,0,23,126,0,2,2,126,0,7,1,126,0,8,4,126,1,0,83,126,1,2,1,126,1,3,3,126,1,6,4,126,1,7,44,126,1,8,1,126,2,0,8,126,3,0,5,126,3,8,1,126,4,0,6,126,5,0,2,126,6,0,8,126,6,6,2,126,6,8,1,126,7,0,10,126,7,2,2,126,7,6,2,126,7,8,1,126,8,0,29,126,8,7,10,126,8,8,1,126,9,0,18,126,9,8,4,126,10,0,12,126,10,7,1,126,11,0,1,126,12,0,2,127,0,4,2,127,0,5,2,127,1,0,5,127,1,3,1,127,1,4,2,127,2,2,4,127,2,4,2,127,3,2,2,127,3,4,2,127,4,2,2,127,7,2,8,127,7,4,2,127,8,2,6,127,8,4,2,127,8,5,1,127,9,2,3,128,0,2,5,128,1,3,3,128,3,2,1,128,4,2,5,128,7,0,2,128,7,2,2,128,7,5,2,128,7,8,1,128,8,2,1,128,8,5,2,128,9,2,1,129,0,2,3,129,1,2,1,129,1,3,13,129,7,0,2,129,8,2,3,130,0,4,5,130,1,0,224,130,1,2,1,130,1,3,1,130,1,4,5,130,1,6,15,130,1,10,3,130,2,0,14,130,2,2,3,130,2,4,5,130,4,2,1,130,6,0,103,130,6,6,2,130,6,10,3,130,7,0,73,130,7,2,3,130,7,4,6,130,7,6,1,130,7,11,1,130,8,0,41,130,8,4,5,130,8,6,5,130,9,0,17,130,9,4,1,130,9,13,1,130,10,0,30,130,10,6,1,130,11,0,1,131,0,2,2,131,1,2,4,131,1,3,2,131,2,2,2,131,2,5,1,131,3,2,2,131,4,2,2,131,7,2,3,131,8,2,4,132,0,0,73,132,0,2,4,132,0,5,1,132,1,0,40,132,1,2,2,132,1,3,1,132,1,5,2,132,1,6,8,132,2,0,47,132,2,5,5,132,2,8,1,132,3,2,2,132,3,9,4,132,4,2,1,132,4,4,4,132,4,5,3,132,4,8,2,132,7,2,2,132,7,4,3,132,7,9,1,132,8,4,3,132,8,9,3,132,8,10,1,132,8,13,1,132,9,2,1,132,11,4,1,133,0,3,1,133,0,9,2,133,1,3,1,133,2,2,4,133,3,2,1,133,4,2,4,133,4,5,1,133,7,0,3,133,7,9,2,133,8,2,1,133,8,9,2,134,1,2,2,134,1,3,2,134,2,2,2,134,3,2,3,134,4,2,1,134,4,5,2,134,7,0,1,134,7,2,3,134,8,2,2,134,8,5,2,135,1,3,1,135,4,0,1,135,4,5,2,136,0,0,1,136,0,2,9,136,1,3,5,136,2,2,1,137,0,0,1,137,0,4,2,137,1,0,1,137,1,3,2,137,1,4,1,137,2,0,1,137,2,4,2,137,2,9,3,137,3,4,2,137,4,4,2,137,7,4,2,137,7,9,3,137,8,4,5,137,8,9,2,138,1,3,2,138,4,6,1,138,7,0,2,138,8,0,1,139,0,4,2,139,1,2,2,139,2,4,2,139,3,4,2,139,4,4,2,139,4,9,1,139,7,4,2,140,0,1,2,140,0,9,1,140,1,9,2,140,2,1,3,140,3,1,1,140,7,0,2,140,7,1,1,140,7,9,2,140,8,1,4,141,0,0,1,141,0,1,10,141,1,3,2,141,4,1,6,141,7,1,8,141,8,1,6,142,0,0,3,142,0,1,2,142,0,4,1,142,0,8,1,142,1,1,9,142,1,3,2,142,1,4,2,142,2,1,4,142,2,2,1,142,2,9,8,142,3,0,3,142,3,1,11,142,3,4,2,142,4,1,2,142,4,8,1,143,0,1,10,143,1,1,10,143,1,3,1,143,2,1,12,143,3,1,10,143,4,1,1,143,11,1,1,144,4,1,3,144,7,0,2,144,7,1,10,144,8,0,2,144,8,1,9,150,8,0,3,151,0,0,2,151,0,1,7,151,0,4,5,151,0,9,3,151,1,1,3,151,1,3,1,151,2,1,1,151,3,0,1,151,4,0,2,151,4,1,2,151,4,4,5,151,4,9,2,151,6,1,2,151,6,4,1,151,7,1,5,151,7,4,4,151,7,8,1,151,8,0,1,151,8,1,10,151,8,4,5,151,9,1,1,151,12,0,1,151,12,9,2,152,0,0,6,152,0,1,17,152,0,4,3,152,0,8,2,152,1,0,3,152,1,1,6,152,1,3,10,152,1,4,5,152,2,0,4,152,2,1,10,152,2,4,1,152,2,8,1,152,3,1,10,152,4,1,13,152,4,9,2,152,7,0,1,152,7,1,11,152,8,0,1,152,8,1,5,152,11,1,1,152,11,9,1,152,12,1,15,153,0,1,6,153,1,1,6,153,1,3,3,153,3,1,6,153,4,1,21,153,6,1,1,153,7,0,2,153,7,1,16,153,8,1,19,153,9,1,3,154,0,1,4,154,0,4,3,154,0,9,3,154,1,1,5,154,1,3,5,154,1,4,3,154,1,9,3,154,2,1,3,154,3,1,7,154,3,4,3,154,3,9,3,154,4,0,1,154,4,1,9,154,4,4,4,154,7,0,5,154,7,1,8,154,7,4,4,154,7,8,1,154,8,0,7,154,8,1,5,154,8,4,1,154,9,1,2,154,9,4,1,154,12,1,3,155,1,3,7,155,2,1,1,155,3,1,1,155,4,1,1,155,7,1,1,155,8,1,1,156,0,4,3,156,1,3,3,156,2,1,2,156,2,3,1,156,2,4,3,156,3,0,1,156,3,4,4,156,4,1,1,156,4,4,3,156,4,6,1,156,6,4,2,156,7,1,1,156,7,4,3,156,8,1,1,156,8,4,3,156,12,4,2,157,0,1,3,157,1,3,6,157,3,1,3,157,4,1,3,157,6,1,1,157,7,1,4,157,12,1,4,158,0,0,2,158,0,1,2,158,0,6,2,158,0,9,1,158,2,1,4,158,3,0,1,158,3,1,3,158,3,6,2,158,4,1,4,158,4,9,2,158,6,1,2,158,7,0,2,158,7,1,2,158,7,9,2,158,9,1,2,158,9,9,1,158,11,3,1,158,11,9,1,158,12,1,2,158,12,9,1,159,0,1,2,159,1,1,2,159,2,1,4,159,3,1,3,159,4,0,5,159,4,1,2,159,7,0,3,159,7,1,2,159,9,0,1,160,0,1,2,160,0,9,2,160,2,1,2,160,2,9,1,160,3,1,5,160,3,9,2,160,4,0,2,160,4,1,2,160,4,9,2,160,7,1,2,160,7,9,2,160,8,1,4,160,8,9,1,161,0,1,1,161,0,4,3,161,1,1,2,161,2,4,3,161,3,0,1,161,3,1,1,161,3,4,3,161,4,1,3,161,4,4,4,161,6,0,1,161,7,4,4,161,8,1,2,161,8,4,4,161,9,4,1,162,0,0,2,162,0,1,1,162,1,1,5,162,3,0,2,162,3,1,3,162,8,1,4,163,0,1,4,163,0,4,1,163,1,1,1,163,1,4,1,163,2,1,1,163,2,3,1,163,2,6,1,163,3,1,5,163,3,4,1,163,4,4,1,163,7,0,2,163,7,1,1,163,7,4,1,163,8,1,2,163,8,4,1,163,8,6,1,163,9,0,1,163,9,1,1,163,9,4,1,164,0,1,4,164,3,1,4,164,4,1,2,164,6,3,1,164,7,1,1,164,8,1,1,164,9,3,1,165,0,1,3,165,0,4,3,165,1,1,4,165,2,1,4,165,3,1,3,165,3,4,2,165,4,1,1,165,4,3,1,165,7,0,2,165,7,1,1,165,8,0,2,165,8,1,1,166,0,0,1,166,0,1,2,166,1,1,1,166,1,4,2,166,2,1,3,166,2,4,1,166,3,0,1,166,3,1,3,166,4,1,3,166,7,1,1,166,8,1,4,166,9,1,2,167,0,1,3,167,1,1,1,167,1,6,1,167,2,1,4,167,3,0,2,167,3,1,3,167,4,1,2,167,8,1,3,167,8,6,1,167,9,1,1,168,0,1,8,168,1,1,8,168,2,1,1,168,3,1,6,168,4,1,9,168,7,1,8,168,8,1,5,168,9,0,1,168,9,1,1,168,12,1,1,169,0,1,1,169,4,0,1,170,0,1,1,170,0,4,1,170,3,1,4,170,3,4,4,170,4,0,1,170,4,1,2,170,4,4,1,170,8,4,4,171,0,1,1,171,3,1,3,171,4,1,1,172,0,0,1,172,0,1,2,172,1,1,1,172,1,4,1,172,3,0,5,172,3,1,1,172,4,1,1,172,4,4,1,172,7,1,1,172,7,4,2,172,8,1,1,172,8,4,1,173,0,1,2,173,0,4,1,173,0,10,1,173,1,1,1,173,1,4,1,173,4,1,1,173,4,4,2,173,7,1,1,173,7,4,2,173,8,1,1,173,8,4,1,174,0,1,2,174,1,1,1,174,1,4,1,174,3,1,1,174,3,4,1,174,4,1,1,174,7,0,1,174,7,1,2,174,8,1,1,175,0,1,1,175,4,1,1,175,7,1,1,175,8,1,1,176,0,1,2,176,4,1,3,176,7,0,1,176,7,1,2,176,8,1,2,176,8,8,1,176,11,1,1,177,0,0,1,177,0,3,2,177,0,4,2,177,0,8,1,177,3,0,1,177,3,1,2,177,3,2,1,177,3,4,2,177,3,8,1,177,4,1,1,177,4,4,1,177,4,8,1,177,7,0,1,177,7,2,3,177,7,4,1,177,7,8,1,177,8,0,1,177,8,2,1,177,8,4,1,177,8,8,1,178,0,1,2,178,3,1,2,178,7,1,1,178,8,1,1,178,9,1,2,179,0,0,3,179,0,1,1,179,1,1,3,179,2,7,1,179,3,1,1,179,4,1,2,179,7,1,1,179,8,1,1,179,9,1,1,180,0,1,1,180,1,0,2,180,1,1,2,180,2,1,2,180,2,9,2,180,3,0,2,180,3,1,1,180,4,1,2,180,6,0,1,180,7,1,4,180,8,1,3,181,0,1,2,181,0,4,3,181,1,4,4,181,3,4,3,181,4,1,3,181,7,1,2,181,7,4,5,181,7,8,1,181,8,1,2,181,8,4,3,181,9,1,2,181,9,4,2,182,0,1,1,182,1,1,1,182,3,1,3,182,7,0,1,182,7,1,1,182,8,0,1,183,2,1,1,183,4,0,1,183,4,1,1,183,7,0,3,183,7,1,1,183,8,0,4,183,8,1,2,183,9,1,2,184,0,1,1,184,1,1,2,184,2,1,3,184,4,0,4,184,4,1,3,184,7,8,1,184,8,1,4,184,9,1,1,185,0,1,1,185,1,1,1,185,2,1,5,185,7,1,2,185,8,1,4,186,0,0,1,186,0,1,2,186,1,1,2,186,2,0,1,186,2,1,4,186,3,0,1,186,3,1,3,186,4,1,1,186,7,1,1,186,8,6,1,187,0,1,1,187,0,4,1,187,1,1,1,187,1,4,1,187,2,1,2,187,3,1,1,187,4,1,1,187,7,1,2,187,8,1,2,188,0,1,3,188,2,1,3,188,3,1,1,188,3,6,1,188,4,6,1,188,7,0,1,188,8,0,3,188,8,1,1,188,12,0,1,189,0,1,2,189,1,1,1,189,2,1,3,189,3,1,2,189,7,1,2,189,8,1,1,189,9,1,1,190,0,0,1,190,0,1,1,190,1,1,5,190,2,0,1,190,2,1,7,190,3,1,4,190,7,1,3,190,8,1,1,190,9,1,1,190,11,1,1,191,0,0,2,191,0,1,3,191,0,3,1,191,1,0,1,191,1,1,1,191,2,1,7,191,3,1,5,191,4,7,1,191,7,1,2,191,9,1,1,192,0,1,1,192,0,3,2,192,1,1,1,192,2,1,3,192,3,1,4,192,7,1,1,192,8,1,1,192,9,1,2,192,11,1,4,193,0,1,1,193,0,3,5,193,9,0,1,194,4,0,1,196,0,4,3,196,1,4,4,196,2,4,5,196,3,4,5,196,4,4,9,196,7,4,5,196,7,6,1,196,8,4,5,196,9,4,2,196,11,4,4,197,0,4,2,197,4,4,2,198,0,1,4,198,1,1,4,198,3,1,4,198,4,1,4,198,4,4,1,198,6,4,2,198,7,1,1,198,8,4,3,199,0,1,5,199,1,1,4,199,2,1,10,199,3,1,4,199,4,1,4,199,7,8,1,200,0,1,2,200,1,1,1,200,3,1,2,200,4,1,3,200,6,1,2,200,7,1,5,200,8,0,3,200,8,1,4,200,9,0,1,200,9,1,2,201,0,1,1,201,0,3,5,201,0,4,2,201,2,1,1,201,3,4,2,201,4,1,3,201,4,4,2,201,6,1,1,201,6,4,6,201,7,1,3,201,7,4,2,201,8,1,2,201,8,4,1,201,9,4,1,201,11,1,4,201,11,4,1,202,0,1,1,202,0,3,16,202,0,4,3,202,1,1,3,202,2,1,2,202,3,4,2,202,3,6,1,202,4,1,4,202,4,6,1,202,6,1,2,202,7,1,1,202,7,6,1,202,8,1,1,202,9,1,3,202,11,1,1,203,0,1,5,203,0,3,20,203,1,1,2,203,2,1,4,203,3,1,1,203,4,1,3,203,6,1,1,203,7,1,1,203,8,1,3,203,8,3,4,203,11,1,4,204,0,1,2,204,1,1,2,204,2,1,4,204,3,1,1,204,4,1,3,204,6,1,4,204,7,1,3,204,8,3,8,204,9,1,1,204,11,1,2,205,0,0,2,205,0,1,2,205,0,4,2,205,1,0,2,205,1,1,4,205,1,4,2,205,2,0,2,205,2,1,8,205,2,4,2,205,3,0,2,205,3,1,2,205,3,4,2,205,4,0,1,205,4,1,3,205,4,4,1,205,6,0,1,205,6,1,1,205,6,4,1,205,7,0,1,205,7,1,1,205,7,4,1,205,8,1,2,205,8,3,22,205,11,1,1,205,11,4,1,206,0,1,1,206,2,1,7,206,3,1,1,206,6,1,1,206,7,1,2,206,8,1,2,206,8,3,8,206,10,1,1,206,11,1,1,207,0,1,2,207,0,4,2,207,0,6,1,207,2,1,2,207,3,1,2,207,3,6,1,207,4,1,2,207,4,6,2,207,6,1,2,207,6,4,3,207,6,6,1,207,7,0,3,207,7,1,1,207,7,6,1,207,8,1,4,207,8,3,7,207,8,4,3,207,8,6,1,207,9,6,1,207,11,1,5,208,3,0,1,208,6,4,1,208,7,4,1,208,11,4,1,209,8,4,1,209,9,6,1,210,0,2,1,210,1,2,1,210,4,2,1,210,6,4,1,210,7,2,1,210,7,4,3,211,0,2,2,211,0,4,2,211,1,4,2,211,2,2,1,211,2,4,1,211,2,9,2,211,4,2,3,211,6,2,1,211,6,9,2,211,7,2,4,211,7,6,1,211,7,9,2,211,8,2,2,211,8,4,1,211,9,2,1,211,11,2,2,212,4,2,1,212,4,8,1,212,7,2,3,212,7,4,1,212,7,5,1,212,8,2,3,212,11,2,7,213,0,2,3,213,2,2,4,213,3,2,3,213,4,2,3,213,6,2,2,213,8,2,2,213,9,2,1,213,11,2,6,214,0,2,2,214,1,12,1,214,2,2,2,214,2,9,1,214,3,0,1,214,3,2,2,214,4,2,4,214,4,9,1,214,6,2,4,214,6,9,1,214,7,2,1,214,8,2,3,214,8,4,1,214,8,9,1,214,11,2,3,214,11,4,1,215,0,2,1,215,1,2,1,215,2,2,1,215,3,2,2,215,4,2,1,215,4,7,1,215,6,2,1,215,7,2,3,215,8,2,1,215,11,2,1,216,0,2,2,216,2,2,1,216,3,2,1,216,6,2,2,216,6,4,3,216,7,2,3,216,8,2,1,216,8,4,6,216,11,2,1,217,0,2,1,217,3,2,1,217,6,2,1,217,7,2,1,217,8,2,1,217,9,2,1,217,11,2,1,218,0,2,1,218,1,2,1,218,2,2,2,218,3,2,1,218,4,2,5,218,6,2,1,218,7,2,5,218,8,2,5,218,8,3,1,218,9,2,3,218,10,2,1,218,11,2,3,219,0,2,1,219,1,2,2,219,2,2,14,219,3,2,2,219,4,0,1,219,6,2,1,219,7,2,1,219,8,2,1,219,9,2,2,219,10,2,1,219,11,2,4,220,0,2,3,220,3,2,3,220,4,2,3,220,7,2,3,220,8,2,3,220,9,2,1,220,10,2,1,220,11,2,6,221,0,2,3,221,0,5,1,221,2,2,1,221,3,2,3,221,3,5,1,221,4,2,2,221,4,5,2,221,6,4,1,221,7,2,2,221,7,4,2,221,7,5,1,221,8,2,1,221,8,5,2,221,9,2,1,221,9,4,1,221,10,2,4,221,10,5,1,221,11,2,2,222,0,0,2,222,0,2,1,222,2,6,1,222,3,0,1,222,3,2,1,222,4,4,1,222,6,2,2,222,7,0,1,222,7,2,4,222,7,4,1,222,8,7,1,222,9,2,2,222,10,2,1,222,11,2,3,223,0,2,2,223,0,4,1,223,3,2,2,223,4,2,2,223,6,2,3,223,6,6,1,223,7,2,5,223,7,7,1,223,8,2,3,223,10,2,1,223,11,2,4,224,0,2,4,224,6,2,1,224,7,2,4,224,8,2,2,224,9,2,3,224,11,2,2,225,0,2,10,225,7,2,8,225,8,2,8,225,9,2,3,225,11,2,1,226,0,2,10,226,0,4,1,226,3,2,1,226,4,2,1,226,6,2,1,226,7,2,11,226,8,0,1,226,8,2,8,226,9,2,5,226,10,2,1,227,0,2,5,227,3,2,4,227,4,2,5,227,4,5,1,227,6,2,4,227,7,2,5,227,8,2,6,227,10,2,5,227,11,2,4,228,0,2,10,228,2,2,3,228,3,2,5,228,4,2,8,228,4,5,1,228,6,2,9,228,7,2,4,228,7,4,1,228,7,5,1,228,8,2,7,228,8,4,1,228,8,6,1,228,9,2,3,228,10,2,4,228,11,2,8,229,0,0,2,229,0,2,8,229,0,5,2,229,0,7,1,229,1,2,4,229,2,0,1,229,2,2,10,229,2,5,2,229,4,2,12,229,4,5,2,229,4,7,1,229,6,0,2,229,6,2,5,229,6,5,1,229,7,0,1,229,7,2,13,229,7,5,1,229,8,2,6,229,9,2,1,229,10,0,1,229,10,2,8,229,10,5,1,229,11,2,6,230,0,0,3,230,0,2,8,230,0,4,1,230,0,5,1,230,1,2,6,230,1,4,1,230,2,2,5,230,3,2,6,230,3,4,1,230,4,2,5,230,4,4,1,230,6,2,2,230,7,2,8,230,8,2,9,230,9,2,2,230,10,2,6,230,11,2,4,231,0,2,8,231,1,2,2,231,2,2,2,231,3,2,7,231,3,4,1,231,4,2,3,231,6,2,5,231,6,5,1,231,7,2,5,231,8,2,7,231,9,2,3,231,10,2,4,231,11,2,5,232,0,2,6,232,1,2,6,232,2,2,9,232,3,2,10,232,4,2,5,232,6,2,4,232,7,2,3,232,8,2,6,232,9,2,3,232,10,2,3,232,11,2,4,232,11,4,1,233,0,2,3,233,3,2,2,233,4,2,2,233,6,2,3,233,7,2,3,233,8,2,9,233,9,2,2,233,10,2,1,233,11,2,2,234,2,2,1,234,3,2,7,234,4,2,3,234,6,2,6,234,7,2,1,234,8,2,12,234,9,2,5,234,10,2,4,234,11,2,5,235,0,2,3,235,2,2,16,235,3,2,7,235,4,0,3,235,4,2,3,235,6,2,9,235,7,2,2,235,8,2,11,235,9,2,8,235,10,2,5,235,11,2,8,236,0,2,9,236,0,5,1,236,1,2,3,236,2,2,7,236,2,5,2,236,3,2,10,236,3,5,2,236,4,0,2,236,4,2,6,236,4,5,1,236,6,2,5,236,6,5,1,236,7,2,5,236,8,2,6,236,9,2,2,236,10,2,2,236,10,5,1,236,11,2,5,237,0,2,7,237,1,2,5,237,2,2,5,237,3,2,5,237,4,2,2,237,6,2,6,237,8,2,5,237,9,2,2,237,10,2,5,237,11,2,4,238,0,0,1,238,0,2,3,238,0,5,1,238,1,2,3,238,2,2,4,238,2,5,1,238,3,0,1,238,3,2,1,238,3,5,1,238,4,2,2,238,6,2,2,238,8,2,3,238,9,2,3,238,10,2,2,238,11,2,5,239,0,2,4,239,1,2,4,239,2,2,5,239,3,2,3,239,4,2,3,239,6,2,3,239,7,2,5,239,8,2,1,239,11,2,1,240,0,2,2,240,2,2,1,240,3,2,1,240,4,2,4,240,6,2,2,240,6,5,2,240,7,2,2,240,7,7,1,240,9,2,2,241,0,2,5,241,1,2,3,241,3,2,3,241,4,2,3,241,7,2,1,241,8,2,4,241,9,4,1,241,10,2,3,241,11,2,2,242,0,2,4,242,0,5,1,242,1,2,3,242,1,5,1,242,2,2,3,242,3,2,5,242,3,5,1,242,4,2,2,242,6,2,2,242,7,2,6,242,8,2,1,242,9,2,2,242,10,2,3,242,11,2,4,243,0,2,1,243,0,3,2,243,2,2,1,243,2,3,2,243,3,2,1,243,3,3,2,243,4,2,2,243,6,2,2,243,6,3,4,243,7,0,1,243,7,2,3,243,7,3,2,243,7,5,1,243,8,2,1,243,8,3,1,243,9,2,1,243,10,0,1,243,10,2,4,243,10,3,4,243,11,2,1,243,11,3,4,244,0,2,1,244,0,3,3,244,2,3,4,244,3,3,4,244,4,0,1,244,4,3,3,244,4,4,1,244,4,5,6,244,6,2,1,244,6,3,5,244,7,3,5,244,8,3,2,244,10,3,7,244,11,3,1,245,0,3,3,245,1,3,1,245,2,3,1,245,3,3,2,245,4,3,4,245,6,3,2,245,7,3,2,245,8,3,2,245,8,7,1,245,10,3,3,245,10,8,1,245,11,3,3,246,0,3,6,246,0,5,1,246,0,7,1,246,1,3,3,246,2,0,1,246,2,3,4,246,2,5,1,246,3,3,4,246,4,3,4,246,6,3,2,246,6,4,1,246,7,3,1,246,8,3,2,246,10,3,2,246,11,3,2,247,0,6,1,247,1,3,1,247,4,3,2,247,6,3,2,247,6,5,1,247,7,3,1,247,8,3,3,247,10,3,4,248,0,3,3,248,7,3,2,248,8,3,3,248,10,3,4,248,11,3,2,249,0,3,2,249,0,4,2,249,1,4,3,249,2,4,2,249,3,4,2,249,4,3,1,249,4,4,3,249,6,4,2,249,7,0,2,249,7,3,2,249,7,4,2,249,8,3,2,249,8,4,2,249,9,4,2,249,10,3,3,249,10,4,2,249,10,5,1,249,11,3,1,249,11,4,1,250,0,0,1,250,0,3,2,250,1,0,1,250,1,3,3,250,2,3,1,250,2,4,1,250,3,3,2,250,4,0,5,250,4,3,2,250,6,0,2,250,6,3,11,250,6,11,1,250,7,0,2,250,7,3,2,250,7,7,1,250,8,0,2,250,8,3,1,250,8,4,1,250,10,0,2,250,10,3,1,250,11,0,1,251,0,3,2,251,0,4,1,251,1,3,3,251,1,4,3,251,2,3,1,251,3,3,1,251,4,3,4,251,6,3,2,251,7,3,1,251,8,3,1,251,8,4,2,251,10,3,2,252,0,0,2,252,2,3,2,252,3,3,4,252,4,3,3,252,6,3,3,252,7,3,1,252,8,3,3,252,10,3,1,253,0,0,1,253,0,3,4,253,2,3,2,253,3,3,2,253,6,0,3,253,6,3,2,253,9,3,1,253,10,3,4,253,11,3,4,254,4,3,2,254,6,3,1,254,6,5,1,254,10,3,1,255,1,3,2,255,3,3,2,255,8,3,2,256,2,6,1,256,4,0,1,256,4,3,1,256,6,3,1,256,7,3,1,256,9,3,1,258,0,0,1,258,2,0,1,258,6,0,1,258,9,4,1,258,10,4,1,259,6,0,3,259,6,14,1,261,7,3,1,263,0,4,2,263,1,4,1,263,2,4,2,263,3,4,2,263,4,0,2,263,4,4,2,263,6,4,3,263,7,4,2,263,8,4,2,263,9,4,1,263,10,4,2,264,2,15,1,265,6,0,2,265,11,4,10,265,12,4,2,266,4,4,1,266,7,6,1,267,0,3,1,267,4,3,1,267,7,3,1,268,0,3,2,268,1,3,1,268,2,3,3,268,4,2,1,268,4,3,2,268,8,3,1,269,0,3,2,269,1,3,2,269,2,3,2,269,4,3,1,269,7,3,3,269,8,3,3,269,9,3,1,269,10,3,2,270,0,0,1,270,0,3,3,270,0,4,1,270,1,4,1,270,2,0,1,270,2,3,3,270,2,4,1,270,4,3,1,270,7,3,2,270,8,3,1,270,9,3,1,270,10,3,2,271,2,3,2,271,2,4,2,271,3,4,1,271,4,3,2,271,4,4,1,271,6,0,1,271,6,4,1,271,7,3,1,271,8,4,1,271,9,4,2,271,10,3,1,271,10,4,4,272,0,3,1,272,2,3,3,272,4,3,3,272,6,0,1,272,6,4,1,272,7,3,2,272,10,3,3,273,2,3,1,273,3,3,1,273,4,3,4,273,6,4,4,273,7,3,3,273,8,0,1,273,8,4,1,273,10,3,2,274,2,3,1,274,4,0,1,274,7,0,1,274,7,3,2,274,8,3,1,275,2,3,8,275,4,3,1,275,7,3,2,275,8,3,1,275,8,4,1,275,10,3,1,276,2,3,2,276,4,3,8,276,7,3,4,276,8,3,3,276,10,3,2,277,2,3,3,277,2,4,2,277,4,3,2,277,4,4,2,277,7,3,1,277,7,4,1,277,8,3,3,277,8,4,4,277,10,3,1,278,0,0,1,278,2,0,1,278,2,3,4,278,4,0,2,278,4,3,1,278,8,0,1,278,8,3,4,278,10,0,3,278,10,3,4,279,2,3,1,279,4,3,2,279,7,3,3,279,8,3,1,279,10,0,1,280,0,3,2,280,0,4,1,280,2,3,3,280,4,0,1,280,4,3,3,280,4,4,1,280,6,3,1,280,7,3,2,280,8,3,3,280,10,0,1,280,10,3,1,281,0,3,4,281,2,3,3,281,6,3,4,281,8,3,1,282,0,4,2,282,2,3,1,282,2,4,1,282,4,3,1,282,4,4,1,282,6,3,1,282,7,3,1,282,7,4,1,282,8,3,3,282,8,4,1,282,10,3,2,282,10,4,4,283,0,3,1,283,2,3,1,283,4,3,2,283,7,3,1,283,8,3,1,283,10,3,2,284,0,3,2,284,0,4,8,284,0,6,1,284,2,0,1,284,2,3,1,284,4,3,1,284,6,0,1,284,6,3,2,284,7,4,2,285,0,3,1,285,0,4,1,285,2,3,2,285,3,3,3,285,4,3,2,285,7,3,1,285,8,3,3,285,10,3,2,286,0,3,1,286,4,3,2,287,0,3,3,287,2,3,1,287,3,3,1,287,4,3,1,287,6,3,1,287,7,3,2,287,8,3,5,287,9,3,1,287,10,3,4,288,0,3,4,288,2,3,1,288,3,3,3,288,6,3,3,288,7,3,3,288,8,3,1,288,8,4,1,288,10,3,1,289,0,3,1,289,0,4,6,289,1,4,1,289,2,4,1,289,3,3,1,289,6,0,1,289,6,3,3,289,6,4,1,289,7,0,1,289,7,3,2,289,8,3,1,289,10,4,1,290,0,3,2,290,3,3,3,290,6,3,2,290,7,3,2,290,8,3,3,291,0,3,2,291,0,4,3,291,2,0,1,291,2,3,2,291,2,4,2,291,3,3,2,291,3,4,2,291,4,3,3,291,4,4,1,291,6,3,1,291,6,4,1,291,7,3,1,291,7,4,1,291,8,3,2,291,8,4,1,292,0,3,1,292,3,3,1,292,4,3,1,292,6,0,3,292,8,3,1,292,10,3,1,293,0,3,2,293,0,4,1,293,2,4,1,293,3,3,1,293,4,3,1,293,4,9,1,293,6,3,2,293,7,3,1,293,8,3,2,293,9,4,1,294,0,3,2,294,3,3,1,294,4,0,1,294,4,3,2,294,6,3,2,294,7,0,2,294,7,3,1,294,7,6,1,294,8,3,1,295,0,3,3,295,0,4,1,295,4,0,1,295,4,3,1,295,6,3,1,295,6,4,1,296,0,3,2,296,2,4,1,296,3,3,2,296,6,3,1,296,7,3,2,296,8,3,2,297,0,3,2,297,3,3,2,297,7,3,2,297,8,3,2,298,0,3,2,298,3,3,2,298,6,3,1,298,7,3,1,298,8,3,2,298,11,3,2,299,0,3,4,299,2,4,1,299,2,6,1,299,3,3,1,299,4,3,2,299,6,3,2,299,7,0,1,299,7,3,3,299,8,3,1,299,11,3,1,300,4,3,2,300,6,0,1,300,6,3,4,300,7,3,2,300,8,3,2,300,11,3,2,301,0,3,1,301,4,3,1,301,6,3,1,301,8,3,1,301,11,3,3,302,0,3,2,302,0,4,2,302,2,4,1,302,3,3,1,302,3,4,1,302,4,0,1,302,4,3,2,302,6,3,3,302,11,3,1,302,11,4,1,303,0,3,2,303,3,3,2,303,4,3,1,303,7,0,2,303,7,3,1,303,11,3,2,304,0,3,2,304,3,3,1,304,4,3,2,304,7,3,2,304,11,3,2,305,0,3,1,305,3,3,2,305,4,0,4,305,4,3,1,305,6,3,1,305,7,3,2,305,8,3,3,305,11,3,2,306,0,0,2,306,0,3,1,306,0,4,1,306,1,3,1,306,2,4,1,306,3,3,1,306,3,4,2,306,4,0,1,306,4,3,2,306,6,4,1,306,7,3,2,306,8,3,3,306,11,3,1,306,11,4,1,307,0,0,1,307,1,3,3,307,2,0,1,307,2,6,1,307,3,0,2,307,6,3,4,307,7,6,1,307,11,3,2,308,0,3,3,308,1,3,2,308,4,3,2,308,7,3,3,308,10,3,2,309,0,4,1,309,1,3,1,309,1,4,1,309,2,4,1,309,3,3,1,309,3,4,1,309,6,3,1,309,6,4,1,309,7,4,2,309,8,4,2,309,10,4,1,309,11,0,1,309,11,1,1,309,11,3,1,310,0,3,3,310,3,3,4,310,5,4,2,310,6,0,1,310,6,3,2,310,6,4,1,310,7,3,3,310,7,4,1,310,8,3,1,310,8,4,2,310,9,4,2,310,10,3,3,310,11,0,2,310,11,3,1,310,11,4,2,310,12,4,2,311,0,3,2,311,3,3,3,311,6,3,2,311,7,3,2,311,10,3,2,311,11,3,2,312,0,3,2,312,3,3,4,312,6,3,2,312,7,3,2,312,10,3,4,312,11,3,2,313,1,3,1,313,2,6,1,313,3,3,2,313,3,4,2,313,3,6,1,313,5,4,5,313,6,3,1,313,7,3,1,313,7,6,2,313,8,0,1,313,8,3,2,313,9,4,1,313,10,3,1,313,10,4,1,313,11,3,1,313,12,3,1,313,12,4,5,314,0,3,3,314,1,3,3,314,2,3,1,314,2,6,2,314,12,3,4,315,0,3,1,315,2,0,1,315,2,3,1,315,3,3,2,315,6,3,2,315,7,3,1,315,8,3,2,315,10,4,1,315,11,3,2,315,12,3,3,316,0,0,1,316,0,3,4,316,0,4,1,316,1,3,1,316,1,4,2,316,2,3,2,316,2,4,2,316,3,3,2,316,3,4,2,316,5,11,1,316,6,3,1,316,10,3,1,316,11,3,1,316,12,3,1,317,0,3,1,317,0,4,1,317,1,3,2,317,2,3,2,317,3,3,3,317,6,3,1,317,7,3,1,317,8,3,2,317,9,3,1,317,10,3,2,317,11,3,1,318,0,3,2,318,1,3,3,318,2,3,2,318,3,3,1,318,6,3,2,318,7,3,3,318,8,3,1,318,10,3,1,318,11,3,3,319,0,0,6,319,0,3,1,319,0,4,1,319,1,0,6,319,1,3,1,319,2,0,6,319,2,3,2,319,2,4,1,319,3,0,5,319,3,3,2,319,5,0,7,319,5,4,4,319,6,0,9,319,6,3,3,319,7,3,2,319,7,4,3,319,8,3,2,319,8,4,4,319,9,4,2,319,10,3,2,319,10,4,4,319,11,0,6,319,11,1,1,319,11,3,2,319,11,4,4,319,12,0,6,319,12,4,5,320,0,4,1,320,11,4,1,321,0,0,1,321,2,3,1,321,3,4,1,321,6,4,1,321,7,0,2,321,8,4,2,321,9,0,1,321,12,3,5,322,0,4,1,322,1,3,1,322,2,4,2,322,3,4,2,322,6,3,1,322,6,4,1,322,8,4,1,322,9,4,2,322,10,3,1,322,10,4,1,322,11,3,1,323,0,4,1,323,1,4,1,323,2,4,3,323,3,4,2,323,3,7,1,323,5,3,3,323,5,4,1,323,7,3,1,323,8,4,2,323,9,3,2,323,9,4,1,323,10,4,1,323,11,3,1,323,12,3,4,323,12,4,1,324,0,0,1,324,3,0,1,324,5,3,2,324,5,4,3,324,6,4,1,324,7,3,1,324,11,3,1,326,1,4,3,326,2,4,1,326,3,3,1,326,6,4,2,326,7,4,1,326,8,3,1,326,8,4,3,326,9,4,1,326,11,0,1,326,11,4,3,326,12,0,2,326,12,4,1,327,0,3,1,327,3,4,2,327,5,3,1,327,6,3,1,327,6,4,1,327,8,4,3,327,10,4,1,327,11,4,2]};
+let LD_SORT={k:'n',dir:-1}, LD_CTX=null;
+let LD_BASE=new Date(LEAD_DATA.base+'T00:00:00');
+function ldOff(d){return Math.round((new Date(d+'T00:00:00')-LD_BASE)/864e5);}
+function ldDate(o){const d=new Date(LD_BASE.getTime()+o*864e5);return `${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}`;}
+function ldLong(d){const [y,m,dd]=d.split('-');return `${+dd} ${MON[+m-1]} ${y}`;}
+function ldShareCell(n,tot,c){const p=tot>0?n/tot*100:0;return `<td><span class="ach" style="--w:${Math.min(100,p)}%;--c:${c||'#60a5fa'}"><i></i>${p>=10?Math.round(p):p.toFixed(1)}%</span></td>`;}
+const ldBarLabels={id:'ldBarLabels',afterDatasetsDraw(chart,args,o){const ctx=chart.ctx,hz=chart.options.indexAxis==='y',two=chart.data.datasets.length>1;
+  ctx.save();ctx.font=`600 ${two?10:11.5}px Inter,sans-serif`;ctx.fillStyle='#e2e8f0';
+  chart.data.datasets.forEach((ds,di)=>{const meta=chart.getDatasetMeta(di);if(meta.hidden)return;
+    meta.data.forEach((bar,i)=>{const v=ds.data[i];if(v==null||v===0)return;
+      let t=Number.isInteger(v)?fmt(v):fmt1(v); if(o&&o.pctOf>0){const pc=v/o.pctOf*100;t+=`  ·  ${pc<0.5?'<1':Math.round(pc)}%`;}
+      if(hz){ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(t,bar.x+7,bar.y);}
+      else{ctx.textAlign='center';ctx.textBaseline='bottom';ctx.fillText(t,bar.x,bar.y-5);}});});
+  ctx.restore();}};
+// ---- live data: the Receipts tab of the lead-distribution Google Sheet (built-in copy above is the fallback) ----
+const LEAD_SHEET_ID='17kZEmkgLkfVdzLTmaPa6rEXyw8urCQdjDVaKBtTKy-8', LEAD_SHEET_TAB='Receipts';
+const LEAD_TL_ORDER=['Ahsan Sohail','Fizza Hussain','Usman Gul','Usman Khalid','Sufyaan Fareed'];
+let LD_SRC='Google Sheet · not synced yet — showing built-in copy', LD_LOADING=false, LD_LAST=0;
+function ldGviz(id,tab,tq){   // like gvizLoad, with an optional query so only Team Ahsan's rows are downloaded
+  return new Promise((resolve,reject)=>{
+    const cb='ldCb_'+Math.random().toString(36).slice(2)+Date.now(); let done=false;
+    const timer=setTimeout(()=>{if(done)return;done=true;cleanup();reject(new Error('Could not open the sheet — check that Share is set to Anyone with the link → Viewer'));},40000);
+    function cleanup(){clearTimeout(timer);try{delete window[cb];}catch(e){window[cb]=undefined;}if(sc.parentNode)sc.parentNode.removeChild(sc);}
+    window[cb]=j=>{if(done)return;done=true;cleanup();resolve(j);};
+    let url=`https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:json;responseHandler:${cb}&headers=1&sheet=${encodeURIComponent(tab)}`; if(tq)url+='&tq='+encodeURIComponent(tq);
+    const sc=document.createElement('script'); sc.src=url;
+    sc.onerror=()=>{if(done)return;done=true;cleanup();reject(new Error('Sheet failed to load — check the link or sharing settings'));};
+    document.body.appendChild(sc);
+  });
+}
+function parseLeadSheet(json){
+  if(json.status==='error')throw new Error((json.errors&&json.errors[0]&&(json.errors[0].detailed_message||json.errors[0].message))||'Sheet error');
+  let rows=json.table.rows||[], headers=(json.table.cols||[]).map(c=>c.label||'');
+  if(headers.every(h=>!h)&&rows.length){headers=(rows[0].c||[]).map(cText);rows=rows.slice(1);}
+  const H=headers.map(norm), col=f=>H.findIndex(f);
+  const iD=col(h=>h.includes('receiptdate')||h==='date'), iK=col(h=>h.includes('leadid')), iS=col(h=>h==='source'), iA=col(h=>h.includes('salesperson')), iT=col(h=>h==='currenttl'||h==='tl'||h==='teamlead'), iST=col(h=>h.includes('seniortl'));
+  if(iD<0||iS<0||iA<0||iT<0)throw new Error('Receipts headings not found (need Receipt date, Source, Current salesperson, Current TL)');
+  const seen=new Set(), list=[];
+  rows.forEach((r,idx)=>{const c=r.c||[], d=cDate(c[iD]), a=cText(c[iA]).trim(), t=cText(c[iT]).trim(), so=cText(c[iS]).trim()||'Unknown'; if(!d||!a)return;
+    if(iST>=0){ if(cText(c[iST]).trim()!=='Ahsan Sohail'&&t!=='Sufyaan Fareed')return; }          // Team Ahsan = Senior TL Ahsan Sohail + Sufyaan Fareed's team
+    else if(!LEAD_TL_ORDER.includes(t))return;
+    list.push({d,a,t,so,k:iK>=0?cText(c[iK]).trim():'',i:idx});});
+  if(!list.length)throw new Error('No Team Ahsan rows found in the Receipts tab');
+  list.sort((x,y)=>x.d<y.d?-1:x.d>y.d?1:x.i-y.i);
+  const keep=list.filter(r=>{if(!r.k)return true;if(seen.has(r.k))return false;seen.add(r.k);return true;});   // a lead counts once per month (same Lead ID · Month key)
+  const first=keep[0].d, last=keep[keep.length-1].d, base=first.slice(0,4)+'-01-01', b0=new Date(base+'T00:00:00');
+  const cnt={}, tlOf={}; keep.forEach(r=>{cnt[r.a]=(cnt[r.a]||0)+1; tlOf[r.a]=r.t;});
+  const tls=[...LEAD_TL_ORDER.filter(t=>keep.some(r=>r.t===t)),...[...new Set(keep.map(r=>r.t))].filter(t=>!LEAD_TL_ORDER.includes(t)).sort()];
+  const agents=Object.keys(cnt).map(n=>({n,tl:tlOf[n]})).sort((x,y)=>tls.indexOf(x.tl)-tls.indexOf(y.tl)||cnt[y.n]-cnt[x.n]||x.n.localeCompare(y.n));
+  const sc={}; keep.forEach(r=>{sc[r.so]=(sc[r.so]||0)+1;}); const sources=Object.keys(sc).sort((x,y)=>sc[y]-sc[x]||x.localeCompare(y));
+  const aI={}, sI={}; agents.forEach((x,i)=>aI[x.n]=i); sources.forEach((x,i)=>sI[x]=i);
+  const agg={}; keep.forEach(r=>{const k=Math.round((new Date(r.d+'T00:00:00')-b0)/864e5)+'|'+aI[r.a]+'|'+sI[r.so]; agg[k]=(agg[k]||0)+1;});
+  const rec=[]; Object.keys(agg).forEach(k=>{const p=k.split('|');rec.push(+p[0],+p[1],+p[2],agg[k]);});
+  return {live:true,asOf:'',file:'Lead distribution Google Sheet · Receipts tab',base,first:first.slice(0,8)+'01',last,tls,agents,sources,rec,n:keep.length};
+}
+async function loadLeads(manual){
+  if(LD_LOADING)return; LD_LOADING=true; LD_SRC='Syncing with Google Sheet…'; if($('ldSync'))$('ldSync').textContent=LD_SRC;
+  const tries=[()=>ldGviz(LEAD_SHEET_ID,LEAD_SHEET_TAB,"select A,B,C,D,E,F where F='Ahsan Sohail' or E='Sufyaan Fareed'"),()=>ldGviz(LEAD_SHEET_ID,LEAD_SHEET_TAB,''),()=>scriptSheetLoad(LEAD_SHEET_ID,LEAD_SHEET_TAB)];
+  let ok=false, err='';
+  for(const t of tries){ try{ const d=parseLeadSheet(await t()); const now=new Date(); d.asOf=`${now.getDate()} ${MON[now.getMonth()]} ${now.getFullYear()}, ${hm(now)} (synced)`;
+      LEAD_DATA=d; LD_BASE=new Date(d.base+'T00:00:00'); LD_SRC=`Google Sheet · synced ${hm(now)} · ${fmt(d.n)} leads`; ok=true; break; }catch(e){ err=err||e.message; } }
+  if(!ok) LD_SRC=`Google Sheet · ⚠ ${err} — showing ${LEAD_DATA.live?'the last synced data':'the built-in copy'}`;
+  LD_LAST=Date.now(); LD_LOADING=false;
+  if(ok){ const st=$('ldTL'), ss=$('ldSource'), tv=st.value, sv=ss.options[ss.selectedIndex]?ss.options[ss.selectedIndex].text:''; st.length=1; ss.length=1; renderLeads();   // lists are rebuilt from the sheet; keep the current choices
+    st.value=tv; if(st.value!==tv)st.value=''; const so=[...ss.options].find(o=>o.text===sv&&o.value!==''); ss.value=so?so.value:''; }
+  renderLeads();
+}
+$('ldRefresh').onclick=()=>loadLeads(true);
+function ldDefault(){const last=LEAD_DATA.last;return {from:last.slice(0,8)+'01',to:last};}
 function renderLeads(){
   const can=canTab('leads'); $('tabLeads').style.display=can?'':'none';
   if(!can){ if($('page-leads').classList.contains('active')){document.querySelector('.tab[data-page="agent"]').click();} return; }
   const D=LEAD_DATA, esc=v=>String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
-  const all=D.rows.map(r=>Object.assign({},r,{gap:r.act-r.exp,pct:r.exp>0?r.act/r.exp*100:null}));
-  const tls=[...new Set(all.map(r=>r.tl))].sort((a,b)=>a.localeCompare(b));
-  const sel=$('ldTL'); if(sel.options.length<=1){tls.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);});}
-  sel.value=LD_TL; if(sel.value!==LD_TL){LD_TL='';sel.value='';}
-  $('ldMonth').textContent=D.month;
-  $('ldAsOf').textContent=D.refreshed;
-  $('ldSrc').textContent='Paid Lead Distribution Control (Excel) · pool: '+[...new Set(all.map(r=>r.pool))].join(', ');
-  $('ldTeamInfo').textContent=`${tls.length} team leads · ${all.length} agents · ${all.filter(r=>r.elig).length} eligible today`;
-  // TL table (always the whole team)
-  const sumOf=list=>{const o={n:list.length,el:list.filter(r=>r.elig).length,ed:0,act:0,exp:0,under:list.filter(r=>r.status==='Under-allocated').length};list.forEach(r=>{o.ed+=r.ed||0;o.act+=r.act;o.exp+=r.exp;});o.gap=o.act-o.exp;return o;};
-  const tlRows=tls.map(t=>Object.assign({name:t},sumOf(all.filter(r=>r.tl===t))));
-  const tlTr=(r,foot)=>`<td>${foot?esc(r.name):'<b>'+esc(r.name)+'</b>'}</td><td class="r">${r.n}</td><td class="r">${r.el} / ${r.n}</td><td class="r">${fmt(r.ed)}</td><td class="r sep">${fmt(r.act)}</td><td class="r">${fmt1(r.exp)}</td>${ldGapCell(r.gap)}${ldPctCell(r.act,r.exp)}<td class="r">${r.under}</td>`;
-  $('ldTLBody').innerHTML=tlRows.map(r=>`<tr class="clickable ${LD_TL===r.name?'sel':''}" data-tl="${esc(r.name)}">${tlTr(r)}</tr>`).join('');
-  const T=Object.assign({name:'TEAM AHSAN'},sumOf(all));
-  $('ldTLFoot').innerHTML=`<tr>${tlTr(T,true).replace(/class="r (pos|neg|zero)"/,'class="r"').replace(/<td class="sep"><span class="ach"[^>]*><i><\/i>/,'<td class="sep">').replace('</span></td>','</td>')}</tr>`;
-  $('ldTLCount').textContent=`${tlRows.length} team leads`;
-  // filters
-  const fs=$('ldStatus').value, fe=$('ldElig').value;
-  let list=all.filter(r=>(!LD_TL||r.tl===LD_TL)&&(!fs||r.status===fs)&&(fe===''||String(+r.elig)===fe));
-  const S=sumOf(list);
-  // cards (current selection)
+  const A=D.agents, S=D.sources, TLS=D.tls;
+  // ---- filters ----
+  const fF=$('ldFrom'), fT=$('ldTo'), sTL=$('ldTL'), sAg=$('ldAgent'), sSrc=$('ldSource');
+  if(sTL.options.length<=1){TLS.forEach(t=>sTL.add(new Option(t,t)));S.forEach((x,i)=>sSrc.add(new Option(x,String(i))));}
+  fF.min=fT.min=D.first; fF.max=fT.max=D.last;
+  const def=ldDefault(); if(fF.dataset.manual!=='1')fF.value=def.from; if(fT.dataset.manual!=='1')fT.value=def.to;
+  let from=fF.value||def.from, to=fT.value||def.to; if(from>to){const x=from;from=to;to=x;}
+  const tlF=sTL.value;
+  const agKeep=sAg.value; sAg.innerHTML='<option value="">All agents</option>'+A.map((a,i)=>(!tlF||a.tl===tlF)?`<option value="${i}">${esc(a.n)}</option>`:'').join(''); sAg.value=agKeep; if(sAg.value!==agKeep)sAg.value='';
+  const agF=sAg.value===''?-1:+sAg.value, srcF=sSrc.value===''?-1:+sSrc.value;
+  const inScope=i=>(agF<0||i===agF)&&(!tlF||A[i].tl===tlF);
+  const o1=ldOff(from), o2=ldOff(to), rec=D.rec;
+  // ---- aggregate ----
+  const byAg=A.map(()=>0), bySrc=S.map(()=>0), mx=A.map(()=>S.map(()=>0)), byMonth=Array(12).fill(0), dayCnt=A.map(()=>new Set()), lastD=A.map(()=>-1), teamDays=new Set();
+  let total=0, teamTotal=0; const lastY=+D.last.slice(0,4);
+  for(let i=0;i<rec.length;i+=4){const d=rec[i],a=rec[i+1],so=rec[i+2],n=rec[i+3];
+    if(d>=o1&&d<=o2&&(srcF<0||so===srcF)) teamTotal+=n;
+    if(!inScope(a)||(srcF>=0&&so!==srcF))continue;
+    {const dt=new Date(LD_BASE.getTime()+d*864e5); if(dt.getFullYear()===lastY)byMonth[dt.getMonth()]+=n;}
+    if(d<o1||d>o2)continue;
+    byAg[a]+=n; bySrc[so]+=n; mx[a][so]+=n; total+=n; dayCnt[a].add(d); teamDays.add(d); if(d>lastD[a])lastD[a]=d;}
+  const agIdx=A.map((_,i)=>i).filter(inScope);
+  const topSrcOf=row=>{let b=-1;row.forEach((n,i)=>{if(n>0&&(b<0||n>row[b]))b=i;});return b;};
+  // ---- one row per agent (Receipts sheet only) ----
+  const rows=agIdx.map(i=>{const t=topSrcOf(mx[i]);return {i,name:A[i].n,tl:A[i].tl,n:byAg[i],share:total?byAg[i]/total*100:0,top:t>=0?S[t]:'',topN:t>=0?mx[i][t]:0,nsrc:mx[i].filter(v=>v>0).length,days:dayCnt[i].size,perDay:dayCnt[i].size?byAg[i]/dayCnt[i].size:0,last:lastD[i]};});
+  // ---- header ----
+  $('ldPeriod').textContent=`${ldLong(from)} – ${ldLong(to)}`;
+  $('ldScope').textContent=[tlF||'All team leads',agF>=0?A[agF].n:`${agIdx.length} agents`,srcF>=0?S[srcF]:'All sources'].join(' · ');
+  $('ldAsOf').textContent=D.asOf; $('ldSrc').textContent=D.file; $('ldSync').textContent=LD_SRC;
+  document.querySelectorAll('.ld-quick button').forEach(b=>b.classList.toggle('on',b.dataset.q===(fF.dataset.q||'month')&&fT.dataset.manual!=='x'));
+  // ---- cards ----
   const card=(lbl,val,sub,c)=>`<div class="kpi team-kpi" style="--acc:${c}"><div class="lbl">${lbl}</div><div class="big">${val}</div><div class="tg">${sub}</div></div>`;
-  const gc=S.gap<=-0.5?'#f87171':S.gap>=0.5?'#fbbf24':'#4ade80';
-  $('ldKpis').innerHTML=card('Leads received',fmt(S.act),`Paid leads · ${esc(D.month)} to date`,'#60a5fa')
-    +card('Should have received',fmt1(S.exp),`Fair share for <b>${fmt(S.ed)}</b> eligible days`,'var(--gold)')
-    +card('Difference',(Math.abs(S.gap)<0.05?'':S.gap>0?'+':'−')+fmt1(Math.abs(S.gap)),S.exp>0?`Received <b>${Math.round(S.act/S.exp*100)}%</b> of fair share`:'—',gc)
-    +card('Agents short of fair share',`${S.under}<small>of ${S.n}</small>`,`Eligible today <b>${S.el}</b> of ${S.n}`,S.under?'#f87171':'#4ade80');
-  // chart (same selection, ordered by difference)
-  const ch=[...list].sort((a,b)=>a.gap-b.gap);
-  $('ldChartSub').textContent=`${ch.length} agent${ch.length===1?'':'s'} · paid leads, ${D.month} to date · ordered from most short to most over`;
-  mkChart('chLeads',{type:'bar',data:{labels:ch.map(r=>r.name),datasets:[
-    {label:'Leads received',data:ch.map(r=>r.act),backgroundColor:'#60a5fa',borderRadius:4,maxBarThickness:26},
-    {label:'Should have received',data:ch.map(r=>+r.exp.toFixed(1)),backgroundColor:'#c9a24a',borderRadius:4,maxBarThickness:26}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',align:'end',labels:{boxWidth:10,boxHeight:10,usePointStyle:true,color:'#cbd5e1'}}},
-      scales:{x:{grid:{display:false},border:{display:false},ticks:{autoSkip:false,maxRotation:40,color:'#8896ab'}},y:{grid:{color:'#1e2a40'},border:{display:false},ticks:{precision:0,color:'#8896ab'}}}}});
-  // agents table
-  const k=LD_SORT.k, dir=LD_SORT.dir;
-  list.sort((a,b)=>{let x=a[k],y=b[k];if(typeof x==='boolean'){x=+x;y=+y;}if(typeof x==='string')return dir*x.localeCompare(y)||a.name.localeCompare(b.name);x=x==null?-1e9:x;y=y==null?-1e9:y;return dir*(x-y)||a.name.localeCompare(b.name);});
-  $('ldAgTitle').textContent=LD_TL?`Agents under ${LD_TL} (${list.length})`:`All agents in Team Ahsan (${list.length})`;
-  $('ldAgCount').textContent=`${list.length} agents`;
+  const srcRank=S.map((x,i)=>({i,name:x,n:bySrc[i]})).filter(x=>x.n>0).sort((a,b)=>b.n-a.n);
+  const agRank=[...rows].sort((a,b)=>b.n-a.n), got=rows.filter(r=>r.n>0).length, days=o2-o1+1;
+  const tlRank=TLS.map(t=>({t,n:rows.filter(r=>r.tl===t).reduce((a,r)=>a+r.n,0),c:rows.filter(r=>r.tl===t).length})).filter(x=>x.c).sort((a,b)=>b.n-a.n);
+  const small=t=>t.length>12?' style="font-size:18px"':'';
+  $('ldKpis').innerHTML=card('Paid leads received',fmt(total),(tlF||agF>=0)&&teamTotal>0?`<b>${Math.round(total/teamTotal*100)}%</b> of Team Ahsan's ${fmt(teamTotal)}`:`${days} day${days===1?'':'s'} · about <b>${fmt1(total/days)}</b> a day`,'#60a5fa')
+    +card('Agents',`${got}<small>of ${rows.length}</small>`,got?`Average <b>${fmt1(total/got)}</b> leads per agent`:'No leads in this period','var(--gold)')
+    +card('Top source',srcRank.length?`<span${small(srcRank[0].name)}>${esc(srcRank[0].name)}</span>`:'—',srcRank.length?`<b>${fmt(srcRank[0].n)}</b> leads · ${Math.round(srcRank[0].n/total*100)}% of total`:'—','#a78bfa')
+    +card('Top agent',total?`<span${small(agRank[0].name)}>${esc(agRank[0].name)}</span>`:'—',total?`<b>${fmt(agRank[0].n)}</b> leads · ${Math.round(agRank[0].n/total*100)}% of total`:'—','#4ade80')
+    +card('Top team lead',total&&tlRank.length?`<span${small(tlRank[0].t)}>${esc(tlRank[0].t)}</span>`:'—',total&&tlRank.length?`<b>${fmt(tlRank[0].n)}</b> leads · ${Math.round(tlRank[0].n/total*100)}% of total`:'—','#fbbf24');
+  // ---- key findings ----
+  const F=[]; const who=agF>=0?A[agF].n:(tlF?tlF+"'s team":'Team Ahsan');
+  if(!total) F.push(`No paid leads were received by ${esc(who)} between ${ldLong(from)} and ${ldLong(to)}${srcF>=0?' from '+esc(S[srcF]):''}.`);
+  else{
+    F.push(`<b>${esc(who)}</b> received <b>${fmt(total)}</b> paid leads between ${ldLong(from)} and ${ldLong(to)}${srcF>=0?' from <b>'+esc(S[srcF])+'</b>':` from <b>${srcRank.length}</b> source${srcRank.length===1?'':'s'}`} — about <b>${fmt1(total/days)}</b> a day.`);
+    if(srcF<0&&srcRank.length){const t3=srcRank.slice(0,3);F.push(`Main source${t3.length>1?'s':''}: `+t3.map(x=>`<b>${esc(x.name)}</b> ${fmt(x.n)} (${Math.round(x.n/total*100)}%)`).join(', ')+(srcRank.length>3?`. The other ${srcRank.length-3} source${srcRank.length-3===1?'':'s'} together gave ${fmt(srcRank.slice(3).reduce((a,x)=>a+x.n,0))}.`:'.'));}
+    if(!tlF&&agF<0&&tlRank.length>1) F.push(`By team lead: `+tlRank.map(x=>`${esc(x.t)} <b>${fmt(x.n)}</b> (${Math.round(x.n/total*100)}%, ${x.c} agent${x.c===1?'':'s'})`).join(' · ')+'.');
+    if(agF<0&&agRank.length>1){const hi=agRank[0],lo=agRank[agRank.length-1];F.push(`Most leads: <b>${esc(hi.name)}</b> (${fmt(hi.n)}, ${Math.round(hi.n/total*100)}%). Fewest: <b>${esc(lo.name)}</b> (${fmt(lo.n)}). Average per agent: <b>${fmt1(total/rows.length)}</b>.`);
+      const t3=agRank.slice(0,3).reduce((a,r)=>a+r.n,0); if(agRank.length>4)F.push(`The top 3 agents received <b>${Math.round(t3/total*100)}%</b> of the leads (${agRank.slice(0,3).map(r=>esc(r.name)).join(', ')}).`);
+      const none=agRank.filter(r=>r.n===0); if(none.length)F.push(`No leads in this period: ${none.map(r=>esc(r.name)).join(', ')}.`);}
+  }
+  $('ldFind').innerHTML=F.map(x=>`<li>${x}</li>`).join(''); $('ldFindSub').textContent=`${ldLong(from)} – ${ldLong(to)}`;
+  // ---- charts ----
+  const tick='#8896ab', grid='#1e2a40', leg={position:'top',align:'end',labels:{boxWidth:10,boxHeight:10,usePointStyle:true,color:'#cbd5e1'}};
+  $('ldSrcBox').style.height=Math.max(220,srcRank.length*30+50)+'px';
+  $('ldSrcSub').textContent=`${srcRank.length} source${srcRank.length===1?'':'s'} · ${fmt(total)} leads`;
+  mkChart('chLdSrc',{type:'bar',data:{labels:srcRank.map(x=>x.name),datasets:[{label:'Leads',data:srcRank.map(x=>x.n),backgroundColor:'#c9a24a',borderRadius:4,maxBarThickness:22}]},
+    plugins:[ldBarLabels],options:{indexAxis:'y',layout:{padding:{right:86}},responsive:true,maintainAspectRatio:false,plugins:{ldBarLabels:{pctOf:total},legend:{display:false},tooltip:{callbacks:{label:c=>` ${fmt(c.parsed.x)} leads (${total?Math.round(c.parsed.x/total*100):0}%)`}}},scales:{x:{grid:{color:grid},border:{display:false},ticks:{precision:0,color:tick}},y:{grid:{display:false},border:{display:false},ticks:{color:'#cbd5e1',autoSkip:false}}}}});
+  const tlAgg=TLS.map(t=>({t,n:rows.filter(r=>r.tl===t).reduce((a,r)=>a+r.n,0)})).filter(x=>!tlF||x.t===tlF);
+  mkChart('chLdTl',{type:'bar',data:{labels:tlAgg.map(x=>x.t),datasets:[{label:'Leads',data:tlAgg.map(x=>x.n),backgroundColor:'#60a5fa',borderRadius:4,maxBarThickness:46}]},
+    plugins:[ldBarLabels],options:{layout:{padding:{top:22}},responsive:true,maintainAspectRatio:false,plugins:{ldBarLabels:{pctOf:total},legend:{display:false},tooltip:{callbacks:{label:c=>` ${fmt(c.parsed.y)} leads (${total?Math.round(c.parsed.y/total*100):0}%)`}}},scales:{x:{grid:{display:false},border:{display:false},ticks:{color:'#cbd5e1',autoSkip:false}},y:{grid:{color:grid},border:{display:false},ticks:{precision:0,color:tick}}}}});
+  $('ldAgSub').textContent=`Paid leads each agent received · ${ldLong(from)} – ${ldLong(to)}`;
+  mkChart('chLeads',{type:'bar',data:{labels:agRank.map(r=>r.name),datasets:[{label:'Leads received',data:agRank.map(r=>r.n),backgroundColor:'#60a5fa',borderRadius:4,maxBarThickness:34}]},plugins:[ldBarLabels],options:{layout:{padding:{top:20}},responsive:true,maintainAspectRatio:false,plugins:{ldBarLabels:{pctOf:total},legend:{display:false}},scales:{x:{grid:{display:false},border:{display:false},ticks:{autoSkip:false,maxRotation:40,color:'#cbd5e1'}},y:{grid:{color:grid},border:{display:false},ticks:{precision:0,color:tick}}}}});
+  // donut: share of leads by source (largest 7 shown separately, the rest grouped)
+  const DN_COL=['#c9a24a','#60a5fa','#4ade80','#a78bfa','#fb7185','#2dd4bf','#fb923c'], dnTop=srcRank.slice(0,7), dnRest=srcRank.slice(7);
+  const dn=dnTop.map((x,i)=>({name:x.name,n:x.n,c:DN_COL[i]})); if(dnRest.length)dn.push({name:`Other sources (${dnRest.length})`,n:dnRest.reduce((a,x)=>a+x.n,0),c:'#64748b'});
+  $('ldDnSub').textContent=`${fmt(total)} leads from ${srcRank.length} source${srcRank.length===1?'':'s'} · ${ldLong(from)} – ${ldLong(to)}`;
+  const pcT=n=>{const q=total?n/total*100:0;return (q>0&&q<0.5?'<1':q>=10?Math.round(q):q.toFixed(1))+'%';};
+  $('ldDnLeg').innerHTML=dn.map(x=>`<div class="ld-dn-row"><i style="background:${x.c}"></i><span title="${esc(x.name)}">${esc(x.name)}</span><b>${fmt(x.n)}</b><em>${pcT(x.n)}</em></div>`).join('')||'<div class="ld-dn-row"><span>No leads in this period</span></div>';
+  mkChart('chLdDonut',{type:'doughnut',data:{labels:dn.map(x=>x.name),datasets:[{data:dn.map(x=>x.n),backgroundColor:dn.map(x=>x.c),borderColor:'#151d2e',borderWidth:2,hoverOffset:6}]},
+    plugins:[{id:'ldDonutText',afterDatasetsDraw(ch){const c=ch.ctx,ar=ch.chartArea,cx=(ar.left+ar.right)/2,cy=(ar.top+ar.bottom)/2;c.save();c.textAlign='center';c.textBaseline='middle';
+      c.fillStyle='#fff';c.font='700 30px Inter,sans-serif';c.fillText(fmt(total),cx,cy-8);c.fillStyle='#8896ab';c.font='600 11px Inter,sans-serif';c.fillText('PAID LEADS',cx,cy+18);
+      ch.getDatasetMeta(0).data.forEach((arc,i)=>{const v=dn[i].n;if(!total||v/total<0.05)return;const a=(arc.startAngle+arc.endAngle)/2,r=(arc.innerRadius+arc.outerRadius)/2;c.fillStyle='#0b1120';c.font='700 12px Inter,sans-serif';c.fillText(Math.round(v/total*100)+'%',arc.x+Math.cos(a)*r,arc.y+Math.sin(a)*r);});
+      c.restore();}}],
+    options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${fmt(c.parsed)} leads (${pcT(c.parsed)})`}}}}});
+  const lastM=+D.last.slice(5,7), m1=from.slice(0,4)<String(lastY)?0:+from.slice(5,7)-1, m2=to.slice(0,4)<String(lastY)?-1:+to.slice(5,7)-1;
+  $('ldTrendTitle').textContent='Monthly trend · '+lastY;
+  $('ldTrendSub').textContent=`Paid leads received each month · ${[tlF||'whole team',agF>=0?A[agF].n:'',srcF>=0?S[srcF]:''].filter(Boolean).join(' · ')} · selected months highlighted`;
+  mkChart('chLdTrend',{type:'bar',data:{labels:MON.slice(0,lastM),datasets:[{label:'Leads',data:byMonth.slice(0,lastM),backgroundColor:byMonth.slice(0,lastM).map((_,i)=>i>=m1&&i<=m2?'#c9a24a':'#33415a'),borderRadius:4,maxBarThickness:34}]},
+    plugins:[ldBarLabels],options:{layout:{padding:{top:20}},responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},border:{display:false},ticks:{color:'#cbd5e1'}},y:{grid:{color:grid},border:{display:false},ticks:{precision:0,color:tick}}}}});
+  // ---- team lead table ----
+  const sumRows=list=>{const o={c:list.length,n:0,src:S.map(()=>0),hi:null};list.forEach(r=>{o.n+=r.n;mx[r.i].forEach((v,q)=>o.src[q]+=v);if(r.n>0&&(!o.hi||r.n>o.hi.n))o.hi=r;});const t=topSrcOf(o.src);o.top=t>=0?S[t]:'';o.topN=t>=0?o.src[t]:0;o.nsrc=o.src.filter(v=>v>0).length;return o;};
+  const tlTr=(name,o,foot)=>`<td>${foot?esc(name):'<b>'+esc(name)+'</b>'}</td><td class="r">${o.c}</td><td class="r sep"><b>${fmt(o.n)}</b></td>${foot?'<td>100%</td>':ldShareCell(o.n,total)}<td class="r">${o.c?fmt1(o.n/o.c):'—'}</td><td class="r">${o.nsrc?`<span class="ld-srcbtn" data-src-tl="${foot?'':esc(name)}" title="Show leads by source">${o.nsrc}</span>`:'0'}</td><td class="sep">${o.top?esc(o.top)+` <small>${fmt(o.topN)}</small>`:'—'}</td><td>${o.hi?esc(o.hi.name)+` <small>${fmt(o.hi.n)}</small>`:'—'}</td>`;
+  const tlShow=TLS.filter(t=>rows.some(r=>r.tl===t));
+  $('ldTLBody').innerHTML=tlShow.map(t=>`<tr class="clickable ${tlF===t?'sel':''}" data-tl="${esc(t)}">${tlTr(t,sumRows(rows.filter(r=>r.tl===t)))}</tr>`).join('');
+  $('ldTLFoot').innerHTML=`<tr>${tlTr(tlF?tlF.toUpperCase():(agF>=0?'SELECTED':'TEAM AHSAN'),sumRows(rows),true)}</tr>`;
+  $('ldTLCount').textContent=`${tlShow.length} team lead${tlShow.length===1?'':'s'}`;
+  // ---- agent × source matrix ----
+  const MAXC=8, cols=srcRank.slice(0,MAXC), rest=srcRank.slice(MAXC), mxMax=Math.max(1,...rows.map(r=>Math.max(0,...cols.map(c=>mx[r.i][c.i]))));
+  const heat=n=>n?` style="background:rgba(96,165,250,${(0.08+0.5*n/mxMax).toFixed(2)});color:#e2e8f0"`:' style="color:#33415a"';
+  const restOf=i=>rest.reduce((a,c)=>a+mx[i][c.i],0);
+  $('ldMxHead').innerHTML=`<tr><th style="text-align:left">Agent</th>${cols.map(c=>`<th class="r mxh">${esc(c.name)}</th>`).join('')}${rest.length?`<th class="r mxh">Other sources (${rest.length})</th>`:''}<th class="r sep">Total</th><th style="text-align:left">Share</th></tr>`;
+  let mh='';
+  tlShow.forEach(t=>{const list=rows.filter(r=>r.tl===t).sort((a,b)=>b.n-a.n), o=sumRows(list);
+    mh+=`<tr class="mx-tl"><td>${esc(t)} <small>${list.length} agent${list.length===1?'':'s'}</small></td>${cols.map(c=>`<td class="r">${o.src[c.i]?fmt(o.src[c.i]):'·'}</td>`).join('')}${rest.length?`<td class="r">${fmt(rest.reduce((a,c)=>a+o.src[c.i],0))||'·'}</td>`:''}<td class="r sep">${fmt(o.n)}</td><td>${total?Math.round(o.n/total*100):0}%</td></tr>`;
+    list.forEach(r=>{mh+=`<tr><td style="padding-left:22px">${esc(r.name)}</td>${cols.map(c=>`<td class="r"${heat(mx[r.i][c.i])}>${mx[r.i][c.i]?fmt(mx[r.i][c.i]):'·'}</td>`).join('')}${rest.length?`<td class="r">${restOf(r.i)?fmt(restOf(r.i)):'·'}</td>`:''}<td class="r sep"><b>${fmt(r.n)}</b></td>${ldShareCell(r.n,total)}</tr>`;});});
+  $('ldMxBody').innerHTML=mh||`<tr><td colspan="${cols.length+4}" style="text-align:center;padding:24px">No leads in this period</td></tr>`;
+  $('ldMxFoot').innerHTML=total?`<tr><td>TOTAL</td>${cols.map(c=>`<td class="r">${fmt(c.n)}</td>`).join('')}${rest.length?`<td class="r">${fmt(rest.reduce((a,c)=>a+c.n,0))}</td>`:''}<td class="r sep">${fmt(total)}</td><td>100%</td></tr>`:'';
+  $('ldMxSub').textContent=`How many leads each agent received from each source · ${ldLong(from)} – ${ldLong(to)}${rest.length?' · smaller sources are grouped; see Source detail':''}`;
+  $('ldMxCount').textContent=`${rows.length} agents × ${srcRank.length} sources`;
+  // ---- agent detail ----
+  const k=LD_SORT.k, dir=LD_SORT.dir, list=[...rows];
+  list.sort((a,b)=>{let x=a[k],y=b[k];if(typeof x==='string')return dir*x.localeCompare(y)||a.name.localeCompare(b.name);return dir*(x-y)||a.name.localeCompare(b.name);});
+  $('ldFairSub').textContent=`${ldLong(from)} – ${ldLong(to)} · click a heading to sort`;
+  $('ldAgCount').textContent=`${list.length} agent${list.length===1?'':'s'}`;
   document.querySelectorAll('#ldAgTable thead th[data-k]').forEach(th=>{th.style.cursor='pointer';th.innerHTML=th.textContent.replace(/ [↑↓]$/,'')+(th.dataset.k===k?(dir<0?' ↓':' ↑'):'');});
-  $('ldAgBody').innerHTML=list.length?list.map(a=>`<tr><td><b>${esc(a.name)}</b><small style="display:block;font-size:11px">${a.joined?'Joined '+dShort(a.joined)+' '+a.joined.slice(0,4):''}</small></td><td>${esc(a.tl)}</td>
-    <td style="white-space:normal;min-width:190px;max-width:260px">${a.elig?'<span class="st g">Eligible</span>':'<span class="st r">Ineligible</span>'}<small style="display:block;font-size:11px;line-height:1.35;margin-top:4px">${esc(a.reason)}</small></td>
-    <td class="r">${fmt(a.ed)}${a.ev?`<small style="display:block;font-size:11px">${a.id} ineligible · ${a.ev} evaluated</small>`:''}</td>
-    <td class="r sep"><b>${fmt(a.act)}</b></td><td class="r">${fmt1(a.exp)}</td>${ldGapCell(a.gap)}${ldPctCell(a.act,a.exp)}
-    <td>${ldStTag(a.status)}</td></tr>`).join('')
-    :'<tr><td colspan="9" style="text-align:center;padding:24px">No agents match these filters</td></tr>';
-  const perDay=D.pool.days?D.pool.leads/D.pool.days:0;
-  $('ldNote').innerHTML=`<b>How "should have received" is worked out:</b> paid leads assigned in the ${esc(D.pool.name)} pool this month (<b>${fmt(D.pool.leads)}</b>) × the agent's eligible days ÷ all eligible person-days in the pool (<b>${fmt(D.pool.days)}</b>) — about <b>${perDay.toFixed(2)}</b> leads per eligible day. An agent is ineligible on a day with 50+ overdue leads, or a missing KPI form with 5+ activities.`
-    +(D.held&&D.held.length?`<br><b>Paid leads still held by team leads (not yet given to agents, not counted above):</b> ${D.held.map(h=>esc(h.name)+' '+fmt(h.n)).join(' · ')}.`:'')
-    +`<br>Figures are from ${esc(D.file)}, refreshed ${esc(D.refreshed)}.`;
+  $('ldAgBody').innerHTML=list.map((r,q)=>`<tr><td><b>${esc(r.name)}</b></td><td>${esc(r.tl)}</td><td class="r sep"><b>${fmt(r.n)}</b></td>${ldShareCell(r.n,total)}<td class="sep">${r.top?esc(r.top)+` <small>${fmt(r.topN)}</small>`:'—'}</td><td class="r">${r.nsrc?`<span class="ld-srcbtn" data-src-ag="${r.i}" title="Show leads by source">${r.nsrc}</span>`:'—'}</td><td class="r sep">${r.days||'—'}</td><td class="r">${r.days?fmt1(r.perDay):'—'}</td><td>${r.last>=0?ldLong(ldDate(r.last)):'—'}</td></tr>`).join('');
+  // ---- source detail ----
+  $('ldSrcHead').innerHTML=`<tr><th style="text-align:left">Source</th><th class="r sep">Leads</th><th style="text-align:left">Share</th>${tlShow.map(t=>`<th class="r mxh">${esc(t)}</th>`).join('')}<th style="text-align:left" class="sep">Top agent</th></tr>`;
+  $('ldSrcBody').innerHTML=srcRank.map(x=>{let b=null;rows.forEach(r=>{if(mx[r.i][x.i]>0&&(!b||mx[r.i][x.i]>mx[b.i][x.i]))b=r;});
+    return `<tr><td><b>${esc(x.name)}</b></td><td class="r sep"><b>${fmt(x.n)}</b></td>${ldShareCell(x.n,total,'#c9a24a')}${tlShow.map(t=>{const n=rows.filter(r=>r.tl===t).reduce((a,r)=>a+mx[r.i][x.i],0);return `<td class="r">${n?fmt(n):'·'}</td>`;}).join('')}<td class="sep">${b?esc(b.name)+` <small>${fmt(mx[b.i][x.i])}</small>`:'—'}</td></tr>`;}).join('')
+    ||`<tr><td colspan="${tlShow.length+4}" style="text-align:center;padding:24px">No leads in this period</td></tr>`;
+  $('ldSrcFoot').innerHTML=total?`<tr><td>TOTAL</td><td class="r sep">${fmt(total)}</td><td>100%</td>${tlShow.map(t=>`<td class="r">${fmt(rows.filter(r=>r.tl===t).reduce((a,r)=>a+r.n,0))}</td>`).join('')}<td class="sep"></td></tr>`:'';
+  $('ldSrcCount').textContent=`${srcRank.length} source${srcRank.length===1?'':'s'}`;
+  LD_CTX={rows,mx,S,from,to,srcF,scope:tlF?tlF+"'s team":(agF>=0?A[agF].n:'Team Ahsan')};
+  $('ldNote').innerHTML=`<b>How to read this page.</b> A paid lead is counted under the agent who currently holds it, on the date it was received; the same lead is counted once in a month. `
+    +`Team lead and agent are as they stand today in the sheet. <b>Days with leads</b> is the number of dates on which the agent received at least one lead.<br>All figures on this page come from ${esc(D.file)}${D.live?'':' (built-in copy)'} · ${esc(D.asOf)}. Leads are available from ${ldLong(D.first)} to ${ldLong(D.last)}.`;
 }
-$('ldTL').addEventListener('change',()=>{LD_TL=$('ldTL').value;renderLeads();});
-['ldStatus','ldElig'].forEach(id=>$(id).addEventListener('change',renderLeads));
-$('ldReset').onclick=()=>{LD_TL='';$('ldStatus').value='';$('ldElig').value='';LD_SORT={k:'gap',dir:1};renderLeads();};
+['ldFrom','ldTo'].forEach(id=>$(id).addEventListener('change',()=>{$(id).dataset.manual='1';$('ldFrom').dataset.q='';renderLeads();}));
+$('ldTL').addEventListener('change',()=>{$('ldAgent').value='';renderLeads();});
+['ldAgent','ldSource'].forEach(id=>$(id).addEventListener('change',renderLeads));
+function ldQuick(q){const last=LEAD_DATA.last, y=+last.slice(0,4), m=+last.slice(5,7), f=$('ldFrom'), t=$('ldTo'); let a,b=last;
+  if(q==='month')a=last.slice(0,8)+'01';
+  else if(q==='prev'){const pm=m===1?12:m-1, py=m===1?y-1:y; a=`${py}-${p2(pm)}-01`; b=`${py}-${p2(pm)}-${p2(new Date(py,pm,0).getDate())}`;}
+  else if(q==='q3'||q==='q6'){const d=new Date(y,m-(q==='q6'?6:3),1); a=`${d.getFullYear()}-${p2(d.getMonth()+1)}-01`;}
+  else a=`${y}-01-01`;
+  if(a<LEAD_DATA.first)a=LEAD_DATA.first;
+  f.value=a; t.value=b; f.dataset.manual=t.dataset.manual='1'; f.dataset.q=q; renderLeads();}
+document.querySelectorAll('.ld-quick button').forEach(b=>b.onclick=()=>ldQuick(b.dataset.q));
+$('ldReset').onclick=()=>{['ldFrom','ldTo'].forEach(id=>{$(id).dataset.manual='';});$('ldFrom').dataset.q='';$('ldTL').value='';$('ldAgent').value='';$('ldSource').value='';LD_SORT={k:'n',dir:-1};renderLeads();};
 $('ldPrint').onclick=()=>window.print();
-$('ldTLBody').addEventListener('click',e=>{const tr=e.target.closest('tr[data-tl]');if(!tr)return;LD_TL=LD_TL===tr.dataset.tl?'':tr.dataset.tl;renderLeads();});
-document.querySelectorAll('#ldAgTable thead th[data-k]').forEach(th=>th.onclick=()=>{const k=th.dataset.k;LD_SORT=LD_SORT.k===k?{k,dir:-LD_SORT.dir}:{k,dir:(k==='name'||k==='tl'||k==='status'||k==='gap')?1:-1};renderLeads();});
+// small "leads by source" report for a team lead (click the Sources number), the whole selection (total row) or one agent
+function ldSourcePopup(kind,key){const C=LD_CTX; if(!C)return; const esc=v=>String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+  const list=kind==='ag'?C.rows.filter(r=>r.i===+key):(key?C.rows.filter(r=>r.tl===key):C.rows), name=kind==='ag'?(list[0]?list[0].name:''):(key||C.scope);
+  const src=C.S.map((x,i)=>({name:x,n:list.reduce((a,r)=>a+C.mx[r.i][i],0),ag:list.map(r=>({n:r.name,v:C.mx[r.i][i]})).filter(x=>x.v>0).sort((a,b)=>b.v-a.v)})).filter(x=>x.n>0).sort((a,b)=>b.n-a.n);
+  const tot=src.reduce((a,x)=>a+x.n,0), multi=list.length>1;
+  $('ldPopTitle').textContent=`${name} · ${fmt(tot)} lead${tot===1?'':'s'} from ${src.length} source${src.length===1?'':'s'}`;
+  $('ldPopSub').textContent=`${ldLong(C.from)} – ${ldLong(C.to)}${kind==='ag'&&list[0]?' · Team lead: '+list[0].tl:(multi?' · '+list.length+' agents':'')}${C.srcF>=0?' · Source filter: '+C.S[C.srcF]:''}`;
+  $('ldPopCol').textContent=multi?'Agents who received them':''; 
+  $('ldPopBody').innerHTML=src.map(x=>`<tr><td><b>${esc(x.name)}</b></td><td class="r"><b>${fmt(x.n)}</b></td>${ldShareCell(x.n,tot,'#c9a24a')}<td style="font-size:12px;color:#8896ab">${multi?x.ag.map(a=>esc(a.n)+' <b style="color:#e2e8f0">'+fmt(a.v)+'</b>').join(' · '):''}</td></tr>`).join('')||'<tr><td colspan="4" style="text-align:center;padding:24px">No leads in this period</td></tr>';
+  $('ldPopFoot').innerHTML=tot?`<tr><td>TOTAL</td><td class="r">${fmt(tot)}</td><td>100%</td><td></td></tr>`:'';
+  $('ldPop').style.display='flex';}
+function ldPopHide(){$('ldPop').style.display='none';}
+$('ldPopClose').onclick=ldPopHide;
+$('ldPop').addEventListener('click',e=>{if(e.target===$('ldPop'))ldPopHide();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('ldPop').style.display!=='none')ldPopHide();});
+$('ldTLFoot').addEventListener('click',e=>{const b=e.target.closest('[data-src-tl]');if(b)ldSourcePopup('tl',b.dataset.srcTl);});
+$('ldAgBody').addEventListener('click',e=>{const b=e.target.closest('[data-src-ag]');if(b)ldSourcePopup('ag',b.dataset.srcAg);});
+$('ldTLBody').addEventListener('click',e=>{const sb=e.target.closest('[data-src-tl]');if(sb){ldSourcePopup('tl',sb.dataset.srcTl);return;}const tr=e.target.closest('tr[data-tl]');if(!tr)return;$('ldTL').value=$('ldTL').value===tr.dataset.tl?'':tr.dataset.tl;$('ldAgent').value='';renderLeads();});
+document.querySelectorAll('#ldAgTable thead th[data-k]').forEach(th=>th.onclick=()=>{const k=th.dataset.k;LD_SORT=LD_SORT.k===k?{k,dir:-LD_SORT.dir}:{k,dir:(k==='name'||k==='tl'||k==='top')?1:-1};renderLeads();});
 
 // ---------- MYHUB vs CALLYZER PAGE (admin only) ----------
 // KPI-form Google Sheet (Form_Responses): paste its URL/ID below; blank = built-in data only. Built-in data = Reports Bitrix KPIS 1.xlsx (1–27 Oct 2026).
@@ -2954,7 +3188,7 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
   if(t.dataset.page==='visits'||t.dataset.page==='vdash'){ renderVisits(); loadVisits(false); }
   if(t.dataset.page==='team'){ renderTeam(); if(!KZ_LOADED||Date.now()-KZ_LAST>REFRESH_MIN*60*1000) loadKpi(); if(!SD_LOADED&&parseSheetInput(SD_ID).id) loadSales(); if(!TV_LOADED&&parseSheetInput(TV_ID).id) loadTargetValue(); }
   if(t.dataset.page==='teamkpi'){ renderTeamKpi(); if(!KZ_LOADED||Date.now()-KZ_LAST>REFRESH_MIN*60*1000) loadKpi(); if(!SD_LOADED&&parseSheetInput(SD_ID).id) loadSales(); if(!TV_LOADED&&parseSheetInput(TV_ID).id) loadTargetValue(); }
-  if(t.dataset.page==='leads') renderLeads();
+  if(t.dataset.page==='leads'){ renderLeads(); if(!LD_LAST||Date.now()-LD_LAST>REFRESH_MIN*60*1000) loadLeads(); }
   if(t.dataset.page==='settings') renderSettings();
 }));
 ['agentSel','fromDt','toDt'].forEach(id=>$(id).addEventListener('change',renderAgent));
@@ -2972,6 +3206,7 @@ renderKpi();
 renderVisits();
 renderTeam();
 renderLeads();
+loadLeads();
 renderSettings();
 startSheet();
 if(parseSheetInput(SD_ID).id) loadSales();
